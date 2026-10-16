@@ -1,0 +1,2608 @@
+{
+  "meta": {
+    "width": 1920,
+    "height": 1080,
+    "version": "10.0"
+  },
+  "slides": [
+    {
+      "id": "s_1792183644288wb1",
+      "background": "#0a0a0a",
+      "transition": "fade",
+      "transitionDuration": 0.8,
+      "notes": "Opening slide. Greet warmly.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 220,
+          "width": 1600,
+          "height": 40,
+          "text": "ENGLISH GRAMMAR · 2026",
+          "fontSize": 12,
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 8,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183644288j8u2"
+        },
+        {
+          "type": "line",
+          "x": 160,
+          "y": 270,
+          "width": 40,
+          "height": 2,
+          "stroke": "#f97316",
+          "strokeWidth": 2,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.2
+          },
+          "id": "el_1792183644288tynw"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 380,
+          "width": 1600,
+          "height": 240,
+          "text": "Countable &\nUncountable\nNouns",
+          "fontSize": 128,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "lineHeight": 1.05,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183644288m3b2"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 850,
+          "width": 1200,
+          "height": 40,
+          "text": "A Simple Guide",
+          "fontSize": 26,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_179218364428871yb"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 920,
+          "width": 1440,
+          "height": 1,
+          "fill": "#27272a",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_1792183644288yr71"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 950,
+          "width": 800,
+          "height": 40,
+          "text": "Ataei  &  Marashi",
+          "fontSize": 18,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.9
+          },
+          "id": "el_179218364428876uv"
+        },
+        {
+          "type": "text",
+          "x": 1200,
+          "y": 955,
+          "width": 560,
+          "height": 40,
+          "text": "PRESENTATION",
+          "fontSize": 12,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "right",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.9
+          },
+          "id": "el_1792183644288ljbz"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183644288k59",
+      "background": "#fafaf9",
+      "transition": "slideLeft",
+      "transitionDuration": 0.6,
+      "notes": "Introduction and roadmap.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "01",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_1792183644288xakf"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Introduction",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_17921836442884mke"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 120,
+          "text": "Today's Topic.",
+          "fontSize": 96,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183644288sfp9"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 400,
+          "width": 1400,
+          "height": 60,
+          "text": "Hello everyone. Good morning.",
+          "fontSize": 30,
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183644288rvf4"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 460,
+          "width": 1400,
+          "height": 60,
+          "text": "Today, I want to talk about countable and uncountable nouns.",
+          "fontSize": 22,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.45
+          },
+          "id": "el_1792183644288t9ve"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 620,
+          "width": 1440,
+          "height": 1,
+          "fill": "#e7e5e4",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.6
+          },
+          "id": "el_17921836442889ve2"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 680,
+          "width": 460,
+          "height": 260,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.7
+          },
+          "id": "el_179218364428848l0"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 720,
+          "width": 100,
+          "height": 30,
+          "text": "A",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_1792183644288ahth"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 760,
+          "width": 400,
+          "height": 60,
+          "text": "Countable",
+          "fontSize": 32,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.85
+          },
+          "id": "el_17921836442889yfw"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 830,
+          "width": 400,
+          "height": 80,
+          "text": "Things we can count",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "lineHeight": 1.6,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.95
+          },
+          "id": "el_17921836442887zca"
+        },
+        {
+          "type": "rect",
+          "x": 650,
+          "y": 680,
+          "width": 460,
+          "height": 260,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.8
+          },
+          "id": "el_1792183644288sjbz"
+        },
+        {
+          "type": "text",
+          "x": 690,
+          "y": 720,
+          "width": 100,
+          "height": 30,
+          "text": "B",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.9
+          },
+          "id": "el_1792183644288j7jf"
+        },
+        {
+          "type": "text",
+          "x": 690,
+          "y": 760,
+          "width": 400,
+          "height": 60,
+          "text": "Uncountable",
+          "fontSize": 32,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.95
+          },
+          "id": "el_17921836442881wil"
+        },
+        {
+          "type": "text",
+          "x": 690,
+          "y": 830,
+          "width": 400,
+          "height": 80,
+          "text": "Things we cannot count individually",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "lineHeight": 1.6,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 1.05
+          },
+          "id": "el_1792183644288gc9n"
+        },
+        {
+          "type": "rect",
+          "x": 1140,
+          "y": 680,
+          "width": 460,
+          "height": 260,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.9
+          },
+          "id": "el_1792183644288f1cj"
+        },
+        {
+          "type": "text",
+          "x": 1180,
+          "y": 720,
+          "width": 100,
+          "height": 30,
+          "text": "C",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1
+          },
+          "id": "el_1792183644288dlfr"
+        },
+        {
+          "type": "text",
+          "x": 1180,
+          "y": 760,
+          "width": 400,
+          "height": 60,
+          "text": "Questions",
+          "fontSize": 32,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 1.05
+          },
+          "id": "el_1792183644288ychu"
+        },
+        {
+          "type": "text",
+          "x": 1180,
+          "y": 830,
+          "width": 400,
+          "height": 80,
+          "text": "How many & How much",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "lineHeight": 1.6,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 1.15
+          },
+          "id": "el_1792183644288q1mq"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183644288hdd",
+      "background": "#fafaf9",
+      "transition": "fade",
+      "transitionDuration": 0.7,
+      "notes": "Countable nouns.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "02",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_1792183644288z43s"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Part A",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183644288n537"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 120,
+          "text": "Countable Nouns.",
+          "fontSize": 88,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183644288xruu"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 400,
+          "width": 1400,
+          "height": 60,
+          "text": "Things that we can count.",
+          "fontSize": 30,
+          "fontStyle": "italic",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_17921836442882hwn"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 520,
+          "width": 1440,
+          "height": 1,
+          "fill": "#e7e5e4",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.4
+          },
+          "id": "el_17921836442884o4m"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 560,
+          "width": 400,
+          "height": 40,
+          "text": "EXAMPLES",
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288ujny"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 620,
+          "width": 340,
+          "height": 140,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.55
+          },
+          "id": "el_17921836442886jud"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 655,
+          "width": 300,
+          "height": 60,
+          "text": "🚗",
+          "fontSize": 44,
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.6
+          },
+          "id": "el_1792183644288ustz"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 710,
+          "width": 300,
+          "height": 40,
+          "text": "cars",
+          "fontSize": 22,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.65
+          },
+          "id": "el_1792183644288s5n0"
+        },
+        {
+          "type": "rect",
+          "x": 530,
+          "y": 620,
+          "width": 340,
+          "height": 140,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183644288399n"
+        },
+        {
+          "type": "text",
+          "x": 570,
+          "y": 655,
+          "width": 300,
+          "height": 60,
+          "text": "📚",
+          "fontSize": 44,
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.7
+          },
+          "id": "el_1792183644288yxwf"
+        },
+        {
+          "type": "text",
+          "x": 570,
+          "y": 710,
+          "width": 300,
+          "height": 40,
+          "text": "books",
+          "fontSize": 22,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.75
+          },
+          "id": "el_1792183644288je7d"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 620,
+          "width": 340,
+          "height": 140,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.65
+          },
+          "id": "el_1792183644288vm7j"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 655,
+          "width": 300,
+          "height": 60,
+          "text": "🐦",
+          "fontSize": 44,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_17921836442885swb"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 710,
+          "width": 300,
+          "height": 40,
+          "text": "birds",
+          "fontSize": 22,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.85
+          },
+          "id": "el_17921836442880iiv"
+        },
+        {
+          "type": "rect",
+          "x": 1270,
+          "y": 620,
+          "width": 330,
+          "height": 140,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.7
+          },
+          "id": "el_1792183644288a8rp"
+        },
+        {
+          "type": "text",
+          "x": 1310,
+          "y": 655,
+          "width": 300,
+          "height": 60,
+          "text": "👨",
+          "fontSize": 44,
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.9
+          },
+          "id": "el_17921836442888wsj"
+        },
+        {
+          "type": "text",
+          "x": 1310,
+          "y": 710,
+          "width": 300,
+          "height": 40,
+          "text": "men",
+          "fontSize": 22,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.95
+          },
+          "id": "el_1792183644288zabv"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 820,
+          "width": 500,
+          "height": 40,
+          "text": "COUNTING",
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1
+          },
+          "id": "el_1792183644288j291"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 870,
+          "width": 1000,
+          "height": 60,
+          "text": "one car  →  two cars  →  three cars",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 1.05
+          },
+          "id": "el_1792183644288ejel"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 920,
+          "width": 1000,
+          "height": 60,
+          "text": "one book  →  two books  →  three books",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 1.15
+          },
+          "id": "el_1792183644288fglk"
+        }
+      ]
+    },
+    {
+      "id": "s_17921836442881c9",
+      "background": "#0a0a0a",
+      "transition": "slideLeft",
+      "transitionDuration": 0.6,
+      "notes": "Words used with countable nouns.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "03",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_179218364428845gq"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Words & Usage",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183644288x385"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 100,
+          "text": "With Countable Nouns.",
+          "fontSize": 72,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183644288yhk3"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 400,
+          "width": 460,
+          "height": 100,
+          "fill": "#f97316",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183644288zirg"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 425,
+          "width": 400,
+          "height": 60,
+          "text": "many",
+          "fontSize": 38,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.4
+          },
+          "id": "el_179218364428856ns"
+        },
+        {
+          "type": "rect",
+          "x": 650,
+          "y": 400,
+          "width": 460,
+          "height": 100,
+          "fill": "#f97316",
+          "cornerRadius": 20,
+          "opacity": 0.55,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183644288qokn"
+        },
+        {
+          "type": "text",
+          "x": 690,
+          "y": 425,
+          "width": 400,
+          "height": 60,
+          "text": "a few",
+          "fontSize": 38,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_179218364428892d4"
+        },
+        {
+          "type": "rect",
+          "x": 1140,
+          "y": 400,
+          "width": 460,
+          "height": 100,
+          "fill": "#f97316",
+          "cornerRadius": 20,
+          "opacity": 0.25,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288xy15"
+        },
+        {
+          "type": "text",
+          "x": 1180,
+          "y": 425,
+          "width": 400,
+          "height": 60,
+          "text": "a lot of",
+          "fontSize": 38,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.6
+          },
+          "id": "el_1792183644288nbit"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 570,
+          "width": 500,
+          "height": 40,
+          "text": "EXAMPLES",
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.7
+          },
+          "id": "el_1792183644288rm7h"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 620,
+          "width": 1440,
+          "height": 100,
+          "fill": "#18181b",
+          "cornerRadius": 16,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.75
+          },
+          "id": "el_1792183644288gwxo"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 620,
+          "width": 4,
+          "height": 100,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.75
+          },
+          "id": "el_1792183644288jrge"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 655,
+          "width": 1400,
+          "height": 40,
+          "text": "There are many cars in the street.",
+          "fontSize": 26,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_1792183644288tw1t"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 740,
+          "width": 1440,
+          "height": 100,
+          "fill": "#18181b",
+          "cornerRadius": 16,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.85
+          },
+          "id": "el_1792183644288cxch"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 740,
+          "width": 4,
+          "height": 100,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.85
+          },
+          "id": "el_1792183644288ptwe"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 775,
+          "width": 1400,
+          "height": 40,
+          "text": "I need a few books.",
+          "fontSize": 26,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.9
+          },
+          "id": "el_1792183644288vd82"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 860,
+          "width": 1440,
+          "height": 100,
+          "fill": "#18181b",
+          "cornerRadius": 16,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.95
+          },
+          "id": "el_1792183644288bh7o"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 860,
+          "width": 4,
+          "height": 100,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.95
+          },
+          "id": "el_1792183644288rfoo"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 895,
+          "width": 1400,
+          "height": 40,
+          "text": "There are a lot of birds in the sky.",
+          "fontSize": 26,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1
+          },
+          "id": "el_17921836442882skf"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183644288h11",
+      "background": "#fafaf9",
+      "transition": "fade",
+      "transitionDuration": 0.7,
+      "notes": "Uncountable nouns.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "04",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_1792183644288ixqn"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Part B",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_179218364428869c9"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 120,
+          "text": "Uncountable Nouns.",
+          "fontSize": 88,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183644288bxfe"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 400,
+          "width": 1400,
+          "height": 60,
+          "text": "Things that we cannot count individually.",
+          "fontSize": 30,
+          "fontStyle": "italic",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183644288ujam"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 520,
+          "width": 1440,
+          "height": 1,
+          "fill": "#e7e5e4",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.4
+          },
+          "id": "el_1792183644288d8bo"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 560,
+          "width": 400,
+          "height": 40,
+          "text": "EXAMPLES",
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288tf49"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 620,
+          "width": 460,
+          "height": 200,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.55
+          },
+          "id": "el_1792183644288khzm"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 660,
+          "width": 400,
+          "height": 70,
+          "text": "🍞",
+          "fontSize": 52,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.6
+          },
+          "id": "el_179218364428825c8"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 745,
+          "width": 400,
+          "height": 40,
+          "text": "bread",
+          "fontSize": 26,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.65
+          },
+          "id": "el_1792183644288k3f5"
+        },
+        {
+          "type": "rect",
+          "x": 650,
+          "y": 620,
+          "width": 460,
+          "height": 200,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183644288qqpd"
+        },
+        {
+          "type": "text",
+          "x": 690,
+          "y": 660,
+          "width": 400,
+          "height": 70,
+          "text": "ℹ",
+          "fontSize": 52,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.7
+          },
+          "id": "el_1792183644288a5d7"
+        },
+        {
+          "type": "text",
+          "x": 690,
+          "y": 745,
+          "width": 400,
+          "height": 40,
+          "text": "information",
+          "fontSize": 26,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.75
+          },
+          "id": "el_1792183644288o8me"
+        },
+        {
+          "type": "rect",
+          "x": 1140,
+          "y": 620,
+          "width": 460,
+          "height": 200,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.65
+          },
+          "id": "el_1792183644288jb0y"
+        },
+        {
+          "type": "text",
+          "x": 1180,
+          "y": 660,
+          "width": 400,
+          "height": 70,
+          "text": "🚦",
+          "fontSize": 52,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_1792183644288sh4m"
+        },
+        {
+          "type": "text",
+          "x": 1180,
+          "y": 745,
+          "width": 400,
+          "height": 40,
+          "text": "traffic",
+          "fontSize": 26,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.85
+          },
+          "id": "el_17921836442883mk5"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 870,
+          "width": 1440,
+          "height": 100,
+          "fill": "#ffffff",
+          "cornerRadius": 16,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.9
+          },
+          "id": "el_1792183644288otrf"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 905,
+          "width": 1400,
+          "height": 40,
+          "text": "⚠  We don't say \"one bread\" or \"two breads\".",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1
+          },
+          "id": "el_1792183644288djas"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183644288ht3",
+      "background": "#0a0a0a",
+      "transition": "slideLeft",
+      "transitionDuration": 0.6,
+      "notes": "Words used with uncountable nouns.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "05",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_17921836442884o9e"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Words & Usage",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183644288d94q"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 100,
+          "text": "With Uncountable Nouns.",
+          "fontSize": 72,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183644288esua"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 400,
+          "width": 460,
+          "height": 100,
+          "fill": "#f97316",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_17921836442882ccv"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 425,
+          "width": 400,
+          "height": 60,
+          "text": "much",
+          "fontSize": 38,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.4
+          },
+          "id": "el_17921836442885vt4"
+        },
+        {
+          "type": "rect",
+          "x": 650,
+          "y": 400,
+          "width": 460,
+          "height": 100,
+          "fill": "#f97316",
+          "cornerRadius": 20,
+          "opacity": 0.55,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183644288db2o"
+        },
+        {
+          "type": "text",
+          "x": 690,
+          "y": 425,
+          "width": 400,
+          "height": 60,
+          "text": "a little",
+          "fontSize": 38,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288rbj6"
+        },
+        {
+          "type": "rect",
+          "x": 1140,
+          "y": 400,
+          "width": 460,
+          "height": 100,
+          "fill": "#f97316",
+          "cornerRadius": 20,
+          "opacity": 0.25,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288d1ni"
+        },
+        {
+          "type": "text",
+          "x": 1180,
+          "y": 425,
+          "width": 400,
+          "height": 60,
+          "text": "a lot of",
+          "fontSize": 38,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.6
+          },
+          "id": "el_17921836442889ff8"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 570,
+          "width": 500,
+          "height": 40,
+          "text": "EXAMPLES",
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.7
+          },
+          "id": "el_1792183644288dlqu"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 620,
+          "width": 1440,
+          "height": 100,
+          "fill": "#18181b",
+          "cornerRadius": 16,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.75
+          },
+          "id": "el_179218364428811c5"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 620,
+          "width": 4,
+          "height": 100,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.75
+          },
+          "id": "el_1792183644288ikp9"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 655,
+          "width": 1400,
+          "height": 40,
+          "text": "There is a little bread in the kitchen.",
+          "fontSize": 26,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_1792183644288q6dr"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 740,
+          "width": 1440,
+          "height": 100,
+          "fill": "#18181b",
+          "cornerRadius": 16,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.85
+          },
+          "id": "el_1792183644288283z"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 740,
+          "width": 4,
+          "height": 100,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.85
+          },
+          "id": "el_1792183644288eg8j"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 775,
+          "width": 1400,
+          "height": 40,
+          "text": "She needs some information.",
+          "fontSize": 26,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.9
+          },
+          "id": "el_1792183644288lxm4"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 860,
+          "width": 1440,
+          "height": 100,
+          "fill": "#18181b",
+          "cornerRadius": 16,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.95
+          },
+          "id": "el_179218364428896rg"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 860,
+          "width": 4,
+          "height": 100,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.95
+          },
+          "id": "el_1792183644288ivhn"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 895,
+          "width": 1400,
+          "height": 40,
+          "text": "There is a lot of traffic in the street.",
+          "fontSize": 26,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1
+          },
+          "id": "el_17921836442881b3q"
+        }
+      ]
+    },
+    {
+      "id": "s_17921836442886f0",
+      "background": "#fafaf9",
+      "transition": "fade",
+      "transitionDuration": 0.6,
+      "notes": "Some is used with both.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "06",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_1792183644288n5a9"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Both Types",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_17921836442884pu1"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 120,
+          "text": "The Word \"Some\".",
+          "fontSize": 96,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183644288h4jc"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 400,
+          "width": 1400,
+          "height": 60,
+          "text": "We can also use \"some\" with both countable and uncountable nouns.",
+          "fontSize": 24,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183644288jtee"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 540,
+          "width": 700,
+          "height": 400,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183644288z6zd"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 540,
+          "width": 5,
+          "height": 400,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183644288994z"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 580,
+          "width": 400,
+          "height": 40,
+          "text": "COUNTABLE",
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288k5lv"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 640,
+          "width": 620,
+          "height": 60,
+          "text": "I have some books.",
+          "fontSize": 32,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_17921836442887rmf"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 720,
+          "width": 620,
+          "height": 40,
+          "text": "some + plural countable",
+          "fontSize": 17,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.7
+          },
+          "id": "el_17921836442889061"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 810,
+          "width": 620,
+          "height": 80,
+          "text": "📚",
+          "fontSize": 64,
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_17921836442881fsl"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 540,
+          "width": 700,
+          "height": 400,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288tki8"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 540,
+          "width": 5,
+          "height": 400,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288mx0j"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 580,
+          "width": 400,
+          "height": 40,
+          "text": "UNCOUNTABLE",
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.6
+          },
+          "id": "el_17921836442884vs7"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 640,
+          "width": 620,
+          "height": 60,
+          "text": "I need some bread.",
+          "fontSize": 32,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.7
+          },
+          "id": "el_1792183644288jvby"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 720,
+          "width": 620,
+          "height": 40,
+          "text": "some + uncountable",
+          "fontSize": 17,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.8
+          },
+          "id": "el_17921836442883jqj"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 810,
+          "width": 620,
+          "height": 80,
+          "text": "🍞",
+          "fontSize": 64,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.9
+          },
+          "id": "el_1792183644288lvyl"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183644288gh1",
+      "background": "#0a0a0a",
+      "transition": "slideLeft",
+      "transitionDuration": 0.6,
+      "notes": "How many / How much.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "07",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_179218364428846hm"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Asking Questions",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183644288npjf"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 100,
+          "text": "How Many · How Much.",
+          "fontSize": 72,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183644288ieil"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 400,
+          "width": 700,
+          "height": 500,
+          "fill": "#18181b",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183644288uzt3"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 440,
+          "width": 620,
+          "height": 60,
+          "text": "How many",
+          "fontSize": 40,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.4
+          },
+          "id": "el_17921836442887pne"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 515,
+          "width": 620,
+          "height": 40,
+          "text": "for countable nouns",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.45
+          },
+          "id": "el_1792183644288u7u0"
+        },
+        {
+          "type": "rect",
+          "x": 200,
+          "y": 580,
+          "width": 620,
+          "height": 1,
+          "fill": "#27272a",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288pl8c"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 610,
+          "width": 620,
+          "height": 100,
+          "text": "How many cars are there in the street?",
+          "fontSize": 20,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "lineHeight": 1.5,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.55
+          },
+          "id": "el_1792183644288dd39"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 730,
+          "width": 620,
+          "height": 100,
+          "text": "How many books do you need?",
+          "fontSize": 20,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "lineHeight": 1.5,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.65
+          },
+          "id": "el_1792183644288imw3"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 400,
+          "width": 700,
+          "height": 500,
+          "fill": "#f97316",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.45
+          },
+          "id": "el_17921836442888686"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 440,
+          "width": 620,
+          "height": 60,
+          "text": "How much",
+          "fontSize": 40,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.55
+          },
+          "id": "el_17921836442882t9d"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 515,
+          "width": 620,
+          "height": 40,
+          "text": "for uncountable nouns",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "opacity": 0.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183644288nqq1"
+        },
+        {
+          "type": "rect",
+          "x": 940,
+          "y": 580,
+          "width": 620,
+          "height": 1,
+          "fill": "#0a0a0a",
+          "opacity": 0.3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.65
+          },
+          "id": "el_17921836442885mgf"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 610,
+          "width": 620,
+          "height": 100,
+          "text": "How much information does your teacher need?",
+          "fontSize": 20,
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "lineHeight": 1.5,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.7
+          },
+          "id": "el_1792183644288hasu"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 730,
+          "width": 620,
+          "height": 100,
+          "text": "How much bread is there in the kitchen?",
+          "fontSize": 20,
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "lineHeight": 1.5,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.8
+          },
+          "id": "el_1792183644288jzcg"
+        }
+      ]
+    },
+    {
+      "id": "s_17921836442881z9",
+      "background": "#fafaf9",
+      "transition": "fade",
+      "transitionDuration": 0.6,
+      "notes": "Conclusion and thank you.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "08",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_1792183644288h7cs"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Conclusion",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183644288f12z"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 120,
+          "text": "In Conclusion.",
+          "fontSize": 96,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_17921836442885fmi"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 440,
+          "width": 700,
+          "height": 200,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_17921836442887he8"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 440,
+          "width": 5,
+          "height": 200,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_17921836442883wks"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 480,
+          "width": 200,
+          "height": 30,
+          "text": "COUNTABLE",
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.4
+          },
+          "id": "el_1792183644288si3t"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 520,
+          "width": 620,
+          "height": 60,
+          "text": "Things we can count.",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288o4v2"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 575,
+          "width": 620,
+          "height": 40,
+          "text": "cars · books · birds · men",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183644288i90f"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 440,
+          "width": 700,
+          "height": 200,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183644288pfxp"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 440,
+          "width": 5,
+          "height": 200,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183644288of2a"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 480,
+          "width": 200,
+          "height": 30,
+          "text": "UNCOUNTABLE",
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_1792183644288wxca"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 520,
+          "width": 620,
+          "height": 60,
+          "text": "Things we can't count.",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183644288ubu6"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 575,
+          "width": 620,
+          "height": 40,
+          "text": "bread · information · traffic",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.7
+          },
+          "id": "el_17921836442888viy"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 700,
+          "width": 1440,
+          "height": 1,
+          "fill": "#e7e5e4",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_1792183644288ecox"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 750,
+          "width": 1440,
+          "height": 60,
+          "text": "We use different words with each type of noun.",
+          "fontSize": 32,
+          "fontStyle": "italic",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.9
+          },
+          "id": "el_1792183644288pi5o"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 880,
+          "width": 1440,
+          "height": 60,
+          "text": "Thank you for listening to my presentation.",
+          "fontSize": 22,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 1
+          },
+          "id": "el_1792183644288339r"
+        },
+        {
+          "type": "line",
+          "x": 160,
+          "y": 980,
+          "width": 40,
+          "height": 2,
+          "stroke": "#f97316",
+          "strokeWidth": 2,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1.1
+          },
+          "id": "el_1792183644288s6d7"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 1000,
+          "width": 800,
+          "height": 40,
+          "text": "Ataei  &  Marashi",
+          "fontSize": 18,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1.2
+          },
+          "id": "el_1792183644288nfea"
+        },
+        {
+          "type": "text",
+          "x": 1200,
+          "y": 1005,
+          "width": 560,
+          "height": 40,
+          "text": "Any questions?",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "right",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1.2
+          },
+          "id": "el_17921836442881khe"
+        }
+      ]
+    }
+  ]
+}

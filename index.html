@@ -1,0 +1,3377 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova Studio Pro — Presentation Suite</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ═══════════ FONTS ═══════════ */
+@font-face { font-family:'Dana'; src:url('./fonts/dana/dana-regular.woff') format('woff'); font-weight:400; font-display:swap; }
+@font-face { font-family:'Dana'; src:url('./fonts/dana/dana-medium.woff') format('woff'); font-weight:500; font-display:swap; }
+@font-face { font-family:'Dana'; src:url('./fonts/dana/dana-demibold.woff') format('woff'); font-weight:600; font-display:swap; }
+@font-face { font-family:'Dana'; src:url('./fonts/dana/dana-bold.woff') format('woff'); font-weight:700; font-display:swap; }
+@font-face { font-family:'Dana'; src:url('./fonts/dana/dana-black.woff') format('woff'); font-weight:900; font-display:swap; }
+@font-face { font-family:'Iran'; src:url('./fonts/iran/iran-regular.woff') format('woff'); font-weight:400; font-display:swap; }
+@font-face { font-family:'Iran'; src:url('./fonts/iran/iran-medium.woff') format('woff'); font-weight:500; font-display:swap; }
+@font-face { font-family:'Iran'; src:url('./fonts/iran/iran-demibold.woff') format('woff'); font-weight:600; font-display:swap; }
+@font-face { font-family:'Iran'; src:url('./fonts/iran/iran-bold.woff') format('woff'); font-weight:700; font-display:swap; }
+@font-face { font-family:'Iran'; src:url('./fonts/iran/iran-black.woff') format('woff'); font-weight:900; font-display:swap; }
+@font-face { font-family:'Inter'; src:url('./fonts/dana/dana-regular.woff') format('woff'); font-weight:400; font-display:swap; }
+@font-face { font-family:'Inter'; src:url('./fonts/dana/dana-bold.woff') format('woff'); font-weight:700; font-display:swap; }
+
+/* ═══════════ TOKENS ═══════════ */
+:root{
+  --bg-0:#07070b;
+  --bg-1:#0b0c14;
+  --bg-2:#10111c;
+  --bg-3:#161824;
+  --panel:#12141f;
+  --panel-2:#1a1c2b;
+  --panel-3:#232638;
+  --border:rgba(255,255,255,.06);
+  --border-2:rgba(255,255,255,.12);
+  --border-3:rgba(255,255,255,.18);
+  --primary:#5b8def;
+  --primary-2:#7ba7ff;
+  --primary-3:#3d6fd9;
+  --primary-glow:rgba(91,141,239,.45);
+  --accent:#a78bfa;
+  --accent-2:#c4b5fd;
+  --pink:#f472b6;
+  --cyan:#22d3ee;
+  --emerald:#34d399;
+  --amber:#fbbf24;
+  --rose:#fb7185;
+  --danger:#ef4444;
+  --text:#eef1fa;
+  --text-2:#a8adc9;
+  --text-3:#6b7194;
+  --text-4:#424660;
+  --radius-xs:4px;
+  --radius-s:7px;
+  --radius:10px;
+  --radius-l:14px;
+  --radius-xl:20px;
+  --radius-2xl:28px;
+  --shadow-xs:0 1px 3px rgba(0,0,0,.4);
+  --shadow-sm:0 4px 14px rgba(0,0,0,.35);
+  --shadow:0 12px 32px rgba(0,0,0,.5);
+  --shadow-lg:0 24px 60px rgba(0,0,0,.65);
+  --shadow-inner:inset 0 1px 0 rgba(255,255,255,.06);
+  --trans:cubic-bezier(.4,0,.2,1);
+  --trans-smooth:cubic-bezier(.22,1,.36,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'Dana','Iran','Segoe UI',Tahoma,sans-serif;
+  background:var(--bg-0);
+  color:var(--text);
+  font-size:12.5px;
+  font-weight:500;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(1200px 700px at 10% 0%,rgba(91,141,239,.10),transparent 60%),
+    radial-gradient(900px 600px at 90% 100%,rgba(167,139,250,.08),transparent 60%),
+    radial-gradient(700px 500px at 50% 50%,rgba(244,114,182,.03),transparent 70%);
+}
+
+/* ═══════════ APP LAYOUT ═══════════ */
+.app{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:56px 300px 1fr 320px;
+  grid-template-rows:52px 1fr 52px;
+  height:100vh;
+  gap:0;
+  transition:grid-template-columns .3s var(--trans);
+}
+.app.collapsed{grid-template-columns:56px 0 1fr 320px}
+.app.collapsed .slides-panel{opacity:0;pointer-events:none;overflow:hidden}
+.app.collapsed-inspector{grid-template-columns:56px 300px 1fr 0}
+.app.collapsed-inspector .inspector{opacity:0;pointer-events:none;overflow:hidden}
+
+/* ═══════════ TOPBAR ═══════════ */
+.topbar{
+  grid-column:1/-1;
+  grid-row:1;
+  background:linear-gradient(180deg,var(--bg-3),var(--bg-2));
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 14px;gap:8px;
+  box-shadow:var(--shadow-inner);
+  z-index:100;
+}
+.app-logo{
+  display:flex;align-items:center;gap:10px;
+  padding-left:8px;margin-left:4px;
+  border-left:1px solid var(--border);
+  font-weight:800;font-size:13px;letter-spacing:-.3px;
+}
+.app-logo-mark{
+  width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:#fff;font-weight:900;
+  box-shadow:0 6px 18px var(--primary-glow),var(--shadow-inner);
+  position:relative;
+}
+.app-logo-mark::after{
+  content:'';position:absolute;inset:-1px;border-radius:9px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  filter:blur(8px);opacity:.5;z-index:-1;
+}
+.app-logo span.v{color:var(--text-3);font-size:10px;font-weight:700;font-family:'Courier New',monospace;letter-spacing:.5px}
+
+.hdr-group{
+  display:flex;align-items:center;gap:2px;
+  padding:0 8px;height:100%;
+  border-left:1px solid var(--border);
+}
+.hdr-group:first-of-type{border-left:none}
+.hdr-spacer{flex:1}
+
+.hdr-btn{
+  height:32px;padding:0 10px;
+  background:transparent;
+  border-radius:var(--radius-s);
+  color:var(--text-2);font-size:11.5px;font-weight:600;
+  font-family:inherit;
+  display:flex;align-items:center;gap:6px;
+  transition:all .2s var(--trans);
+  white-space:nowrap;cursor:pointer;border:none;
+}
+.hdr-btn:hover{background:var(--panel-2);color:var(--text)}
+.hdr-btn:active{transform:scale(.96)}
+.hdr-btn:disabled{opacity:.3;cursor:not-allowed}
+.hdr-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.hdr-btn.primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff;box-shadow:0 4px 12px var(--primary-glow);
+}
+.hdr-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px var(--primary-glow)}
+
+.hdr-info{
+  display:flex;align-items:center;gap:14px;
+  font-size:10.5px;font-family:'Courier New',monospace;
+  color:var(--text-3);
+  padding:0 12px;height:30px;
+  background:var(--bg-0);border-radius:var(--radius-s);
+  border:1px solid var(--border);
+}
+.hdr-info strong{color:var(--text);font-weight:700}
+
+/* ═══════════ TOOL RAIL ═══════════ */
+.tool-rail{
+  grid-column:1;
+  grid-row:2;
+  background:linear-gradient(180deg,var(--bg-3),var(--bg-2));
+  border-left:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px 0;gap:3px;
+  overflow-y:auto;overflow-x:hidden;
+  box-shadow:var(--shadow-inner);
+}
+.tool-rail::-webkit-scrollbar{width:0}
+.rail-btn{
+  width:40px;height:40px;
+  background:transparent;border:none;
+  border-radius:var(--radius-s);
+  color:var(--text-3);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s var(--trans);
+  position:relative;flex-shrink:0;
+}
+.rail-btn:hover{background:var(--panel-2);color:var(--text)}
+.rail-btn.active{background:rgba(91,141,239,.15);color:var(--primary-2)}
+.rail-btn.accent{color:var(--pink)}
+.rail-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rail-divider{width:22px;height:1px;background:var(--border);margin:5px 0;flex-shrink:0}
+.rail-btn[data-tip]:hover::after{
+  content:attr(data-tip);
+  position:absolute;right:100%;top:50%;
+  transform:translateY(-50%);
+  margin-right:10px;
+  background:var(--panel-3);color:var(--text);
+  padding:6px 11px;border-radius:6px;
+  font-size:10.5px;white-space:nowrap;font-weight:600;
+  border:1px solid var(--border-2);
+  box-shadow:var(--shadow);
+  pointer-events:none;z-index:1000;
+}
+
+/* ═══════════ SLIDES PANEL ═══════════ */
+.slides-panel{
+  grid-column:2;
+  grid-row:2;
+  background:var(--panel);
+  border-left:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  transition:opacity .25s var(--trans);
+  min-width:0;
+}
+.panel-head{
+  height:38px;padding:0 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:10px;font-weight:800;letter-spacing:1.2px;
+  color:var(--text-3);text-transform:uppercase;
+  flex-shrink:0;
+  background:var(--bg-3);
+}
+.panel-badge{
+  background:rgba(91,141,239,.15);
+  color:var(--primary-2);
+  padding:3px 9px;border-radius:10px;
+  font-size:10px;font-weight:800;
+  font-family:'Courier New',monospace;
+}
+.slides-list{
+  flex:1;overflow-y:auto;padding:12px;
+  display:flex;flex-direction:column;gap:10px;
+  min-height:0;
+}
+.slides-list::-webkit-scrollbar{width:8px}
+.slides-list::-webkit-scrollbar-track{background:transparent}
+.slides-list::-webkit-scrollbar-thumb{background:var(--panel-3);border-radius:4px}
+.slides-list::-webkit-scrollbar-thumb:hover{background:var(--primary-3)}
+
+.slide-thumb{
+  position:relative;aspect-ratio:16/9;
+  background:#fff;border-radius:var(--radius-s);
+  border:2px solid transparent;
+  cursor:pointer;overflow:hidden;
+  box-shadow:var(--shadow-xs);
+  transition:all .22s var(--trans-smooth);
+  flex-shrink:0;
+}
+.slide-thumb:hover{border-color:var(--text-3);transform:translateY(-2px);box-shadow:var(--shadow)}
+.slide-thumb.active{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px var(--primary-glow),var(--shadow);
+}
+.slide-thumb-inner{position:absolute;inset:0;overflow:hidden;background:#fff}
+.slide-thumb-num{
+  position:absolute;bottom:6px;right:7px;
+  background:rgba(0,0,0,.8);
+  color:#fff;font-size:9px;
+  padding:2px 7px;border-radius:5px;
+  font-weight:800;font-family:'Courier New',monospace;
+  backdrop-filter:blur(8px);
+  z-index:3;
+}
+.slide-thumb-actions{
+  position:absolute;top:6px;left:6px;
+  display:flex;gap:3px;opacity:0;
+  transition:opacity .2s;z-index:3;
+}
+.slide-thumb:hover .slide-thumb-actions{opacity:1}
+.slide-thumb-action{
+  width:22px;height:22px;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
+  border-radius:5px;border:none;
+  color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;
+}
+.slide-thumb-action:hover{background:var(--primary);transform:scale(1.1)}
+.slide-thumb-action.danger:hover{background:var(--danger)}
+.slide-thumb-action svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5}
+
+.add-slide-btn{
+  margin:0 12px 12px;
+  padding:12px;
+  background:var(--panel-2);
+  border:1px dashed var(--border-2);
+  border-radius:var(--radius-s);
+  color:var(--text-3);
+  font-size:11.5px;font-weight:700;
+  font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:all .2s;cursor:pointer;
+  flex-shrink:0;
+}
+.add-slide-btn:hover{border-color:var(--primary);color:var(--primary-2);background:rgba(91,141,239,.08);border-style:solid}
+.add-slide-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5}
+
+/* ═══════════ CANVAS AREA ═══════════ */
+.canvas-area{
+  grid-column:3;
+  grid-row:2;
+  display:flex;flex-direction:column;
+  background:var(--bg-1);
+  min-width:0;min-height:0;
+}
+.canvas-toolbar{
+  height:38px;padding:0 14px;
+  background:var(--bg-3);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;color:var(--text-3);
+  flex-shrink:0;
+}
+.canvas-toolbar .info{display:flex;align-items:center;gap:12px;font-family:'Courier New',monospace;font-size:10.5px}
+.canvas-toolbar .sep{color:var(--text-4)}
+.zoom-control{display:flex;align-items:center;gap:7px}
+.zoom-btn{
+  width:26px;height:26px;
+  background:var(--panel-2);
+  border:1px solid var(--border);
+  border-radius:5px;color:var(--text-2);
+  cursor:pointer;font-size:14px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;
+}
+.zoom-btn:hover{background:var(--panel-3);color:var(--text);border-color:var(--border-2)}
+.zoom-slider{width:130px;accent-color:var(--primary);height:3px}
+.zoom-label{
+  min-width:44px;text-align:center;
+  font-family:'Courier New',monospace;
+  color:var(--text-2);font-weight:700;font-size:10.5px;
+}
+
+.canvas-wrap{
+  flex:1;min-height:0;
+  overflow:auto;
+  display:flex;align-items:center;justify-content:center;
+  padding:32px;
+  background-color:#0b0c14;
+  background-image:
+    radial-gradient(circle at center,rgba(91,141,239,.04),transparent 70%),
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:100% 100%, 24px 24px, 24px 24px;
+  position:relative;
+}
+.canvas-wrap::-webkit-scrollbar{width:10px;height:10px}
+.canvas-wrap::-webkit-scrollbar-track{background:var(--bg-0)}
+.canvas-wrap::-webkit-scrollbar-thumb{background:var(--panel-3);border-radius:5px}
+.canvas-wrap::-webkit-scrollbar-thumb:hover{background:var(--text-4)}
+
+.canvas{
+  background:#fff;
+  border-radius:6px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.08),
+    0 30px 80px rgba(0,0,0,.7),
+    0 60px 140px rgba(0,0,0,.5);
+  position:relative;
+  overflow:hidden;
+  flex-shrink:0;
+  transition:transform .3s var(--trans),box-shadow .3s;
+}
+.canvas.zoomed{
+  transform:scale(1.4);
+  cursor:zoom-out;
+  z-index:50;
+  box-shadow:
+    0 0 0 2px var(--primary),
+    0 40px 100px rgba(0,0,0,.8);
+}
+
+/* ═══════════ ITEMS (Stage) ═══════════ */
+.item{
+  position:absolute;
+  cursor:grab;user-select:none;
+  border-radius:4px;
+  outline:2px solid transparent;
+  transition:outline .1s,box-shadow .1s;
+  display:flex;
+  overflow:hidden;
+  word-break:break-word;
+  touch-action:none;
+}
+.item:active{cursor:grabbing}
+.item.selected{
+  outline:2px solid var(--primary-2);
+  box-shadow:0 0 0 5px var(--primary-glow);
+}
+.item.locked{cursor:not-allowed;outline:2px dashed var(--amber) !important;outline-offset:2px}
+
+/* Handles */
+.item .resize-handle{
+  position:absolute;width:12px;height:12px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  border:2px solid #fff;border-radius:50%;
+  bottom:-6px;left:-6px;
+  cursor:nwse-resize;display:none;z-index:10;
+  box-shadow:0 2px 8px rgba(0,0,0,.4);
+}
+.item.selected:not(.locked) .resize-handle{display:block}
+
+.item .rotate-handle{
+  position:absolute;width:16px;height:16px;
+  background:var(--accent);border:2px solid #fff;
+  border-radius:50%;top:-8px;left:50%;
+  transform:translateX(-50%);
+  cursor:grab;display:none;z-index:10;
+  box-shadow:0 2px 8px rgba(167,139,250,.6);
+}
+.item.selected:not(.locked) .rotate-handle{display:block}
+
+/* ═══════════ INSPECTOR ═══════════ */
+.inspector{
+  grid-column:4;
+  grid-row:2;
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  transition:opacity .25s var(--trans);
+  min-width:0;
+}
+.insp-tabs{
+  display:flex;background:var(--bg-3);
+  border-bottom:1px solid var(--border);
+  padding:0 2px;flex-shrink:0;
+}
+.insp-tab{
+  flex:1;
+  padding:11px 2px;
+  text-align:center;
+  font-size:9.5px;font-weight:700;
+  color:var(--text-3);
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all .18s;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  letter-spacing:.2px;
+  background:none;border-top:none;border-left:none;border-right:none;
+  font-family:inherit;
+}
+.insp-tab svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.insp-tab:hover{color:var(--text)}
+.insp-tab.active{
+  color:var(--primary-2);
+  border-bottom-color:var(--primary);
+  background:linear-gradient(180deg,transparent,rgba(91,141,239,.06));
+}
+.insp-body{
+  flex:1;overflow-y:auto;padding:14px;
+  min-height:0;
+}
+.insp-body::-webkit-scrollbar{width:8px}
+.insp-body::-webkit-scrollbar-thumb{background:var(--panel-3);border-radius:4px}
+
+.insp-section{
+  margin-bottom:16px;padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+}
+.insp-section:last-child{border-bottom:none;padding-bottom:0}
+.insp-title{
+  font-size:9.5px;color:var(--text-3);font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:7px;
+}
+.insp-title::before{
+  content:'';width:3px;height:11px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+  border-radius:2px;
+}
+
+.form-row{display:grid;gap:7px;margin-bottom:9px}
+.form-row.c2{grid-template-columns:1fr 1fr}
+.form-row.c3{grid-template-columns:1fr 1fr 1fr}
+.form-field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.form-field label{
+  font-size:9.5px;color:var(--text-3);
+  font-weight:700;letter-spacing:.3px;
+}
+.form-field input,.form-field select,.form-field textarea{
+  background:var(--bg-0);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:7px 9px;
+  border-radius:var(--radius-s);
+  font-size:11.5px;font-family:inherit;
+  transition:all .18s;
+  width:100%;min-width:0;
+}
+.form-field input:hover,.form-field select:hover,.form-field textarea:hover{border-color:var(--border-2)}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{
+  outline:none;border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(91,141,239,.15);
+  background:var(--bg-2);
+}
+.form-field textarea{resize:vertical;min-height:70px;line-height:1.6}
+.form-field input[type=color]{
+  width:34px;height:32px;padding:2px;
+  cursor:pointer;
+  border-radius:var(--radius-s);
+}
+.form-field input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+.form-field input[type=color]::-webkit-color-swatch{border:none;border-radius:5px}
+.form-field input[type=range]{
+  padding:0;height:4px;background:var(--panel-3);
+  border:none;border-radius:2px;
+  accent-color:var(--primary);
+}
+.color-wrap{display:flex;gap:5px;align-items:center}
+.color-wrap input[type=color]{flex-shrink:0}
+.color-wrap input[type=text]{flex:1;font-family:'Courier New',monospace;font-size:11px}
+
+/* Align buttons */
+.align-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.align-btn{
+  padding:7px;
+  background:var(--panel-2);
+  border:1px solid var(--border);
+  border-radius:var(--radius-s);
+  color:var(--text-2);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .16s;font-family:inherit;
+}
+.align-btn:hover{background:var(--panel-3);color:var(--text);border-color:var(--border-2)}
+.align-btn.active{
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff;border-color:transparent;
+  box-shadow:0 3px 10px var(--primary-glow);
+}
+.align-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Anim grid */
+.anim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}
+.anim-card{
+  background:var(--panel-2);
+  border:1px solid transparent;
+  border-radius:var(--radius-s);
+  padding:9px 6px;
+  cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  transition:all .18s;
+  font-size:9px;color:var(--text-3);
+  text-align:center;line-height:1.2;font-weight:700;
+}
+.anim-card:hover{border-color:var(--primary);color:var(--primary-2);transform:translateY(-1px)}
+.anim-card.active{
+  background:linear-gradient(135deg,rgba(91,141,239,.2),rgba(167,139,250,.15));
+  border-color:var(--primary);color:var(--primary-2);
+}
+.anim-card .ic{font-size:18px;line-height:1}
+
+/* Layers */
+.layer-list{display:flex;flex-direction:column;gap:4px}
+.layer-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;
+  background:var(--panel-2);
+  border:1px solid transparent;
+  border-radius:var(--radius-s);
+  cursor:pointer;
+  transition:all .16s;
+  font-size:11px;color:var(--text-2);
+}
+.layer-item:hover{background:var(--panel-3);border-color:var(--border-2)}
+.layer-item.active{
+  background:linear-gradient(135deg,rgba(91,141,239,.18),rgba(167,139,250,.12));
+  border-color:var(--primary);color:var(--primary-2);
+}
+.layer-icon{
+  width:22px;height:22px;border-radius:5px;
+  background:var(--panel-3);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.layer-item.active .layer-icon{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
+.layer-icon svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+.layer-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.layer-actions{display:flex;gap:2px;opacity:0;transition:opacity .16s}
+.layer-item:hover .layer-actions,.layer-item.active .layer-actions{opacity:1}
+.layer-action{
+  width:20px;height:20px;background:transparent;border:none;
+  border-radius:4px;color:var(--text-3);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .16s;
+}
+.layer-action:hover{background:var(--panel-3);color:var(--text)}
+.layer-action.danger:hover{background:var(--danger);color:#fff}
+.layer-action svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Action buttons */
+.act-btn{
+  background:var(--panel-2);
+  border:1px solid var(--border);
+  color:var(--text);
+  border-radius:var(--radius-s);
+  padding:9px 12px;
+  cursor:pointer;
+  font-size:11px;font-family:inherit;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:all .18s;
+  width:100%;margin-bottom:6px;
+}
+.act-btn:hover{background:var(--panel-3);border-color:var(--border-2);transform:translateY(-1px)}
+.act-btn:active{transform:translateY(0)}
+.act-btn.primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff;border-color:transparent;
+  box-shadow:0 4px 12px var(--primary-glow);
+}
+.act-btn.primary:hover{box-shadow:0 6px 18px var(--primary-glow)}
+.act-btn.danger{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3);color:#fca5a5}
+.act-btn.danger:hover{background:var(--danger);color:#fff}
+.act-btn.success{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.3);color:#6ee7b7}
+.act-btn.success:hover{background:var(--emerald);color:#fff}
+.act-btn.warn{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.3);color:#fcd34d}
+.act-btn.warn:hover{background:var(--amber);color:#fff}
+.act-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ═══════════ BOTTOM BAR ═══════════ */
+.bottombar{
+  grid-column:1/-1;
+  grid-row:3;
+  background:linear-gradient(0deg,var(--bg-3),var(--bg-2));
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 14px;gap:8px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+  z-index:100;
+}
+.bb-btn{
+  height:32px;padding:0 12px;
+  background:var(--panel-2);
+  border:1px solid var(--border);
+  border-radius:var(--radius-s);
+  color:var(--text-2);
+  font-size:11px;font-weight:700;
+  font-family:inherit;
+  display:flex;align-items:center;gap:7px;
+  cursor:pointer;transition:all .18s;
+  white-space:nowrap;
+}
+.bb-btn:hover{background:var(--panel-3);color:var(--text);border-color:var(--border-2)}
+.bb-btn:disabled{opacity:.35;cursor:not-allowed}
+.bb-btn.primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff;border-color:transparent;
+  box-shadow:0 3px 10px var(--primary-glow);
+}
+.bb-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+.bb-pill{
+  display:flex;align-items:center;gap:7px;
+  background:var(--bg-0);
+  border:1px solid var(--border);
+  border-radius:30px;
+  padding:6px 14px;
+  font-size:10.5px;color:var(--text-3);font-weight:700;
+}
+.bb-pill b{color:var(--primary-2);font-weight:800;font-family:'Courier New',monospace}
+.bb-spacer{flex:1}
+.bb-hint{
+  font-size:10px;color:var(--text-3);
+  font-family:'Courier New',monospace;
+  display:flex;align-items:center;gap:8px;
+}
+.bb-hint kbd{
+  background:var(--panel-2);border:1px solid var(--border);
+  padding:2px 6px;border-radius:4px;
+  font-family:'Courier New',monospace;
+  font-size:9.5px;color:var(--text-2);
+}
+
+/* ═══════════ ANIMATIONS ═══════════ */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInUp{from{opacity:0;transform:translateY(200px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInDown{from{opacity:0;transform:translateY(-200px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-200px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(200px)}to{opacity:1;transform:translateX(0)}}
+@keyframes zoomIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@keyframes zoomOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.5)}}
+@keyframes rotateIn{from{opacity:0;transform:rotate(-180deg) scale(.5)}to{opacity:1;transform:rotate(0) scale(1)}}
+@keyframes bounceIn{0%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.15)}70%{transform:scale(.95)}100%{transform:scale(1)}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 0 transparent)}50%{filter:drop-shadow(0 0 20px var(--primary))}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.a-fadeIn{animation:fadeIn .8s var(--trans-smooth) both}
+.a-fadeInUp{animation:fadeInUp .8s var(--trans-smooth) both}
+.a-fadeInDown{animation:fadeInDown .8s var(--trans-smooth) both}
+.a-fadeInLeft{animation:fadeInLeft .8s var(--trans-smooth) both}
+.a-fadeInRight{animation:fadeInRight .8s var(--trans-smooth) both}
+.a-slideInUp{animation:slideInUp 1s var(--trans-smooth) both}
+.a-slideInDown{animation:slideInDown 1s var(--trans-smooth) both}
+.a-slideInLeft{animation:slideInLeft 1s var(--trans-smooth) both}
+.a-slideInRight{animation:slideInRight 1s var(--trans-smooth) both}
+.a-zoomIn{animation:zoomIn .7s var(--trans-smooth) both}
+.a-zoomOut{animation:zoomOut .7s var(--trans-smooth) both}
+.a-rotateIn{animation:rotateIn .9s var(--trans-smooth) both}
+.a-bounceIn{animation:bounceIn .9s both}
+.a-fadeOut{animation:fadeOut .7s both}
+.a-pulse{animation:pulse 1.6s ease-in-out infinite}
+.a-shake{animation:shake .6s ease-in-out}
+.a-bounce{animation:bounce 1.4s ease-in-out infinite}
+.a-spin{animation:spin 2s linear infinite}
+.a-glow{animation:glow 2s ease-in-out infinite}
+.a-float{animation:float 3s ease-in-out infinite}
+.a-blink{animation:blink 1.5s ease-in-out infinite}
+
+/* Slide transitions */
+.trans-fade{animation:transFade .6s var(--trans-smooth) both}
+.trans-slide{animation:transSlide .6s var(--trans-smooth) both}
+.trans-slideLeft{animation:transSlideLeft .6s var(--trans-smooth) both}
+.trans-slideRight{animation:transSlideRight .6s var(--trans-smooth) both}
+.trans-zoom{animation:transZoom .6s var(--trans-smooth) both}
+.trans-flip{animation:transFlip .7s both}
+@keyframes transFade{from{opacity:0}to{opacity:1}}
+@keyframes transSlide{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+@keyframes transSlideLeft{from{opacity:0;transform:translateX(-60px)}to{opacity:1;transform:translateX(0)}}
+@keyframes transSlideRight{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+@keyframes transZoom{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes transFlip{from{opacity:0;transform:perspective(1200px) rotateY(50deg)}to{opacity:1;transform:perspective(1200px) rotateY(0)}}
+
+/* ═══════════ PRESENTER ═══════════ */
+.presenter{
+  display:none;
+  position:fixed;inset:0;
+  background:#000;z-index:9999;
+  flex-direction:column;
+}
+.presenter.active{display:flex}
+.p-stage{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.p-slide{
+  background:#fff;
+  box-shadow:0 0 200px rgba(91,141,239,.3);
+  position:relative;overflow:hidden;
+  flex-shrink:0;
+}
+.p-controls{
+  position:absolute;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:rgba(15,17,28,.94);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:40px;
+  padding:8px 16px;
+  display:flex;align-items:center;gap:6px;
+  opacity:0;transition:all .3s;
+  box-shadow:0 20px 50px rgba(0,0,0,.6);
+}
+.presenter:hover .p-controls,.p-controls:hover{opacity:1;transform:translateX(-50%) translateY(0)}
+.p-btn{
+  width:40px;height:40px;
+  background:rgba(255,255,255,.08);
+  border:none;border-radius:50%;
+  color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;font-size:14px;
+}
+.p-btn:hover{background:var(--primary);transform:scale(1.1);box-shadow:0 8px 20px var(--primary-glow)}
+.p-btn:disabled{opacity:.25;cursor:not-allowed}
+.p-btn:disabled:hover{background:rgba(255,255,255,.08);transform:none;box-shadow:none}
+.p-btn.active{background:var(--primary);box-shadow:0 0 20px var(--primary-glow)}
+.p-counter{
+  color:#fff;font-size:12px;padding:0 14px;
+  font-weight:800;font-family:'Courier New',monospace;
+  min-width:80px;text-align:center;
+}
+.p-progress{
+  position:absolute;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--primary),var(--accent),var(--pink));
+  transition:width .4s var(--trans-smooth);
+  z-index:10;
+  box-shadow:0 0 16px var(--primary-glow);
+}
+.p-notes{
+  position:absolute;top:20px;right:20px;
+  width:340px;max-height:45vh;
+  background:rgba(15,17,28,.94);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:14px;
+  padding:16px 18px;
+  color:#fff;font-size:13px;line-height:1.8;
+  overflow-y:auto;
+  opacity:0;transition:opacity .3s;
+  z-index:10;
+}
+.presenter:hover .p-notes{opacity:1}
+.p-timer{
+  position:absolute;top:20px;left:20px;
+  background:rgba(15,17,28,.94);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:14px;
+  padding:10px 16px;
+  color:#fff;font-family:'Courier New',monospace;
+  font-size:14px;font-weight:800;
+  opacity:0;transition:opacity .3s;
+  z-index:10;
+}
+.presenter:hover .p-timer{opacity:1}
+
+/* TTS indicator */
+.tts-bar{
+  position:fixed;top:20px;left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;padding:9px 20px;border-radius:22px;
+  font-size:11.5px;font-weight:800;
+  display:none;align-items:center;gap:10px;
+  box-shadow:0 10px 30px var(--primary-glow);
+  z-index:10001;
+}
+.tts-bar.active{display:flex}
+.tts-bar .wave{display:flex;gap:3px;align-items:flex-end;height:14px}
+.tts-bar .wave span{width:3px;background:#fff;border-radius:2px;height:4px;animation:waveAnim .8s ease-in-out infinite}
+.tts-bar .wave span:nth-child(2){animation-delay:.15s}
+.tts-bar .wave span:nth-child(3){animation-delay:.3s}
+.tts-bar .wave span:nth-child(4){animation-delay:.45s}
+@keyframes waveAnim{0%,100%{height:4px}50%{height:14px}}
+
+/* ═══════════ MODALS ═══════════ */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.82);
+  backdrop-filter:blur(14px);
+  display:none;align-items:center;justify-content:center;
+  z-index:9500;
+  padding:20px;
+}
+.modal-overlay.show{display:flex}
+.modal{
+  background:var(--panel);
+  border:1px solid var(--border-2);
+  border-radius:var(--radius-l);
+  width:100%;max-width:880px;
+  max-height:90vh;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  box-shadow:var(--shadow-lg);
+  animation:modalIn .25s var(--trans-smooth);
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal.wide{max-width:1100px}
+.modal-head{
+  padding:16px 22px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;background:var(--bg-3);
+}
+.modal-head h3{
+  font-size:14px;font-weight:800;
+  display:flex;align-items:center;gap:9px;
+}
+.modal-head h3 svg{width:17px;height:17px;stroke:var(--primary-2);fill:none;stroke-width:2}
+.modal-close{
+  width:32px;height:32px;
+  background:transparent;border:none;
+  border-radius:var(--radius-s);
+  color:var(--text-3);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.modal-close:hover{background:rgba(239,68,68,.15);color:var(--danger);transform:rotate(90deg)}
+.modal-close svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+.modal-body{
+  padding:20px 22px;overflow-y:auto;flex:1;
+}
+.modal-body::-webkit-scrollbar{width:8px}
+.modal-body::-webkit-scrollbar-thumb{background:var(--panel-3);border-radius:4px}
+.modal-foot{
+  padding:14px 22px;
+  border-top:1px solid var(--border);
+  display:flex;gap:8px;justify-content:flex-end;
+  flex-shrink:0;background:linear-gradient(0deg,var(--bg-3),transparent);
+}
+
+.code-area{
+  width:100%;
+  background:#05070d;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:14px;
+  color:#c9d1e0;
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:11px;line-height:1.65;
+  resize:vertical;min-height:320px;
+  direction:ltr;text-align:left;
+  transition:border-color .2s;
+  tab-size:2;
+}
+.code-area:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(91,141,239,.15)}
+
+/* ═══════════ CONTEXT MENU ═══════════ */
+.ctx{
+  position:fixed;
+  background:var(--panel-3);
+  border:1px solid var(--border-2);
+  border-radius:var(--radius);
+  padding:6px;
+  min-width:210px;
+  box-shadow:var(--shadow-lg);
+  display:none;
+  z-index:9000;
+  animation:ctxIn .14s;
+}
+@keyframes ctxIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.ctx.show{display:block}
+.ctx-item{
+  padding:9px 12px;
+  font-size:11.5px;font-weight:600;
+  color:var(--text-2);
+  border-radius:var(--radius-s);
+  cursor:pointer;
+  display:flex;align-items:center;gap:10px;
+  transition:all .14s;
+}
+.ctx-item:hover{background:var(--primary);color:#fff}
+.ctx-item.danger:hover{background:var(--danger)}
+.ctx-item svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+.ctx-item kbd{
+  margin-right:auto;
+  font-family:'Courier New',monospace;
+  font-size:9.5px;color:var(--text-3);
+  background:var(--bg-0);
+  padding:2px 6px;border-radius:4px;
+  border:1px solid var(--border);
+}
+.ctx-item:hover kbd{background:rgba(255,255,255,.15);color:#fff;border-color:transparent}
+.ctx-sep{height:1px;background:var(--border);margin:4px 0}
+
+/* ═══════════ TOAST ═══════════ */
+.toast-container{
+  position:fixed;bottom:70px;left:50%;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column-reverse;gap:8px;
+  z-index:10000;pointer-events:none;
+}
+.toast{
+  background:var(--panel-3);
+  color:var(--text);
+  padding:11px 20px;
+  border:1px solid var(--border-2);
+  border-radius:26px;
+  font-size:11.5px;font-weight:700;
+  box-shadow:var(--shadow-lg);
+  opacity:0;transform:translateY(16px);
+  transition:all .3s var(--trans-smooth);
+  backdrop-filter:blur(20px);
+  pointer-events:auto;
+  white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.success{border-color:var(--emerald);color:#6ee7b7}
+.toast.error{border-color:var(--danger);color:#fca5a5}
+.toast.info{border-color:var(--primary);color:var(--primary-2)}
+
+/* ═══════════ TEMPLATE GRID (Modal) ═══════════ */
+.tpl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tpl-item{
+  aspect-ratio:16/9;
+  background:var(--panel-2);
+  border:2px solid var(--border);
+  border-radius:var(--radius);
+  cursor:pointer;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:7px;
+  transition:all .2s;
+  font-size:10.5px;font-weight:700;color:var(--text-2);
+  text-align:center;padding:12px 6px;
+}
+.tpl-item:hover{border-color:var(--primary);background:var(--panel-3);color:var(--primary-2);transform:translateY(-2px)}
+.tpl-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media (max-width:1200px){
+  .inspector{display:none}
+  .app{grid-template-columns:56px 260px 1fr}
+  .app.collapsed{grid-template-columns:56px 0 1fr}
+}
+@media (max-width:900px){
+  .slides-panel{display:none}
+  .app{grid-template-columns:56px 1fr}
+}
+@media (max-width:600px){
+  .tool-rail{display:none}
+  .app{grid-template-columns:1fr}
+  .hdr-btn span{display:none}
+  .hdr-info{display:none}
+  .bb-hint{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- TTS Bar -->
+<div class="tts-bar" id="ttsBar">
+  <div class="wave"><span></span><span></span><span></span><span></span></div>
+  <span>در حال خواندن...</span>
+</div>
+
+<!-- ═══════════ MAIN APP ═══════════ -->
+<div class="app" id="app">
+
+  <!-- ═══════ TOPBAR ═══════ -->
+  <header class="topbar">
+    <div class="app-logo">
+      <div class="app-logo-mark">N</div>
+      <div>
+        <div style="line-height:1">Nova Studio</div>
+        <span class="v">PRO v10</span>
+      </div>
+    </div>
+
+    <div class="hdr-group">
+      <button class="hdr-btn" id="btnUndo" disabled title="واگرد (Ctrl+Z)">
+        <svg viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 7"/></svg>
+        <span>واگرد</span>
+      </button>
+      <button class="hdr-btn" id="btnRedo" disabled title="دوباره (Ctrl+Y)">
+        <svg viewBox="0 0 24 24"><path d="M21 7v6h-6"/><path d="M21 13a9 9 0 1 1-3-7.7L21 7"/></svg>
+        <span>دوباره</span>
+      </button>
+    </div>
+
+    <div class="hdr-group">
+      <button class="hdr-btn" id="btnJSON" title="ورودی JSON">
+        <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v4"/><path d="M16 3h3a2 2 0 0 1 2 2v4"/><path d="M8 21H5a2 2 0 0 1-2-2v-4"/><path d="M16 21h3a2 2 0 0 0 2-2v-4"/></svg>
+        <span>JSON</span>
+      </button>
+      <button class="hdr-btn" id="btnTemplates" title="قالب‌ها">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>قالب‌ها</span>
+      </button>
+    </div>
+
+    <div class="hdr-spacer"></div>
+
+    <div class="hdr-info">
+      <span>X: <strong id="infoX">0</strong></span>
+      <span>Y: <strong id="infoY">0</strong></span>
+      <span>🔍 <strong id="infoZoom">50%</strong></span>
+    </div>
+
+    <div class="hdr-group">
+      <button class="hdr-btn" id="btnTTS" title="پخش صدا (TTS)">
+        <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        <span>TTS</span>
+      </button>
+      <button class="hdr-btn primary" id="btnPresent" title="ارائه (F5)">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span>ارائه</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════ TOOL RAIL ═══════ -->
+  <aside class="tool-rail">
+    <button class="rail-btn active" data-tip="انتخاب (V)">
+      <svg viewBox="0 0 24 24"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+    </button>
+    <button class="rail-btn" id="railText" data-tip="متن (T)">
+      <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+    </button>
+    <button class="rail-btn" id="railHeading" data-tip="عنوان (H)">
+      <svg viewBox="0 0 24 24"><path d="M6 4v16"/><path d="M18 4v16"/><path d="M6 12h12"/></svg>
+    </button>
+    <button class="rail-btn" id="railRect" data-tip="مستطیل (R)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+    </button>
+    <button class="rail-btn" id="railCircle" data-tip="دایره (O)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
+    </button>
+    <button class="rail-btn" id="railTriangle" data-tip="مثلث">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 22 22 2 22"/></svg>
+    </button>
+    <button class="rail-btn" id="railStar" data-tip="ستاره">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.3 17 14 18.5 21 12 17.5 5.5 21 7 14 2 9.3 9 9"/></svg>
+    </button>
+    <div class="rail-divider"></div>
+    <button class="rail-btn" id="railLine" data-tip="خط (L)">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/></svg>
+    </button>
+    <button class="rail-btn" id="railArrow" data-tip="فلش">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="18" y2="12"/><polyline points="15 9 21 12 15 15"/></svg>
+    </button>
+    <button class="rail-btn" id="railBullet" data-tip="بولت">
+      <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>
+    </button>
+    <div class="rail-divider"></div>
+    <button class="rail-btn" id="railImage" data-tip="تصویر">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    </button>
+    <button class="rail-btn" id="railChart" data-tip="نمودار">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+    </button>
+    <button class="rail-btn" id="railTable" data-tip="جدول">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+    </button>
+    <button class="rail-btn" id="railIcon" data-tip="آیکون">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+    </button>
+  </aside>
+
+  <!-- ═══════ SLIDES PANEL ═══════ -->
+  <aside class="slides-panel">
+    <div class="panel-head">
+      <span>اسلایدها</span>
+      <span class="panel-badge" id="slidesCount">0</span>
+    </div>
+    <div class="slides-list" id="slidesList"></div>
+    <button class="add-slide-btn" id="btnAddSlide">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      اسلاید جدید
+    </button>
+  </aside>
+
+  <!-- ═══════ CANVAS ═══════ -->
+  <main class="canvas-area">
+    <div class="canvas-toolbar">
+      <div class="info">
+        <span id="statusText">آماده</span>
+        <span class="sep">|</span>
+        <span id="slideCounter">اسلاید 1 از 1</span>
+      </div>
+      <div class="zoom-control">
+        <button class="zoom-btn" id="zoomOut">−</button>
+        <input type="range" class="zoom-slider" id="zoomSlider" min="10" max="200" value="50">
+        <span class="zoom-label" id="zoomLabel">50%</span>
+        <button class="zoom-btn" id="zoomIn">+</button>
+        <button class="zoom-btn" id="zoomFit" title="جای‌گیری">⛶</button>
+      </div>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="canvas" id="canvas"></div>
+    </div>
+  </main>
+
+  <!-- ═══════ INSPECTOR ═══════ -->
+  <aside class="inspector">
+    <div class="insp-tabs">
+      <button class="insp-tab active" data-tab="position">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/></svg>
+        <span>موقعیت</span>
+      </button>
+      <button class="insp-tab" data-tab="style">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 1-4.5 4.5 1 6-5.5-3-5.5 3 1-6L3 9l6-1z"/></svg>
+        <span>استایل</span>
+      </button>
+      <button class="insp-tab" data-tab="content">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>محتوا</span>
+      </button>
+      <button class="insp-tab" data-tab="anim">
+        <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>انیمیشن</span>
+      </button>
+      <button class="insp-tab" data-tab="layers">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg>
+        <span>لایه‌ها</span>
+      </button>
+    </div>
+    <div class="insp-body" id="inspBody"></div>
+  </aside>
+
+  <!-- ═══════ BOTTOM BAR ═══════ -->
+  <footer class="bottombar">
+    <button class="bb-btn" id="btnPrev">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      قبلی
+    </button>
+    <button class="bb-btn" id="btnNext">
+      بعدی
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <button class="bb-btn" id="btnDupSlide">
+      <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    </button>
+    <button class="bb-btn" id="btnDelSlide">
+      <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14H7L5 6"/></svg>
+    </button>
+    <div class="bb-pill">
+      اسلاید <b id="curNum">1</b> / <b id="totNum">1</b>
+    </div>
+    <div class="bb-spacer"></div>
+    <div class="bb-hint">
+      <kbd>F5</kbd> ارائه
+      <kbd>F6</kbd> تایم‌لاین
+      <kbd>R</kbd> خواندن
+      <kbd>B</kbd> صفحه سیاه
+    </div>
+    <button class="bb-btn" id="btnBg">
+      <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+      پس‌زمینه
+    </button>
+  </footer>
+</div>
+
+<!-- ═══════════ PRESENTER ═══════════ -->
+<div class="presenter" id="presenter">
+  <div class="p-progress" id="pProgress"></div>
+  <div class="p-stage" id="pStage">
+    <div class="p-slide" id="pSlide"></div>
+  </div>
+  <div class="p-notes" id="pNotes"></div>
+  <div class="p-timer" id="pTimer">00:00</div>
+  <div class="p-controls">
+    <button class="p-btn" id="pPrev" title="قبلی (←)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span class="p-counter" id="pCounter">1 / 1</span>
+    <button class="p-btn" id="pNext" title="بعدی (→)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <button class="p-btn" id="pTTS" title="خواندن (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+    </button>
+    <button class="p-btn" id="pBlack" title="صفحه سیاه (B)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor"/></svg>
+    </button>
+    <button class="p-btn" id="pExit" title="خروج (Esc)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════ CONTEXT MENU ═══════════ -->
+<div class="ctx" id="ctx">
+  <div class="ctx-item" data-ctx="copy"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>کپی<kbd>Ctrl+C</kbd></div>
+  <div class="ctx-item" data-ctx="duplicate"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>تکثیر<kbd>Ctrl+D</kbd></div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" data-ctx="front"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 21h14V7"/></svg>به جلو</div>
+  <div class="ctx-item" data-ctx="back"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="14" height="14" rx="2"/><path d="M17 3H3v14"/></svg>به عقب</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" data-ctx="lock"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>قفل/باز</div>
+  <div class="ctx-item" data-ctx="edit"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>ویرایش</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item danger" data-ctx="delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14H7L5 6"/></svg>حذف<kbd>Del</kbd></div>
+</div>
+
+<!-- ═══════════ JSON MODAL ═══════════ -->
+<div class="modal-overlay" id="modalJSON">
+  <div class="modal wide">
+    <div class="modal-head">
+      <h3>
+        <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v4"/><path d="M16 3h3a2 2 0 0 1 2 2v4"/><path d="M8 21H5a2 2 0 0 1-2-2v-4"/><path d="M16 21h3a2 2 0 0 0 2-2v-4"/></svg>
+        ورودی / خروجی JSON
+      </h3>
+      <button class="modal-close" data-close>
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div class="insp-title">ورودی</div>
+          <textarea class="code-area" id="jsonInput" placeholder='{"slides":[...]}' style="min-height:420px"></textarea>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px">
+            <button class="act-btn primary" id="btnImport"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>ایمپورت</button>
+            <button class="act-btn warn" id="btnSample"><svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 3 2 5 3 6"/><path d="M12 2a7 7 0 0 1 7 7c0 3-2 5-3 6"/></svg>نمونه</button>
+          </div>
+        </div>
+        <div>
+          <div class="insp-title">خروجی</div>
+          <textarea class="code-area" id="jsonOutput" readonly placeholder="برای مشاهده JSON فعلی روی دکمه کلیک کنید..." style="min-height:420px"></textarea>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px">
+            <button class="act-btn primary" id="btnExportView"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>نمایش</button>
+            <button class="act-btn success" id="btnCopy"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>کپی</button>
+          </div>
+          <button class="act-btn" id="btnDownload" style="margin-top:7px"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>دانلود فایل JSON</button>
+          <button class="act-btn" id="btnLoadFile" style="margin-top:7px"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>بارگذاری از فایل</button>
+          <input type="file" id="fileInput" accept=".json" style="display:none">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ TEMPLATES MODAL ═══════════ -->
+<div class="modal-overlay" id="modalTemplates">
+  <div class="modal wide">
+    <div class="modal-head">
+      <h3>
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        قالب‌های آماده
+      </h3>
+      <button class="modal-close" data-close>
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="tpl-grid" id="tplGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ TTS MODAL ═══════════ -->
+<div class="modal-overlay" id="modalTTS">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>
+        <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        خواندن متن (TTS)
+      </h3>
+      <button class="modal-close" data-close>
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field" style="margin-bottom:10px">
+        <label>صدا</label>
+        <select id="ttsVoice"></select>
+      </div>
+      <div class="form-row c2">
+        <div class="form-field">
+          <label>سرعت: <span id="ttsRateVal">1.0x</span></label>
+          <input type="range" id="ttsRate" min="0.5" max="2" step="0.1" value="1">
+        </div>
+        <div class="form-field">
+          <label>زیر و بمی: <span id="ttsPitchVal">1.0</span></label>
+          <input type="range" id="ttsPitch" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+      <div class="form-field" style="margin-top:12px">
+        <label>متن پیش‌نمایش</label>
+        <textarea id="ttsPreview" style="min-height:110px">سلام! این یک نمونه از خواندن متن با Text-to-Speech است. Nova Studio Pro به شما امکان می‌دهد اسلایدهای خود را به صورت خودکار بخوانید.</textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="act-btn primary" id="ttsPlay" style="width:auto;margin:0"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>پخش</button>
+      <button class="act-btn danger" id="ttsStop" style="width:auto;margin:0"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12"/></svg>توقف</button>
+      <button class="act-btn" id="ttsSlide" style="width:auto;margin:0"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>خواندن اسلاید</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ NOTES MODAL ═══════════ -->
+<div class="modal-overlay" id="modalNotes">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        یادداشت‌های ارائه‌دهنده
+      </h3>
+      <button class="modal-close" data-close>
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label>یادداشت این اسلاید</label>
+        <textarea id="notesInput" style="min-height:180px;font-family:'Dana',sans-serif;direction:rtl;text-align:right"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="act-btn primary" id="notesSave" style="width:auto;margin:0">ذخیره</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ TOAST ═══════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+(function(){
+'use strict';
+
+// ═══════════════════════════════════════════════════════════
+//  CONSTANTS
+// ═══════════════════════════════════════════════════════════
+const SLIDE_W = 1920;
+const SLIDE_H = 1080;
+
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+const state = {
+  slides: [],
+  currentSlide: 0,
+  selectedIds: [],
+  zoom: 0.5,
+  history: [],
+  historyIndex: -1,
+  activeInspector: 'position',
+  isPresenting: false,
+  presentIndex: 0,
+  timerStart: null,
+  timerInterval: null,
+  notes: '',
+};
+
+const $ = id => document.getElementById(id);
+
+// ═══════════════════════════════════════════════════════════
+//  SLIDE MODEL
+// ═══════════════════════════════════════════════════════════
+function createSlide() {
+  return {
+    id: 's_' + Date.now() + Math.random().toString(36).slice(2, 5),
+    background: '#ffffff',
+    transition: 'fade',
+    transitionDuration: 0.6,
+    notes: '',
+    elements: []
+  };
+}
+
+function addSlide() {
+  const s = createSlide();
+  state.slides.splice(state.currentSlide + 1, 0, s);
+  state.currentSlide++;
+  renderAll();
+  saveHistory();
+  toast('✓ اسلاید اضافه شد', 'success');
+}
+
+function deleteSlide(idx) {
+  if (state.slides.length <= 1) { toast('حداقل یک اسلاید لازم است', 'error'); return; }
+  state.slides.splice(idx, 1);
+  if (state.currentSlide >= state.slides.length) state.currentSlide = state.slides.length - 1;
+  renderAll();
+  saveHistory();
+}
+
+function duplicateSlide(idx) {
+  const copy = JSON.parse(JSON.stringify(state.slides[idx]));
+  copy.id = 's_' + Date.now() + Math.random().toString(36).slice(2, 5);
+  copy.elements = copy.elements.map(e => ({ ...e, id: 'el_' + Date.now() + Math.random().toString(36).slice(2, 6) }));
+  state.slides.splice(idx + 1, 0, copy);
+  state.currentSlide = idx + 1;
+  renderAll();
+  saveHistory();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ELEMENT FACTORY
+// ═══════════════════════════════════════════════════════════
+function createNodeFromData(data) {
+  const el = document.createElement('div');
+  el.className = 'item';
+  el.dataset.id = data.id || 'el_' + Date.now() + Math.random().toString(36).slice(2, 5);
+
+  const x = data.x ?? 0;
+  const y = data.y ?? 0;
+  const w = data.width ?? data.w ?? 200;
+  const h = data.height ?? data.h ?? 100;
+
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.style.width = w + 'px';
+  el.style.height = h + 'px';
+  el.style.position = 'absolute';
+
+  if (data.opacity != null) el.style.opacity = data.opacity;
+  if (data.rotation) el.style.transform = `rotate(${data.rotation}deg)`;
+
+  // Render content
+  el.innerHTML = renderElementContent(data);
+
+  // Apply text overrides
+  if (data.type === 'text') {
+    el.style.color = data.fill || data.color || '#0a0a0a';
+    el.style.fontSize = (data.fontSize || data.size || 24) + 'px';
+    el.style.fontWeight = (data.fontWeight === 'bold' || data.bold) ? '800' : '600';
+    el.style.fontFamily = data.fontFamily || "'Dana',sans-serif";
+    el.style.textAlign = data.align || 'right';
+    el.style.lineHeight = data.lineHeight || 1.3;
+    el.style.justifyContent = data.align === 'center' ? 'center' : (data.align === 'right' ? 'flex-start' : 'flex-end');
+    el.style.direction = 'rtl';
+    if (data.letterSpacing) el.style.letterSpacing = data.letterSpacing + 'px';
+    el.style.whiteSpace = 'pre-line';
+    el.style.padding = '4px';
+  }
+
+  // Handles
+  const resizeH = document.createElement('div');
+  resizeH.className = 'resize-handle';
+  el.appendChild(resizeH);
+  const rotateH = document.createElement('div');
+  rotateH.className = 'rotate-handle';
+  el.appendChild(rotateH);
+
+  return el;
+}
+
+function renderElementContent(data) {
+  const type = data.type || 'rect';
+  const fill = data.fill || data.color || '#5b8def';
+  const color = data.color || data.fill || '#5b8def';
+
+  switch (type) {
+    case 'text':
+      return escapeHtml(data.text || '');
+
+    case 'rect':
+      return `<div style="width:100%;height:100%;background:${fill};border-radius:${data.cornerRadius || 0}px;${
+        data.stroke ? `border:${data.strokeWidth || 1}px solid ${data.stroke};` : ''
+      }"></div>`;
+
+    case 'ellipse':
+      return `<div style="width:100%;height:100%;background:${fill};border-radius:50%"></div>`;
+
+    case 'triangle':
+      return `<div style="width:0;height:0;border-left:${(data.width||200)/2}px solid transparent;border-right:${(data.width||200)/2}px solid transparent;border-bottom:${(data.height||200)}px solid ${fill};margin:auto"></div>`;
+
+    case 'star': {
+      const n = data.numPoints || 5;
+      let pts = [];
+      for (let i = 0; i < n * 2; i++) {
+        const r = i % 2 === 0 ? 50 : 20;
+        const a = (Math.PI / n) * i - Math.PI / 2;
+        pts.push(`${50 + r * Math.cos(a)},${50 + r * Math.sin(a)}`);
+      }
+      return `<svg viewBox="0 0 100 100" style="width:100%;height:100%"><polygon points="${pts.join(' ')}" fill="${fill}"/></svg>`;
+    }
+
+    case 'line':
+      return `<div style="width:100%;background:${data.stroke || color};height:${data.strokeWidth || 4}px;border-radius:2px;align-self:center"></div>`;
+
+    case 'arrow': {
+      const c = data.stroke || color;
+      return `<svg viewBox="0 0 100 20" preserveAspectRatio="none" style="width:100%;height:100%"><defs><marker id="a${data.id}" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="${c}"/></marker></defs><line x1="2" y1="10" x2="92" y2="10" stroke="${c}" stroke-width="${data.strokeWidth || 3}" marker-end="url(#a${data.id})"/></svg>`;
+    }
+
+    case 'image':
+      if (data.src) return `<img src="${data.src}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:${data.cornerRadius || 0}px" draggable="false" onerror="this.style.display='none';this.parentElement.style.background='#1a1c2b';">`;
+      return `<div style="width:100%;height:100%;background:#eef0f5;display:flex;align-items:center;justify-content:center;color:#94a3b8;border-radius:${data.cornerRadius || 0}px"><svg viewBox="0 0 24 24" style="width:40%;height:40%;stroke:currentColor;fill:none;stroke-width:1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`;
+
+    case 'badge': {
+      const bg = data.fill || color;
+      const tc = data.textColor || '#fff';
+      return `<div style="display:inline-flex;align-items:center;justify-content:center;padding:8px 20px;background:${bg};color:${tc};border-radius:30px;font-size:${data.fontSize || 14}px;font-weight:800;width:100%;height:100%">${escapeHtml(data.text || '')}</div>`;
+    }
+
+    case 'button': {
+      const bg = data.fill || color;
+      const tc = data.textColor || '#fff';
+      const r = data.cornerRadius ?? 30;
+      return `<div style="display:flex;align-items:center;justify-content:center;background:${bg};color:${tc};border-radius:${r}px;font-size:${data.fontSize || 16}px;font-weight:800;width:100%;height:100%">${escapeHtml(data.text || '')}</div>`;
+    }
+
+    case 'card': {
+      const acc = data.accent || '#5b8def';
+      return `<div style="width:100%;height:100%;background:#fff;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 24px rgba(0,0,0,.08)">
+        <div style="height:6px;background:${acc}"></div>
+        <div style="padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:6px;text-align:right;direction:rtl">
+          <div style="font-size:18px;font-weight:800;color:#0a0a0a">${escapeHtml(data.title || 'عنوان')}</div>
+          <div style="font-size:12.5px;color:#64748b;line-height:1.6">${escapeHtml(data.text || '')}</div>
+        </div>
+      </div>`;
+    }
+
+    case 'quote': {
+      const acc = data.accent || '#5b8def';
+      return `<div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:14px 18px;border-right:4px solid ${acc};background:#fafafa;border-radius:8px;text-align:right;direction:rtl">
+        <div style="font-size:${data.fontSize || 18}px;font-style:italic;color:#0a0a0a;line-height:1.7;font-weight:600">${escapeHtml(data.text || '')}</div>
+        ${data.author ? `<div style="margin-top:8px;font-size:12px;color:#64748b;font-weight:700">— ${escapeHtml(data.author)}</div>` : ''}
+      </div>`;
+    }
+
+    case 'chart': {
+      const data_ = data.chartData || { labels: ['A','B','C','D'], values: [45, 62, 38, 78] };
+      const colors = data.colors || ['#5b8def', '#a78bfa', '#f472b6', '#22d3ee', '#34d399', '#fbbf24'];
+      const type_ = data.chartType || 'bar';
+      return `<div style="width:100%;height:100%;background:${data.bgFill || '#fff'};border-radius:10px;padding:16px;display:flex;flex-direction:column;text-align:right;direction:rtl">
+        ${data.title ? `<div style="font-size:15px;font-weight:800;color:#0a0a0a;margin-bottom:12px">${escapeHtml(data.title)}</div>` : ''}
+        <div style="flex:1;display:flex;align-items:flex-end;gap:6px;padding-bottom:24px;position:relative">${renderChartSVG(data_, colors, type_)}</div>
+      </div>`;
+    }
+
+    case 'table': {
+      const cells = data.cells || [['A','B'],['1','2']];
+      const fs = data.fontSize || 14;
+      const headerFill = data.headerFill || '#5b8def';
+      const borderColor = data.borderColor || '#e5e7ef';
+      const textColor = data.textColor || '#0a0a0a';
+      let html = `<table style="width:100%;height:100%;border-collapse:collapse;font-size:${fs}px;color:${textColor};font-family:'Dana',sans-serif;direction:rtl;border-radius:10px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.06)">`;
+      cells.forEach((row, ri) => {
+        html += '<tr>';
+        row.forEach(cell => {
+          const isHeader = ri === 0;
+          html += `<td style="padding:10px 14px;border:1px solid ${borderColor};background:${isHeader ? headerFill : (data.rowFill || '#fff')};color:${isHeader ? '#fff' : textColor};font-weight:${isHeader ? '800' : '600'};text-align:center">${escapeHtml(String(cell))}</td>`;
+        });
+        html += '</tr>';
+      });
+      html += '</table>';
+      return html;
+    }
+
+    case 'progress': {
+      const v = (data.value || 0.5) * 100;
+      const c = data.fill || color;
+      const bg = data.bgColor || '#e2e8f0';
+      const r = (data.height || 24) / 2;
+      return `<div style="width:100%;height:100%;background:${bg};border-radius:${r}px;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;width:${v}%;background:${c};border-radius:${r}px;transition:width .6s"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;mix-blend-mode:difference">${Math.round(v)}%</div>
+      </div>`;
+    }
+
+    case 'icon': {
+      const c = data.fill || color;
+      const s = data.scaleX || 1;
+      const pathData = data.pathData || 'M12 2L2 7l10 5 10-5-10-5z';
+      return `<svg viewBox="0 0 24 24" style="width:100%;height:100%;overflow:visible"><g transform="scale(${s})" fill="${c}" stroke="${c}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${pathData}"/></g></svg>`;
+    }
+
+    case 'divider':
+      return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center"><div style="width:100%;height:${data.strokeWidth || 2}px;background:${data.fill || '#e2e8f0'};border-radius:2px"></div></div>`;
+
+    default:
+      return `<div style="width:100%;height:100%;background:${fill};border-radius:${data.cornerRadius || 4}px"></div>`;
+  }
+}
+
+function renderChartSVG(chartData, colors, type) {
+  const values = chartData.values || [];
+  const max = Math.max(...values, 1);
+  const w = 100 / Math.max(values.length, 1);
+
+  if (type === 'bar') {
+    return values.map((v, i) => {
+      const h = (v / max) * 100;
+      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%">
+        <div style="font-size:11px;font-weight:800;color:#0a0a0a;margin-bottom:4px">${v}</div>
+        <div style="width:70%;height:${h}%;background:${colors[i % colors.length]};border-radius:4px 4px 0 0;min-height:4px"></div>
+        <div style="font-size:10px;color:#64748b;margin-top:6px;font-weight:600">${chartData.labels?.[i] || ''}</div>
+      </div>`;
+    }).join('');
+  }
+
+  if (type === 'line') {
+    const pts = values.map((v, i) => {
+      const x = (i / Math.max(values.length - 1, 1)) * 100;
+      const y = 100 - (v / max) * 100;
+      return `${x},${y}`;
+    }).join(' ');
+    return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%;position:absolute;inset:16px;overflow:visible">
+      <polyline points="${pts}" fill="none" stroke="${colors[0]}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+      ${values.map((v, i) => {
+        const x = (i / Math.max(values.length - 1, 1)) * 100;
+        const y = 100 - (v / max) * 100;
+        return `<circle cx="${x}" cy="${y}" r="1.5" fill="${colors[0]}" vector-effect="non-scaling-stroke" style="stroke-width:0.5px"/>`;
+      }).join('')}
+    </svg>`;
+  }
+
+  if (type === 'pie' || type === 'donut') {
+    const total = values.reduce((a, b) => a + b, 0) || 1;
+    let acc = 0;
+    const paths = values.map((v, i) => {
+      const a1 = (acc / total) * Math.PI * 2 - Math.PI / 2;
+      acc += v;
+      const a2 = (acc / total) * Math.PI * 2 - Math.PI / 2;
+      const x1 = 50 + 45 * Math.cos(a1), y1 = 50 + 45 * Math.sin(a1);
+      const x2 = 50 + 45 * Math.cos(a2), y2 = 50 + 45 * Math.sin(a2);
+      const large = (a2 - a1) > Math.PI ? 1 : 0;
+      return `<path d="M50,50 L${x1},${y1} A45,45 0 ${large} 1 ${x2},${y2} Z" fill="${colors[i % colors.length]}"/>`;
+    }).join('');
+    const hole = type === 'donut' ? '<circle cx="50" cy="50" r="24" fill="#fff"/>' : '';
+    return `<svg viewBox="0 0 100 100" style="width:100%;height:100%;position:absolute;inset:0;padding:20px">${paths}${hole}</svg>`;
+  }
+
+  return '';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════════
+function renderAll() {
+  renderCanvas();
+  renderSlidesList();
+  renderInspector();
+  updateToolbar();
+}
+
+function renderCanvas() {
+  const canvas = $('canvas');
+  const slide = state.slides[state.currentSlide];
+  if (!slide) return;
+
+  const scale = state.zoom;
+  canvas.style.width = (SLIDE_W * scale) + 'px';
+  canvas.style.height = (SLIDE_H * scale) + 'px';
+  canvas.style.background = slide.background || '#fff';
+  canvas.innerHTML = '';
+
+  const inner = document.createElement('div');
+  inner.style.cssText = `position:absolute;top:0;left:0;width:${SLIDE_W}px;height:${SLIDE_H}px;transform:scale(${scale});transform-origin:top left`;
+  canvas.appendChild(inner);
+
+  slide.elements.forEach(data => {
+    const el = createNodeFromData(data);
+    if (state.selectedIds.includes(data.id)) el.classList.add('selected');
+    attachElementEvents(el, data);
+    inner.appendChild(el);
+  });
+
+  $('zoomLabel').textContent = Math.round(scale * 100) + '%';
+  $('infoZoom').textContent = Math.round(scale * 100) + '%';
+  $('zoomSlider').value = Math.round(scale * 100);
+}
+
+function renderSlidesList() {
+  const list = $('slidesList');
+  $('slidesCount').textContent = state.slides.length;
+  list.innerHTML = '';
+
+  state.slides.forEach((s, i) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'slide-thumb' + (i === state.currentSlide ? ' active' : '');
+    thumb.dataset.idx = i;
+
+    const inner = document.createElement('div');
+    inner.className = 'slide-thumb-inner';
+    inner.style.background = s.background || '#fff';
+
+    // Mini preview with elements at scaled size
+    const scale = 180 / SLIDE_W;
+    s.elements.forEach(data => {
+      const el = createNodeFromData(data);
+      el.style.transform = `scale(${scale})`;
+      el.style.transformOrigin = 'top left';
+      el.style.pointerEvents = 'none';
+      inner.appendChild(el);
+    });
+
+    thumb.appendChild(inner);
+
+    const num = document.createElement('span');
+    num.className = 'slide-thumb-num';
+    num.textContent = i + 1;
+    thumb.appendChild(num);
+
+    const actions = document.createElement('div');
+    actions.className = 'slide-thumb-actions';
+    actions.innerHTML = `
+      <button class="slide-thumb-action" data-action="dup" title="تکثیر"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="slide-thumb-action danger" data-action="del" title="حذف"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14H7L5 6"/></svg></button>
+    `;
+    thumb.appendChild(actions);
+
+    thumb.addEventListener('click', e => {
+      if (e.target.closest('[data-action]')) return;
+      state.currentSlide = i;
+      state.selectedIds = [];
+      renderAll();
+    });
+    thumb.querySelector('[data-action="dup"]').addEventListener('click', e => {
+      e.stopPropagation(); duplicateSlide(i);
+    });
+    thumb.querySelector('[data-action="del"]').addEventListener('click', e => {
+      e.stopPropagation(); deleteSlide(i);
+    });
+
+    list.appendChild(thumb);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SELECTION & DRAG
+// ═══════════════════════════════════════════════════════════
+let drag = null, resize = null, rotate = null;
+
+function attachElementEvents(el, data) {
+  el.addEventListener('pointerdown', e => {
+    if (e.target.classList.contains('resize-handle') || e.target.classList.contains('rotate-handle')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (!e.shiftKey) state.selectedIds = [data.id];
+    else if (!state.selectedIds.includes(data.id)) state.selectedIds.push(data.id);
+    renderAll();
+
+    const canvasRect = $('canvas').getBoundingClientRect();
+    const scale = state.zoom;
+    drag = {
+      id: data.id,
+      startX: e.clientX,
+      startY: e.clientY,
+      startItemX: data.x,
+      startItemY: data.y,
+      scale,
+    };
+    el.setPointerCapture(e.pointerId);
+  });
+
+  el.addEventListener('pointermove', e => {
+    if (!drag || drag.id !== data.id) return;
+    const dx = (e.clientX - drag.startX) / drag.scale;
+    const dy = (e.clientY - drag.startY) / drag.scale;
+    data.x = drag.startItemX + dx;
+    data.y = drag.startItemY + dy;
+    el.style.left = data.x + 'px';
+    el.style.top = data.y + 'px';
+  });
+
+  el.addEventListener('pointerup', e => {
+    if (drag) { drag = null; saveHistory(); }
+  });
+
+  el.addEventListener('pointercancel', () => { drag = null; });
+
+  // Resize handle
+  const rH = el.querySelector('.resize-handle');
+  if (rH) {
+    rH.addEventListener('pointerdown', e => {
+      e.preventDefault(); e.stopPropagation();
+      const scale = state.zoom;
+      resize = {
+        id: data.id,
+        startX: e.clientX,
+        startY: e.clientY,
+        startW: data.width,
+        startH: data.height,
+        scale,
+      };
+      rH.setPointerCapture(e.pointerId);
+    });
+    rH.addEventListener('pointermove', e => {
+      if (!resize || resize.id !== data.id) return;
+      const dw = (e.clientX - resize.startX) / resize.scale;
+      const dh = (e.clientY - resize.startY) / resize.scale;
+      data.width = Math.max(20, resize.startW + dw);
+      data.height = Math.max(20, resize.startH + dh);
+      el.style.width = data.width + 'px';
+      el.style.height = data.height + 'px';
+      // Re-render chart/table content if needed
+      if (['chart', 'table', 'card', 'quote'].includes(data.type)) {
+        el.innerHTML = renderElementContent(data);
+        const nRH = document.createElement('div');
+        nRH.className = 'resize-handle';
+        el.appendChild(nRH);
+        const nRotH = document.createElement('div');
+        nRotH.className = 'rotate-handle';
+        el.appendChild(nRotH);
+      }
+    });
+    rH.addEventListener('pointerup', () => {
+      if (resize) { resize = null; saveHistory(); }
+    });
+  }
+
+  // Rotate handle
+  const rotH = el.querySelector('.rotate-handle');
+  if (rotH) {
+    rotH.addEventListener('pointerdown', e => {
+      e.preventDefault(); e.stopPropagation();
+      const rect = el.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      rotate = {
+        id: data.id,
+        cx, cy,
+        startAngle: data.rotation || 0,
+        startPointer: Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI,
+      };
+      rotH.setPointerCapture(e.pointerId);
+    });
+    rotH.addEventListener('pointermove', e => {
+      if (!rotate || rotate.id !== data.id) return;
+      const angle = Math.atan2(e.clientY - rotate.cy, e.clientX - rotate.cx) * 180 / Math.PI;
+      data.rotation = Math.round(rotate.startAngle + angle - rotate.startPointer);
+      el.style.transform = `rotate(${data.rotation}deg)`;
+    });
+    rotH.addEventListener('pointerup', () => {
+      if (rotate) { rotate = null; saveHistory(); }
+    });
+  }
+
+  // Double-click to edit text
+  el.addEventListener('dblclick', e => {
+    if (data.type === 'text') {
+      const newText = prompt('متن:', data.text || '');
+      if (newText !== null) {
+        data.text = newText;
+        renderAll();
+        saveHistory();
+      }
+    }
+  });
+
+  // Right-click context
+  el.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    state.selectedIds = [data.id];
+    renderAll();
+    const ctx = $('ctx');
+    ctx.style.left = e.clientX + 'px';
+    ctx.style.top = e.clientY + 'px';
+    ctx.classList.add('show');
+  });
+}
+
+// Deselect on empty canvas click
+document.addEventListener('click', e => {
+  if (!e.target.closest('.item') && !e.target.closest('.ctx')) {
+    if (state.selectedIds.length) {
+      state.selectedIds = [];
+      renderAll();
+    }
+    $('ctx').classList.remove('show');
+  }
+});
+
+// ═══════════════════════════════════════════════════════════
+//  INSPECTOR
+// ═══════════════════════════════════════════════════════════
+function renderInspector() {
+  const body = $('inspBody');
+  const tab = state.activeInspector;
+  const slide = state.slides[state.currentSlide];
+  if (!slide) return;
+
+  const selected = state.selectedIds.length === 1
+    ? slide.elements.find(e => e.id === state.selectedIds[0])
+    : null;
+
+  if (tab === 'layers') {
+    body.innerHTML = renderLayersPanel(slide);
+    bindLayersPanel();
+    return;
+  }
+
+  if (!selected) {
+    body.innerHTML = renderSlidePanel(slide);
+    bindSlidePanel(slide);
+    return;
+  }
+
+  if (tab === 'position') body.innerHTML = renderPositionPanel(selected);
+  else if (tab === 'style') body.innerHTML = renderStylePanel(selected);
+  else if (tab === 'content') body.innerHTML = renderContentPanel(selected);
+  else if (tab === 'anim') body.innerHTML = renderAnimPanel(selected);
+
+  bindFieldEvents(selected);
+}
+
+function renderSlidePanel(slide) {
+  return `
+    <div class="insp-section">
+      <div class="insp-title">پس‌زمینه اسلاید</div>
+      <div class="form-field">
+        <label>رنگ</label>
+        <div class="color-wrap">
+          <input type="color" id="slideBgColor" value="${toHex(slide.background)}">
+          <input type="text" id="slideBgText" value="${slide.background || '#ffffff'}">
+        </div>
+      </div>
+    </div>
+    <div class="insp-section">
+      <div class="insp-title">انتقال اسلاید</div>
+      <div class="form-field">
+        <label>نوع</label>
+        <select id="slideTrans">
+          <option value="fade" ${slide.transition === 'fade' ? 'selected' : ''}>محو (Fade)</option>
+          <option value="slide" ${slide.transition === 'slide' ? 'selected' : ''}>اسلاید</option>
+          <option value="slideLeft" ${slide.transition === 'slideLeft' ? 'selected' : ''}>اسلاید چپ</option>
+          <option value="zoom" ${slide.transition === 'zoom' ? 'selected' : ''}>زوم</option>
+          <option value="flip" ${slide.transition === 'flip' ? 'selected' : ''}>فلیپ</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>مدت (ثانیه)</label>
+        <input type="number" id="slideTransDur" value="${slide.transitionDuration || 0.6}" step="0.1" min="0.1" max="3">
+      </div>
+    </div>
+    <div class="insp-section">
+      <div class="insp-title">یادداشت</div>
+      <div class="form-field">
+        <textarea id="slideNotes" placeholder="یادداشت ارائه‌دهنده...">${escapeHtml(slide.notes || '')}</textarea>
+      </div>
+    </div>
+    <div class="insp-section">
+      <div style="font-size:11px;color:var(--text-3);text-align:center;padding:16px 0;line-height:1.8">
+        💡 یک عنصر انتخاب کنید<br>یا از نوار سمت چپ عنصر اضافه کنید
+      </div>
+    </div>
+  `;
+}
+
+function bindSlidePanel(slide) {
+  const bgColor = $('slideBgColor');
+  const bgText = $('slideBgText');
+  if (bgColor) bgColor.addEventListener('input', e => {
+    slide.background = e.target.value;
+    bgText.value = e.target.value;
+    renderCanvas(); renderSlidesList(); saveHistory();
+  });
+  if (bgText) bgText.addEventListener('input', e => {
+    slide.background = e.target.value;
+    if (/^#[0-9a-f]{6}$/i.test(e.target.value)) bgColor.value = e.target.value;
+    renderCanvas(); renderSlidesList(); saveHistory();
+  });
+  const trans = $('slideTrans');
+  if (trans) trans.addEventListener('change', e => { slide.transition = e.target.value; saveHistory(); });
+  const transDur = $('slideTransDur');
+  if (transDur) transDur.addEventListener('input', e => { slide.transitionDuration = parseFloat(e.target.value); saveHistory(); });
+  const notes = $('slideNotes');
+  if (notes) notes.addEventListener('input', e => { slide.notes = e.target.value; saveHistory(); });
+}
+
+function renderPositionPanel(el) {
+  return `
+    <div class="insp-section">
+      <div class="insp-title">موقعیت</div>
+      <div class="form-row c2">
+        <div class="form-field"><label>X (px)</label><input type="number" data-f="x" value="${Math.round(el.x)}"></div>
+        <div class="form-field"><label>Y (px)</label><input type="number" data-f="y" value="${Math.round(el.y)}"></div>
+      </div>
+    </div>
+    <div class="insp-section">
+      <div class="insp-title">ابعاد</div>
+      <div class="form-row c2">
+        <div class="form-field"><label>عرض</label><input type="number" data-f="width" value="${Math.round(el.width)}"></div>
+        <div class="form-field"><label>ارتفاع</label><input type="number" data-f="height" value="${Math.round(el.height)}"></div>
+      </div>
+    </div>
+    <div class="insp-section">
+      <div class="insp-title">چرخش و شفافیت</div>
+      <div class="form-row c2">
+        <div class="form-field"><label>چرخش°</label><input type="number" data-f="rotation" value="${Math.round(el.rotation || 0)}"></div>
+        <div class="form-field"><label>شفافیت %</label><input type="number" data-f="opacityPct" value="${Math.round((el.opacity ?? 1) * 100)}" min="0" max="100"></div>
+      </div>
+    </div>
+    <div class="insp-section">
+      <div class="insp-title">ترازبندی</div>
+      <div class="align-grid">
+        <button class="align-btn" data-align="left"><svg viewBox="0 0 24 24"><line x1="3" y1="3" x2="3" y2="21"/><rect x="6" y="6" width="12" height="4"/></svg></button>
+        <button class="align-btn" data-align="center-h"><svg viewBox="0 0 24 24"><line x1="12" y1="3" x2="12" y2="21"/><rect x="5" y="6" width="14" height="4"/></svg></button>
+        <button class="align-btn" data-align="right"><svg viewBox="0 0 24 24"><line x1="21" y1="3" x2="21" y2="21"/><rect x="6" y="6" width="12" height="4"/></svg></button>
+        <button class="align-btn" data-align="top"><svg viewBox="0 0 24 24"><line x1="3" y1="3" x2="21" y2="3"/><rect x="6" y="6" width="4" height="12"/></svg></button>
+        <button class="align-btn" data-align="center-v"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><rect x="6" y="5" width="4" height="14"/></svg></button>
+        <button class="align-btn" data-align="bottom"><svg viewBox="0 0 24 24"><line x1="3" y1="21" x2="21" y2="21"/><rect x="6" y="6" width="4" height="12"/></svg></button>
+      </div>
+    </div>
+  `;
+}
+
+function renderStylePanel(el) {
+  const isText = el.type === 'text';
+  return `
+    <div class="insp-section">
+      <div class="insp-title">رنگ</div>
+      <div class="form-field">
+        <label>رنگ اصلی</label>
+        <div class="color-wrap">
+          <input type="color" data-c="fill" value="${toHex(el.fill || el.color || '#5b8def')}">
+          <input type="text" data-c="fill-t" value="${el.fill || el.color || '#5b8def'}">
+        </div>
+      </div>
+      ${el.stroke !== undefined ? `
+        <div class="form-field" style="margin-top:8px">
+          <label>خط دور</label>
+          <div class="color-wrap">
+            <input type="color" data-c="stroke" value="${toHex(el.stroke)}">
+            <input type="text" data-c="stroke-t" value="${el.stroke}">
+          </div>
+        </div>
+        <div class="form-row c2" style="margin-top:8px">
+          <div class="form-field"><label>ضخامت</label><input type="number" data-f="strokeWidth" value="${el.strokeWidth || 0}"></div>
+        </div>
+      ` : ''}
+      ${el.cornerRadius !== undefined ? `
+        <div class="form-field" style="margin-top:8px">
+          <label>گردی گوشه</label>
+          <input type="number" data-f="cornerRadius" value="${el.cornerRadius || 0}" min="0" max="200">
+        </div>
+      ` : ''}
+    </div>
+    ${isText ? `
+      <div class="insp-section">
+        <div class="insp-title">تایپوگرافی</div>
+        <div class="form-field">
+          <label>فونت</label>
+          <select data-f="fontFamily">
+            ${['Dana', 'Iran', 'Inter', 'Tahoma', 'Arial', 'Georgia', 'Courier New'].map(f =>
+              `<option value="${f}" ${el.fontFamily === f ? 'selected' : ''}>${f}</option>`
+            ).join('')}
+          </select>
+        </div>
+        <div class="form-row c2" style="margin-top:8px">
+          <div class="form-field"><label>اندازه</label><input type="number" data-f="fontSize" value="${el.fontSize || 24}"></div>
+          <div class="form-field">
+            <label>وزن</label>
+            <select data-f="fontWeight">
+              <option value="normal" ${el.fontWeight !== 'bold' ? 'selected' : ''}>نرمال</option>
+              <option value="bold" ${el.fontWeight === 'bold' ? 'selected' : ''}>ضخیم</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field" style="margin-top:8px">
+          <label>تراز متن</label>
+          <div class="align-grid">
+            <button class="align-btn ${el.align === 'right' ? 'active' : ''}" data-textalign="right">راست</button>
+            <button class="align-btn ${el.align === 'center' ? 'active' : ''}" data-textalign="center">وسط</button>
+            <button class="align-btn ${el.align === 'left' ? 'active' : ''}" data-textalign="left">چپ</button>
+          </div>
+        </div>
+      </div>
+    ` : ''}
+  `;
+}
+
+function renderContentPanel(el) {
+  if (el.type === 'text') {
+    return `
+      <div class="insp-section">
+        <div class="insp-title">متن</div>
+        <div class="form-field">
+          <textarea data-f="text" style="min-height:180px">${escapeHtml(el.text || '')}</textarea>
+        </div>
+      </div>
+    `;
+  }
+  if (el.type === 'image') {
+    return `
+      <div class="insp-section">
+        <div class="insp-title">تصویر</div>
+        <div class="form-field">
+          <label>آدرس تصویر</label>
+          <input type="text" data-f="src" value="${el.src || ''}">
+        </div>
+        <button class="act-btn" id="pickImage" style="margin-top:8px">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          آپلود تصویر
+        </button>
+      </div>
+    `;
+  }
+  if (el.type === 'badge' || el.type === 'button') {
+    return `
+      <div class="insp-section">
+        <div class="insp-title">محتوا</div>
+        <div class="form-field">
+          <label>متن</label>
+          <input type="text" data-f="text" value="${escapeHtml(el.text || '')}">
+        </div>
+      </div>
+    `;
+  }
+  if (el.type === 'card') {
+    return `
+      <div class="insp-section">
+        <div class="insp-title">کارت</div>
+        <div class="form-field">
+          <label>عنوان</label>
+          <input type="text" data-f="title" value="${escapeHtml(el.title || '')}">
+        </div>
+        <div class="form-field" style="margin-top:8px">
+          <label>متن</label>
+          <textarea data-f="text">${escapeHtml(el.text || '')}</textarea>
+        </div>
+      </div>
+    `;
+  }
+  if (el.type === 'quote') {
+    return `
+      <div class="insp-section">
+        <div class="insp-title">نقل قول</div>
+        <div class="form-field">
+          <label>متن</label>
+          <textarea data-f="text">${escapeHtml(el.text || '')}</textarea>
+        </div>
+        <div class="form-field" style="margin-top:8px">
+          <label>نویسنده</label>
+          <input type="text" data-f="author" value="${escapeHtml(el.author || '')}">
+        </div>
+      </div>
+    `;
+  }
+  if (el.type === 'chart') {
+    return `
+      <div class="insp-section">
+        <div class="insp-title">نمودار</div>
+        <div class="form-field">
+          <label>عنوان</label>
+          <input type="text" data-f="title" value="${escapeHtml(el.title || '')}">
+        </div>
+        <div class="form-field" style="margin-top:8px">
+          <label>نوع</label>
+          <select data-f="chartType">
+            <option value="bar" ${el.chartType === 'bar' ? 'selected' : ''}>میله‌ای</option>
+            <option value="line" ${el.chartType === 'line' ? 'selected' : ''}>خطی</option>
+            <option value="pie" ${el.chartType === 'pie' ? 'selected' : ''}>دایره‌ای</option>
+            <option value="donut" ${el.chartType === 'donut' ? 'selected' : ''}>دونات</option>
+          </select>
+        </div>
+        <div class="form-field" style="margin-top:8px">
+          <label>مقادیر (با کاما جدا کنید)</label>
+          <input type="text" data-chart="values" value="${(el.chartData?.values || []).join(', ')}">
+        </div>
+        <div class="form-field" style="margin-top:8px">
+          <label>برچسب‌ها (با کاما)</label>
+          <input type="text" data-chart="labels" value="${(el.chartData?.labels || []).join(', ')}">
+        </div>
+      </div>
+    `;
+  }
+  if (el.type === 'table') {
+    return `
+      <div class="insp-section">
+        <div class="insp-title">جدول</div>
+        <div class="form-field">
+          <label>داده (هر سطر با ;، هر ستون با ,)</label>
+          <textarea data-table="cells" style="min-height:140px">${(el.cells || []).map(r => r.join(', ')).join('\n')}</textarea>
+        </div>
+      </div>
+    `;
+  }
+  return `<div style="font-size:11px;color:var(--text-3);text-align:center;padding:20px">محتوای قابل ویرایش برای این نوع وجود ندارد</div>`;
+}
+
+function renderAnimPanel(el) {
+  const anims = [
+    { key: 'fadeIn', name: 'محو', icon: '👁' },
+    { key: 'fadeInUp', name: 'از پایین', icon: '⬆' },
+    { key: 'fadeInDown', name: 'از بالا', icon: '⬇' },
+    { key: 'fadeInLeft', name: 'از راست', icon: '⬅' },
+    { key: 'fadeInRight', name: 'از چپ', icon: '➡' },
+    { key: 'slideInUp', name: 'اسلاید ↑', icon: '↑' },
+    { key: 'slideInDown', name: 'اسلاید ↓', icon: '↓' },
+    { key: 'slideInLeft', name: 'اسلاید ←', icon: '←' },
+    { key: 'slideInRight', name: 'اسلاید →', icon: '→' },
+    { key: 'zoomIn', name: 'زوم', icon: '⊕' },
+    { key: 'rotateIn', name: 'چرخش', icon: '↻' },
+    { key: 'bounceIn', name: 'پرش', icon: '⊚' },
+  ];
+  const emphasis = [
+    { key: '', name: 'بدون', icon: '∅' },
+    { key: 'pulse', name: 'پالس', icon: '💓' },
+    { key: 'shake', name: 'لرزش', icon: '📳' },
+    { key: 'glow', name: 'درخشش', icon: '✨' },
+    { key: 'bounce', name: 'پرش', icon: '⚫' },
+    { key: 'spin', name: 'چرخش', icon: '🔄' },
+  ];
+  const loops = [
+    { key: '', name: 'بدون', icon: '∅' },
+    { key: 'float', name: 'شنا', icon: '☁' },
+    { key: 'rotate', name: 'چرخش', icon: '🔄' },
+    { key: 'pulseLoop', name: 'پالس', icon: '💫' },
+    { key: 'blink', name: 'چشمک', icon: '✨' },
+  ];
+  const entrance = el.animation?.entrance || '';
+  const em = el.animation?.emphasis || '';
+  const loop = el.animation?.loop || '';
+  return `
+    <div class="insp-section">
+      <div class="insp-title">انیمیشن ورودی</div>
+      <div class="anim-grid">
+        <div class="anim-card ${!entrance ? 'active' : ''}" data-ent=""><div class="ic">∅</div><span>بدون</span></div>
+        ${anims.map(a => `<div class="anim-card ${entrance === a.key ? 'active' : ''}" data-ent="${a.key}"><div class="ic">${a.icon}</div><span>${a.name}</span></div>`).join('')}
+      </div>
+    </div>
+    <div class="insp-section">
+      <div class="insp-title">تأکید</div>
+      <div class="anim-grid">
+        ${emphasis.map(a => `<div class="anim-card ${em === a.key ? 'active' : ''}" data-em="${a.key}"><div class="ic">${a.icon}</div><span>${a.name}</span></div>`).join('')}
+      </div>
+    </div>
+    <div class="insp-section">
+      <div class="insp-title">حلقه</div>
+      <div class="anim-grid">
+        ${loops.map(a => `<div class="anim-card ${loop === a.key ? 'active' : ''}" data-loop="${a.key}"><div class="ic">${a.icon}</div><span>${a.name}</span></div>`).join('')}
+      </div>
+    </div>
+    <div class="insp-section">
+      <div class="insp-title">تأخیر و مدت</div>
+      <div class="form-row c2">
+        <div class="form-field">
+          <label>تأخیر (ثانیه)</label>
+          <input type="number" data-f="animDelay" value="${el.animation?.delay || 0}" step="0.1" min="0">
+        </div>
+        <div class="form-field">
+          <label>مدت (ثانیه)</label>
+          <input type="number" data-f="animDuration" value="${el.animation?.duration || 0.8}" step="0.1" min="0.1">
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderLayersPanel(slide) {
+  const items = [...slide.elements].reverse();
+  const icons = {
+    text: '<path d="M4 7V4h16v3"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>',
+    rect: '<rect x="3" y="3" width="18" height="18" rx="2"/>',
+    ellipse: '<circle cx="12" cy="12" r="9"/>',
+    image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
+    chart: '<line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>',
+    table: '<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/>',
+    badge: '<rect x="3" y="10" width="18" height="4" rx="2"/>',
+    button: '<rect x="3" y="8" width="18" height="8" rx="4"/>',
+    card: '<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/>',
+    quote: '<path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h2c0 5-3 5-3 5z"/>',
+    line: '<line x1="3" y1="12" x2="21" y2="12"/>',
+    arrow: '<line x1="3" y1="12" x2="18" y2="12"/><polyline points="15 9 21 12 15 15"/>',
+    progress: '<rect x="3" y="10" width="18" height="4" rx="2"/>',
+    icon: '<circle cx="12" cy="12" r="10"/>',
+    triangle: '<polygon points="12 2 22 22 2 22"/>',
+    star: '<polygon points="12 2 15 9 22 9.3 17 14 18.5 21 12 17.5 5.5 21 7 14 2 9.3 9 9"/>',
+    divider: '<line x1="3" y1="12" x2="21" y2="12"/>'
+  };
+  let html = `<div class="insp-section" style="border:none">
+    <div class="insp-title">لایه‌ها (${items.length})</div>
+    <div class="layer-list">`;
+  if (items.length === 0) {
+    html += `<div style="text-align:center;color:var(--text-3);font-size:11px;padding:20px">خالی</div>`;
+  }
+  items.forEach(el => {
+    const active = state.selectedIds.includes(el.id);
+    const name = el.text ? el.text.slice(0, 22) : (el.title || el.type);
+    html += `<div class="layer-item ${active ? 'active' : ''}" data-layer="${el.id}">
+      <div class="layer-icon"><svg viewBox="0 0 24 24">${icons[el.type] || icons.rect}</svg></div>
+      <div class="layer-name">${escapeHtml(name)}</div>
+      <div class="layer-actions">
+        <button class="layer-action" data-layer-act="dup" title="تکثیر"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+        <button class="layer-action danger" data-layer-act="del" title="حذف"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14H7L5 6"/></svg></button>
+      </div>
+    </div>`;
+  });
+  html += '</div></div>';
+  return html;
+}
+
+function bindLayersPanel() {
+  document.querySelectorAll('[data-layer]').forEach(item => {
+    item.addEventListener('click', e => {
+      if (e.target.closest('[data-layer-act]')) return;
+      state.selectedIds = [item.dataset.layer];
+      renderAll();
+    });
+  });
+  document.querySelectorAll('[data-layer-act]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = btn.closest('[data-layer]').dataset.layer;
+      const act = btn.dataset.layerAct;
+      const slide = state.slides[state.currentSlide];
+      if (act === 'del') {
+        slide.elements = slide.elements.filter(el => el.id !== id);
+        state.selectedIds = [];
+      } else if (act === 'dup') {
+        const orig = slide.elements.find(el => el.id === id);
+        if (orig) {
+          const copy = JSON.parse(JSON.stringify(orig));
+          copy.id = 'el_' + Date.now() + Math.random().toString(36).slice(2, 6);
+          copy.x += 20;
+          copy.y += 20;
+          slide.elements.push(copy);
+          state.selectedIds = [copy.id];
+        }
+      }
+      renderAll();
+      saveHistory();
+    });
+  });
+}
+
+function bindFieldEvents(el) {
+  document.querySelectorAll('[data-f]').forEach(input => {
+    input.addEventListener('input', e => {
+      const f = e.target.dataset.f;
+      let v = e.target.value;
+      if (e.target.type === 'number') v = parseFloat(v) || 0;
+      if (f === 'opacityPct') { el.opacity = v / 100; renderCanvas(); return; }
+      if (f === 'animDelay') { el.animation = el.animation || {}; el.animation.delay = parseFloat(v) || 0; return; }
+      if (f === 'animDuration') { el.animation = el.animation || {}; el.animation.duration = parseFloat(v) || 0.8; return; }
+      el[f] = v;
+      if (f === 'fontSize' || f === 'fontFamily' || f === 'fontWeight') {
+        // Live update text
+        renderCanvas();
+      } else {
+        renderCanvas();
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-c]').forEach(input => {
+    input.addEventListener('input', e => {
+      const c = e.target.dataset.c;
+      const v = e.target.value;
+      const field = c.replace('-t', '');
+      el[field] = v;
+      if (field === 'fill') el.color = v;
+      renderCanvas();
+    });
+  });
+
+  document.querySelectorAll('[data-textalign]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      el.align = btn.dataset.textalign;
+      renderAll(); saveHistory();
+    });
+  });
+
+  document.querySelectorAll('[data-align]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const dir = btn.dataset.align;
+      if (dir === 'left') el.x = 40;
+      else if (dir === 'right') el.x = SLIDE_W - el.width - 40;
+      else if (dir === 'center-h') el.x = (SLIDE_W - el.width) / 2;
+      else if (dir === 'top') el.y = 40;
+      else if (dir === 'bottom') el.y = SLIDE_H - el.height - 40;
+      else if (dir === 'center-v') el.y = (SLIDE_H - el.height) / 2;
+      renderAll(); saveHistory();
+    });
+  });
+
+  document.querySelectorAll('[data-ent]').forEach(card => {
+    card.addEventListener('click', () => {
+      el.animation = el.animation || {};
+      el.animation.entrance = card.dataset.ent;
+      renderAll(); saveHistory();
+    });
+  });
+  document.querySelectorAll('[data-em]').forEach(card => {
+    card.addEventListener('click', () => {
+      el.animation = el.animation || {};
+      el.animation.emphasis = card.dataset.em;
+      renderAll(); saveHistory();
+    });
+  });
+  document.querySelectorAll('[data-loop]').forEach(card => {
+    card.addEventListener('click', () => {
+      el.animation = el.animation || {};
+      el.animation.loop = card.dataset.loop;
+      renderAll(); saveHistory();
+    });
+  });
+
+  document.querySelectorAll('[data-chart]').forEach(input => {
+    input.addEventListener('input', e => {
+      const key = e.target.dataset.chart;
+      const vals = e.target.value.split(',').map(v => key === 'values' ? (parseFloat(v.trim()) || 0) : v.trim());
+      el.chartData = el.chartData || { labels: [], values: [] };
+      el.chartData[key] = vals;
+      renderCanvas();
+    });
+  });
+
+  document.querySelectorAll('[data-table]').forEach(input => {
+    input.addEventListener('input', e => {
+      const rows = e.target.value.split('\n').map(r => r.split(',').map(c => c.trim()));
+      el.cells = rows;
+      renderCanvas();
+    });
+  });
+
+  const pickImg = $('pickImage');
+  if (pickImg) pickImg.addEventListener('click', () => {
+    const inp = document.createElement('input');
+    inp.type = 'file';
+    inp.accept = 'image/*';
+    inp.onchange = () => {
+      const f = inp.files[0]; if (!f) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        el.src = ev.target.result;
+        renderAll(); saveHistory();
+      };
+      reader.readAsDataURL(f);
+    };
+    inp.click();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TOOLBAR
+// ═══════════════════════════════════════════════════════════
+function updateToolbar() {
+  $('curNum').textContent = state.currentSlide + 1;
+  $('totNum').textContent = state.slides.length;
+  $('slideCounter').textContent = `اسلاید ${state.currentSlide + 1} از ${state.slides.length}`;
+  $('btnUndo').disabled = state.historyIndex <= 0;
+  $('btnRedo').disabled = state.historyIndex >= state.history.length - 1;
+  $('btnPrev').disabled = state.currentSlide === 0;
+  $('btnNext').disabled = state.currentSlide === state.slides.length - 1;
+  $('btnDelSlide').disabled = state.slides.length === 1;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ZOOM
+// ═══════════════════════════════════════════════════════════
+function setZoom(z) {
+  state.zoom = Math.max(0.1, Math.min(3, z));
+  renderCanvas();
+}
+function zoomFit() {
+  const wrap = $('canvasWrap');
+  const zx = (wrap.clientWidth - 80) / SLIDE_W;
+  const zy = (wrap.clientHeight - 80) / SLIDE_H;
+  setZoom(Math.min(zx, zy));
+}
+
+// ═══════════════════════════════════════════════════════════
+//  HISTORY
+// ═══════════════════════════════════════════════════════════
+function saveHistory() {
+  clearTimeout(saveHistory._t);
+  saveHistory._t = setTimeout(() => {
+    const snap = JSON.stringify(state.slides);
+    if (state.historyIndex < state.history.length - 1) {
+      state.history = state.history.slice(0, state.historyIndex + 1);
+    }
+    state.history.push(snap);
+    if (state.history.length > 60) state.history.shift();
+    state.historyIndex = state.history.length - 1;
+    updateToolbar();
+    autoSave();
+  }, 200);
+}
+
+function undo() {
+  if (state.historyIndex <= 0) return;
+  state.historyIndex--;
+  state.slides = JSON.parse(state.history[state.historyIndex]);
+  if (state.currentSlide >= state.slides.length) state.currentSlide = 0;
+  state.selectedIds = [];
+  renderAll();
+  toast('↶ واگرد', 'info');
+}
+
+function redo() {
+  if (state.historyIndex >= state.history.length - 1) return;
+  state.historyIndex++;
+  state.slides = JSON.parse(state.history[state.historyIndex]);
+  if (state.currentSlide >= state.slides.length) state.currentSlide = 0;
+  state.selectedIds = [];
+  renderAll();
+  toast('↷ دوباره', 'info');
+}
+
+function autoSave() {
+  try {
+    localStorage.setItem('novaStudioPro', JSON.stringify({
+      slides: state.slides,
+      currentSlide: state.currentSlide
+    }));
+  } catch (e) {}
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADD ELEMENT
+// ═══════════════════════════════════════════════════════════
+function addElement(el) {
+  const slide = state.slides[state.currentSlide];
+  el.id = 'el_' + Date.now() + Math.random().toString(36).slice(2, 6);
+  // Center-ish placement
+  if (el.x == null) el.x = (SLIDE_W - (el.width || 300)) / 2;
+  if (el.y == null) el.y = (SLIDE_H - (el.height || 100)) / 2;
+  slide.elements.push(el);
+  state.selectedIds = [el.id];
+  renderAll();
+  saveHistory();
+  toast('✓ اضافه شد', 'success');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TEMPLATES
+// ═══════════════════════════════════════════════════════════
+const TEMPLATES = {
+  title: {
+    name: 'عنوان', icon: '<path d="M6 4v16"/><path d="M18 4v16"/><path d="M6 12h12"/>',
+    build: () => ({
+      background: '#fafafa',
+      elements: [
+        { type: 'text', x: 160, y: 380, width: 1600, height: 220, text: 'عنوان ارائه', fontSize: 120, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'center' },
+        { type: 'text', x: 160, y: 640, width: 1600, height: 80, text: 'زیرعنوان توضیحی', fontSize: 32, fontFamily: 'Dana', fill: '#64748b', align: 'center' },
+        { type: 'line', x: 810, y: 740, width: 300, height: 4, stroke: '#5b8def', strokeWidth: 4 }
+      ]
+    })
+  },
+  bullets: {
+    name: 'بولت', icon: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>',
+    build: () => ({
+      background: '#fafafa',
+      elements: [
+        { type: 'text', x: 160, y: 100, width: 1600, height: 120, text: 'فهرست مطالب', fontSize: 64, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'text', x: 160, y: 340, width: 1600, height: 600, text: '• مورد اول\n• مورد دوم\n• مورد سوم\n• مورد چهارم', fontSize: 40, fontFamily: 'Dana', fill: '#0a0a0a', align: 'right', lineHeight: 2 }
+      ]
+    })
+  },
+  quote: {
+    name: 'نقل قول', icon: '<path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h2c0 5-3 5-3 5z"/>',
+    build: () => ({
+      background: '#fafafa',
+      elements: [
+        { type: 'text', x: 240, y: 200, width: 200, height: 200, text: '"', fontSize: 300, fontFamily: 'Georgia', fill: '#e5e5e5', align: 'right' },
+        { type: 'text', x: 240, y: 400, width: 1440, height: 400, text: 'طراحی خوب، کمتر طراحی کردن است.', fontSize: 96, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right', lineHeight: 1.3 },
+        { type: 'text', x: 240, y: 830, width: 800, height: 40, text: '— دیتر رامس', fontSize: 22, fontFamily: 'Dana', fill: '#737373', align: 'right' }
+      ]
+    })
+  },
+  stats: {
+    name: 'آمار', icon: '<line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>',
+    build: () => ({
+      background: '#fafafa',
+      elements: [
+        { type: 'text', x: 160, y: 140, width: 800, height: 30, text: 'آمار کلیدی', fontSize: 14, fontFamily: 'Dana', fill: '#737373', align: 'right' },
+        { type: 'text', x: 160, y: 200, width: 1600, height: 100, text: 'دستاوردهای یک سال', fontSize: 64, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'text', x: 160, y: 480, width: 400, height: 140, text: '۲۴۸٪', fontSize: 120, fontWeight: 'bold', fontFamily: 'Dana', fill: '#5b8def', align: 'right' },
+        { type: 'text', x: 160, y: 640, width: 400, height: 60, text: 'رشد کاربران فعال', fontSize: 22, fontFamily: 'Dana', fill: '#737373', align: 'right' },
+        { type: 'text', x: 680, y: 480, width: 400, height: 140, text: '۱۲.۴M', fontSize: 120, fontWeight: 'bold', fontFamily: 'Dana', fill: '#a78bfa', align: 'right' },
+        { type: 'text', x: 680, y: 640, width: 400, height: 60, text: 'جلسه در ماه', fontSize: 22, fontFamily: 'Dana', fill: '#737373', align: 'right' },
+        { type: 'text', x: 1200, y: 480, width: 400, height: 140, text: '۹۸.۷٪', fontSize: 120, fontWeight: 'bold', fontFamily: 'Dana', fill: '#ec4899', align: 'right' },
+        { type: 'text', x: 1200, y: 640, width: 400, height: 60, text: 'رضایت مشتری', fontSize: 22, fontFamily: 'Dana', fill: '#737373', align: 'right' }
+      ]
+    })
+  },
+  chart: {
+    name: 'نمودار', icon: '<polyline points="3 17 9 11 13 15 21 7"/>',
+    build: () => ({
+      background: '#fafafa',
+      elements: [
+        { type: 'text', x: 160, y: 140, width: 800, height: 30, text: 'نمودار', fontSize: 14, fontFamily: 'Dana', fill: '#737373', align: 'right' },
+        { type: 'text', x: 160, y: 200, width: 1600, height: 100, text: 'روند رشد', fontSize: 64, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'chart', x: 160, y: 380, width: 1600, height: 600, chartType: 'line', title: 'درآمد ماهانه', chartData: { labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], values: [45, 52, 61, 58, 72, 85, 91, 104, 118, 132, 148, 165] }, colors: ['#5b8def'], bgFill: '#fafafa' }
+      ]
+    })
+  },
+  coverDark: {
+    name: 'جلد تیره', icon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+    build: () => ({
+      background: '#0a0a0a',
+      elements: [
+        { type: 'text', x: 160, y: 200, width: 1600, height: 40, text: 'NOVA STUDIO · ۱۴۰۳', fontSize: 18, fontFamily: 'Dana', fill: '#737373', align: 'right', letterSpacing: 6 },
+        { type: 'line', x: 160, y: 260, width: 240, height: 2, stroke: '#fafafa', strokeWidth: 2 },
+        { type: 'text', x: 160, y: 340, width: 1600, height: 340, text: 'طراحی\nآینده.', fontSize: 220, fontWeight: 'bold', fontFamily: 'Dana', fill: '#fafafa', align: 'right', lineHeight: 1.0 },
+        { type: 'text', x: 160, y: 760, width: 1000, height: 100, text: 'مطالعه‌ای در مینیمالیسم، شفافیت و طراحی هدفمند.', fontSize: 32, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right', lineHeight: 1.5 },
+        { type: 'text', x: 160, y: 960, width: 1600, height: 40, text: 'ارائه توسط استودیو · اسفند ۱۴۰۳', fontSize: 18, fontFamily: 'Dana', fill: '#525252', align: 'right' }
+      ]
+    })
+  },
+  chapter: {
+    name: 'فصل', icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+    build: () => ({
+      background: '#0a0a0a',
+      elements: [
+        { type: 'text', x: 160, y: 400, width: 400, height: 40, text: 'فصل اول', fontSize: 16, fontFamily: 'Dana', fill: '#737373', align: 'right', letterSpacing: 8 },
+        { type: 'line', x: 160, y: 470, width: 120, height: 3, stroke: '#fafafa', strokeWidth: 3 },
+        { type: 'text', x: 160, y: 540, width: 1600, height: 240, text: 'فلسفه‌ی\nکمتر.', fontSize: 180, fontWeight: 'bold', fontFamily: 'Dana', fill: '#fafafa', align: 'right', lineHeight: 1.0 },
+        { type: 'text', x: 160, y: 900, width: 1200, height: 60, text: 'چرا مینیمالیسم درباره‌ی حذف کردن نیست — درباره‌ی آشکار کردن است.', fontSize: 26, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right' }
+      ]
+    })
+  },
+  contact: {
+    name: 'تماس', icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>',
+    build: () => ({
+      background: '#fafafa',
+      elements: [
+        { type: 'text', x: 160, y: 140, width: 800, height: 30, text: 'تماس', fontSize: 14, fontFamily: 'Dana', fill: '#737373', align: 'right', letterSpacing: 4 },
+        { type: 'text', x: 160, y: 220, width: 1600, height: 120, text: 'بیایید گفتگو کنیم.', fontSize: 88, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'line', x: 160, y: 420, width: 1600, height: 1, stroke: '#e5e5e5', strokeWidth: 1 },
+        { type: 'text', x: 160, y: 460, width: 400, height: 40, text: 'ایمیل', fontSize: 12, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right', letterSpacing: 3 },
+        { type: 'text', x: 160, y: 510, width: 700, height: 60, text: 'hello@studio.design', fontSize: 32, fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'line', x: 160, y: 620, width: 1600, height: 1, stroke: '#e5e5e5', strokeWidth: 1 },
+        { type: 'text', x: 160, y: 660, width: 400, height: 40, text: 'وب‌سایت', fontSize: 12, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right', letterSpacing: 3 },
+        { type: 'text', x: 160, y: 710, width: 700, height: 60, text: 'studio.design', fontSize: 32, fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'line', x: 160, y: 820, width: 1600, height: 1, stroke: '#e5e5e5', strokeWidth: 1 },
+        { type: 'text', x: 160, y: 860, width: 400, height: 40, text: 'شبکه‌های اجتماعی', fontSize: 12, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right', letterSpacing: 3 },
+        { type: 'text', x: 160, y: 910, width: 1000, height: 60, text: '@studiostudio · linkedin.com/company/studio', fontSize: 24, fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' }
+      ]
+    })
+  },
+  threeCol: {
+    name: 'سه ستونه', icon: '<rect x="3" y="3" width="6" height="18"/><rect x="9" y="3" width="6" height="18"/><rect x="15" y="3" width="6" height="18"/>',
+    build: () => ({
+      background: '#fafafa',
+      elements: [
+        { type: 'text', x: 160, y: 140, width: 800, height: 30, text: 'اصول', fontSize: 14, fontFamily: 'Dana', fill: '#737373', align: 'right', letterSpacing: 4 },
+        { type: 'text', x: 160, y: 200, width: 1200, height: 100, text: 'سه اصل راهنما', fontSize: 64, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'text', x: 160, y: 400, width: 100, height: 100, text: '۰۱', fontSize: 48, fontWeight: 'bold', fontFamily: 'Dana', fill: '#5b8def', align: 'right' },
+        { type: 'line', x: 160, y: 520, width: 480, height: 2, stroke: '#0a0a0a', strokeWidth: 2 },
+        { type: 'text', x: 160, y: 550, width: 480, height: 60, text: 'شفافیت', fontSize: 42, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'text', x: 160, y: 630, width: 480, height: 200, text: 'هر عنصر جای خود را دارد. اگر هدفی را دنبال نمی‌کند، حذفش کنید.', fontSize: 20, fontFamily: 'Dana', fill: '#737373', align: 'right', lineHeight: 1.7 },
+        { type: 'text', x: 720, y: 400, width: 100, height: 100, text: '۰۲', fontSize: 48, fontWeight: 'bold', fontFamily: 'Dana', fill: '#a78bfa', align: 'right' },
+        { type: 'line', x: 720, y: 520, width: 480, height: 2, stroke: '#0a0a0a', strokeWidth: 2 },
+        { type: 'text', x: 720, y: 550, width: 480, height: 60, text: 'ریتم', fontSize: 42, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'text', x: 720, y: 630, width: 480, height: 200, text: 'فاصله‌گذاری منظم و تکرار، هارمونی بصری ایجاد می‌کند.', fontSize: 20, fontFamily: 'Dana', fill: '#737373', align: 'right', lineHeight: 1.7 },
+        { type: 'text', x: 1280, y: 400, width: 100, height: 100, text: '۰۳', fontSize: 48, fontWeight: 'bold', fontFamily: 'Dana', fill: '#ec4899', align: 'right' },
+        { type: 'line', x: 1280, y: 520, width: 480, height: 2, stroke: '#0a0a0a', strokeWidth: 2 },
+        { type: 'text', x: 1280, y: 550, width: 480, height: 60, text: 'کنتراست', fontSize: 42, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'text', x: 1280, y: 630, width: 480, height: 200, text: 'سلسله‌مراتب قوی، چشم را هدایت می‌کند. رنگ محدود، فضای زیاد.', fontSize: 20, fontFamily: 'Dana', fill: '#737373', align: 'right', lineHeight: 1.7 }
+      ]
+    })
+  },
+  gallery: {
+    name: 'گالری', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
+    build: () => ({
+      background: '#fafafa',
+      elements: [
+        { type: 'text', x: 160, y: 140, width: 800, height: 30, text: 'گالری', fontSize: 14, fontFamily: 'Dana', fill: '#737373', align: 'right', letterSpacing: 4 },
+        { type: 'text', x: 160, y: 200, width: 1200, height: 100, text: 'نمونه کارها', fontSize: 64, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'image', x: 160, y: 380, width: 600, height: 400, src: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80' },
+        { type: 'image', x: 780, y: 380, width: 600, height: 400, src: 'https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&q=80' },
+        { type: 'image', x: 1400, y: 380, width: 360, height: 400, src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80' }
+      ]
+    })
+  },
+  imageText: {
+    name: 'تصویر+متن', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/>',
+    build: () => ({
+      background: '#fafafa',
+      elements: [
+        { type: 'image', x: 160, y: 200, width: 800, height: 700, src: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1000&q=80' },
+        { type: 'text', x: 1040, y: 280, width: 720, height: 100, text: 'عنوان بخش', fontSize: 64, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+        { type: 'line', x: 1040, y: 420, width: 100, height: 4, stroke: '#5b8def', strokeWidth: 4 },
+        { type: 'text', x: 1040, y: 480, width: 720, height: 400, text: 'این یک پاراگراف توضیحی است که کنار تصویر قرار می‌گیرد. می‌تواند شامل توضیحات مفصل درباره‌ی موضوع باشد.', fontSize: 24, fontFamily: 'Dana', fill: '#64748b', align: 'right', lineHeight: 1.8 }
+      ]
+    })
+  }
+};
+
+function renderTemplates() {
+  const grid = $('tplGrid');
+  grid.innerHTML = Object.entries(TEMPLATES).map(([key, tpl]) => `
+    <div class="tpl-item" data-tpl="${key}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${tpl.icon}</svg>
+      <span>${tpl.name}</span>
+    </div>
+  `).join('');
+  grid.querySelectorAll('[data-tpl]').forEach(item => {
+    item.addEventListener('click', () => {
+      const key = item.dataset.tpl;
+      const tpl = TEMPLATES[key];
+      if (!tpl) return;
+      const newSlide = tpl.build();
+      newSlide.id = 's_' + Date.now();
+      Object.assign(state.slides[state.currentSlide], newSlide);
+      state.selectedIds = [];
+      renderAll();
+      saveHistory();
+      closeModals();
+      toast(`✓ قالب "${tpl.name}" اعمال شد`, 'success');
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PRESENTATION
+// ═══════════════════════════════════════════════════════════
+function enterPresentation() {
+  if (state.isPresenting) return;
+  state.isPresenting = true;
+  state.presentIndex = state.currentSlide;
+  document.body.classList.add('presenting');
+  $('presenter').classList.add('active');
+  startTimer();
+  renderPresenter();
+  try {
+    if (document.documentElement.requestFullscreen && location.protocol !== 'file:') {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  } catch (e) {}
+}
+
+function exitPresentation() {
+  state.isPresenting = false;
+  document.body.classList.remove('presenting');
+  $('presenter').classList.remove('active');
+  stopTimer();
+  stopTTS();
+  try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (e) {}
+}
+
+function renderPresenter() {
+  const slide = state.slides[state.presentIndex];
+  if (!slide) return;
+
+  const slideEl = $('pSlide');
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const scale = Math.min(vw / SLIDE_W, vh / SLIDE_H);
+  const sw = SLIDE_W * scale;
+  const sh = SLIDE_H * scale;
+
+  slideEl.style.width = sw + 'px';
+  slideEl.style.height = sh + 'px';
+  slideEl.style.background = slide.background || '#fff';
+  slideEl.className = 'p-slide';
+  slideEl.innerHTML = '';
+
+  const inner = document.createElement('div');
+  inner.style.cssText = `position:absolute;top:0;left:0;width:${SLIDE_W}px;height:${SLIDE_H}px;transform:scale(${scale});transform-origin:top left`;
+  slideEl.appendChild(inner);
+
+  slide.elements.forEach(el => {
+    const node = createNodeFromData({ ...el, draggable: false });
+    // Apply entrance animations
+    if (el.animation?.entrance) {
+      node.classList.add('a-' + el.animation.entrance);
+      const delay = (el.animation.delay || 0);
+      const dur = (el.animation.duration || 0.8);
+      node.style.animationDelay = delay + 's';
+      node.style.animationDuration = dur + 's';
+    }
+    if (el.animation?.emphasis) {
+      setTimeout(() => {
+        node.classList.add('a-' + el.animation.emphasis);
+      }, ((el.animation.delay || 0) + 0.8) * 1000);
+    }
+    if (el.animation?.loop) {
+      setTimeout(() => {
+        node.classList.add('a-' + el.animation.loop);
+      }, ((el.animation.delay || 0) + 1.2) * 1000);
+    }
+    // Disable pointer events
+    node.style.pointerEvents = 'none';
+    node.querySelectorAll('.resize-handle,.rotate-handle').forEach(h => h.remove());
+    inner.appendChild(node);
+  });
+
+  // Apply slide transition
+  if (slide.transition) {
+    slideEl.classList.add('trans-' + slide.transition);
+    slideEl.style.animationDuration = (slide.transitionDuration || 0.6) + 's';
+    setTimeout(() => {
+      slideEl.classList.remove('trans-' + slide.transition);
+    }, (slide.transitionDuration || 0.6) * 1000);
+  }
+
+  $('pCounter').textContent = (state.presentIndex + 1) + ' / ' + state.slides.length;
+  $('pProgress').style.width = ((state.presentIndex + 1) / state.slides.length * 100) + '%';
+  $('pNotes').innerHTML = slide.notes
+    ? `<div style="font-size:10px;color:#737373;margin-bottom:8px;font-weight:800;letter-spacing:1px;text-transform:uppercase">یادداشت</div><div style="color:#cbd5e1;font-family:'Dana',sans-serif;font-size:13px;line-height:1.9">${escapeHtml(slide.notes)}</div>`
+    : '<div style="color:#525252;font-size:11.5px;text-align:center">یادداشتی ثبت نشده</div>';
+}
+
+function presNext() { if (state.presentIndex < state.slides.length - 1) { state.presentIndex++; renderPresenter(); } }
+function presPrev() { if (state.presentIndex > 0) { state.presentIndex--; renderPresenter(); } }
+
+// Timer
+function startTimer() {
+  stopTimer();
+  state.timerStart = Date.now();
+  state.timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - state.timerStart) / 1000);
+    const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    const s = String(elapsed % 60).padStart(2, '0');
+    $('pTimer').textContent = m + ':' + s;
+  }, 500);
+}
+function stopTimer() {
+  if (state.timerInterval) clearInterval(state.timerInterval);
+  state.timerInterval = null;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TTS
+// ═══════════════════════════════════════════════════════════
+let ttsVoices = [];
+function initTTS() {
+  if (!('speechSynthesis' in window)) return;
+  function load() {
+    ttsVoices = speechSynthesis.getVoices();
+    const sel = $('ttsVoice');
+    if (!sel) return;
+    const fa = ttsVoices.filter(v => v.lang.toLowerCase().startsWith('fa'));
+    const ar = ttsVoices.filter(v => v.lang.toLowerCase().startsWith('ar'));
+    const en = ttsVoices.filter(v => v.lang.toLowerCase().startsWith('en'));
+    const rest = ttsVoices.filter(v => !v.lang.toLowerCase().match(/^(fa|ar|en)/));
+    let html = '';
+    if (fa.length) html += `<optgroup label="فارسی">${fa.map(v => `<option value="${ttsVoices.indexOf(v)}">${v.name} (${v.lang})</option>`).join('')}</optgroup>`;
+    if (ar.length) html += `<optgroup label="عربی">${ar.map(v => `<option value="${ttsVoices.indexOf(v)}">${v.name} (${v.lang})</option>`).join('')}</optgroup>`;
+    if (en.length) html += `<optgroup label="انگلیسی">${en.map(v => `<option value="${ttsVoices.indexOf(v)}">${v.name} (${v.lang})</option>`).join('')}</optgroup>`;
+    if (rest.length) html += `<optgroup label="سایر">${rest.map(v => `<option value="${ttsVoices.indexOf(v)}">${v.name} (${v.lang})</option>`).join('')}</optgroup>`;
+    sel.innerHTML = html || '<option>صدایی یافت نشد</option>';
+  }
+  load();
+  speechSynthesis.onvoiceschanged = load;
+}
+
+function speak(text, opts = {}) {
+  if (!('speechSynthesis' in window) || !text) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  const sel = $('ttsVoice');
+  if (sel && sel.value) {
+    const idx = parseInt(sel.value);
+    if (!isNaN(idx) && ttsVoices[idx]) u.voice = ttsVoices[idx];
+  }
+  if (!u.voice) {
+    u.voice = ttsVoices.find(v => v.lang.toLowerCase().startsWith('fa')) ||
+              ttsVoices.find(v => v.lang.toLowerCase().startsWith('ar')) ||
+              ttsVoices[0];
+  }
+  u.lang = opts.lang || u.voice?.lang || 'fa-IR';
+  u.rate = opts.rate ?? parseFloat($('ttsRate')?.value || 1);
+  u.pitch = opts.pitch ?? parseFloat($('ttsPitch')?.value || 1);
+  u.onstart = () => $('ttsBar').classList.add('active');
+  u.onend = () => $('ttsBar').classList.remove('active');
+  u.onerror = () => $('ttsBar').classList.remove('active');
+  speechSynthesis.speak(u);
+}
+
+function speakSlide() {
+  const slide = state.slides[state.presentIndex ?? state.currentSlide];
+  if (!slide) return;
+  const texts = [];
+  if (slide.notes) texts.push(slide.notes);
+  slide.elements.filter(el => el.type === 'text' && el.text).forEach(el => texts.push(el.text));
+  if (!texts.length) { toast('متنی برای خواندن نیست', 'info'); return; }
+  const fullText = texts.join('. ');
+  speak(fullText);
+}
+
+function stopTTS() {
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  $('ttsBar').classList.remove('active');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  JSON IMPORT/EXPORT
+// ═══════════════════════════════════════════════════════════
+function importJSON(text) {
+  try {
+    const data = JSON.parse(text);
+    if (!data.slides || !Array.isArray(data.slides)) throw new Error('فرمت نامعتبر: آرایه "slides" یافت نشد');
+    state.slides = data.slides.map(s => {
+      const slide = {
+        id: s.id || 's_' + Date.now() + Math.random().toString(36).slice(2, 5),
+        background: s.background || '#ffffff',
+        transition: s.transition || 'fade',
+        transitionDuration: s.transitionDuration || 0.6,
+        notes: s.notes || '',
+        elements: []
+      };
+      (s.elements || s.items || []).forEach(el => {
+        const item = { ...el };
+        if (!item.id) item.id = 'el_' + Date.now() + Math.random().toString(36).slice(2, 6);
+        // Support both width/height and w/h
+        if (item.w != null && item.width == null) item.width = item.w;
+        if (item.h != null && item.height == null) item.height = item.h;
+        // Default position
+        if (item.x == null) item.x = 40;
+        if (item.y == null) item.y = 40;
+        if (item.width == null) item.width = 300;
+        if (item.height == null) item.height = 100;
+        slide.elements.push(item);
+      });
+      return slide;
+    });
+    state.currentSlide = 0;
+    state.selectedIds = [];
+    renderAll();
+    saveHistory();
+    closeModals();
+    toast(`✓ ${state.slides.length} اسلاید بارگذاری شد`, 'success');
+  } catch (e) {
+    toast('خطا: ' + e.message, 'error');
+  }
+}
+
+function exportJSON() {
+  return JSON.stringify({
+    meta: { width: SLIDE_W, height: SLIDE_H, version: '10.0' },
+    slides: state.slides
+  }, null, 2);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════════════
+function toHex(c) {
+  if (!c || typeof c !== 'string') return '#000000';
+  if (c.startsWith('#') && (c.length === 7 || c.length === 4)) {
+    if (c.length === 4) return '#' + c[1] + c[1] + c[2] + c[2] + c[3] + c[3];
+    return c;
+  }
+  return '#000000';
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
+function toast(msg, type = '') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  $('toastContainer').appendChild(t);
+  requestAnimationFrame(() => t.classList.add('show'));
+  setTimeout(() => {
+    t.classList.remove('show');
+    setTimeout(() => t.remove(), 300);
+  }, 2400);
+}
+
+function closeModals() {
+  document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
+}
+
+// ═══════════════════════════════════════════════════════════
+//  EVENT BINDINGS
+// ═══════════════════════════════════════════════════════════
+function bindEvents() {
+  // Header
+  $('btnUndo').onclick = undo;
+  $('btnRedo').onclick = redo;
+  $('btnJSON').onclick = () => $('modalJSON').classList.add('show');
+  $('btnTemplates').onclick = () => { renderTemplates(); $('modalTemplates').classList.add('show'); };
+  $('btnTTS').onclick = () => $('modalTTS').classList.add('show');
+  $('btnPresent').onclick = enterPresentation;
+
+  // Modals close
+  document.querySelectorAll('.modal-close, [data-close]').forEach(btn => {
+    btn.onclick = closeModals;
+  });
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.onclick = e => { if (e.target === m) closeModals(); };
+  });
+
+  // Zoom
+  $('zoomIn').onclick = () => setZoom(state.zoom + 0.1);
+  $('zoomOut').onclick = () => setZoom(state.zoom - 0.1);
+  $('zoomFit').onclick = zoomFit;
+  $('zoomSlider').oninput = e => setZoom(parseInt(e.target.value) / 100);
+
+  // Slides
+  $('btnAddSlide').onclick = addSlide;
+  $('btnDupSlide').onclick = () => duplicateSlide(state.currentSlide);
+  $('btnDelSlide').onclick = () => deleteSlide(state.currentSlide);
+  $('btnPrev').onclick = () => { if (state.currentSlide > 0) { state.currentSlide--; state.selectedIds = []; renderAll(); } };
+  $('btnNext').onclick = () => { if (state.currentSlide < state.slides.length - 1) { state.currentSlide++; state.selectedIds = []; renderAll(); } };
+
+  // Canvas info
+  const canvasWrap = $('canvasWrap');
+  canvasWrap.addEventListener('mousemove', e => {
+    const canvas = $('canvas');
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.round((e.clientX - rect.left) / state.zoom);
+    const y = Math.round((e.clientY - rect.top) / state.zoom);
+    if (x >= 0 && x <= SLIDE_W && y >= 0 && y <= SLIDE_H) {
+      $('infoX').textContent = x;
+      $('infoY').textContent = y;
+    }
+  });
+
+  // Rail buttons
+  const defaults = {
+    railText: () => ({ type: 'text', text: 'متن جدید', width: 400, height: 100, fontSize: 48, fontFamily: 'Dana', fontWeight: 'bold', fill: '#0a0a0a' }),
+    railHeading: () => ({ type: 'text', text: 'عنوان', width: 800, height: 120, fontSize: 88, fontFamily: 'Dana', fontWeight: 'bold', fill: '#0a0a0a' }),
+    railRect: () => ({ type: 'rect', width: 300, height: 200, fill: '#5b8def', cornerRadius: 12 }),
+    railCircle: () => ({ type: 'ellipse', width: 300, height: 300, fill: '#a78bfa' }),
+    railTriangle: () => ({ type: 'triangle', width: 300, height: 260, fill: '#f472b6' }),
+    railStar: () => ({ type: 'star', width: 300, height: 300, fill: '#fbbf24', numPoints: 5 }),
+    railLine: () => ({ type: 'line', width: 600, height: 20, stroke: '#0a0a0a', strokeWidth: 6 }),
+    railArrow: () => ({ type: 'arrow', width: 600, height: 40, stroke: '#5b8def', strokeWidth: 6 }),
+    railBullet: () => ({ type: 'text', text: '• مورد اول\n• مورد دوم\n• مورد سوم', width: 600, height: 400, fontSize: 40, fontFamily: 'Dana', fill: '#0a0a0a', lineHeight: 2 }),
+    railImage: () => ({ type: 'image', width: 600, height: 400, src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1000&q=80' }),
+    railChart: () => ({ type: 'chart', width: 800, height: 500, chartType: 'bar', title: 'نمودار فروش', chartData: { labels: ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور'], values: [45, 62, 38, 78, 92, 58] }, colors: ['#5b8def','#a78bfa','#f472b6','#22d3ee','#34d399','#fbbf24'] }),
+    railTable: () => ({ type: 'table', width: 800, height: 400, cells: [['عنوان ۱','عنوان ۲','عنوان ۳'],['داده','داده','داده'],['داده','داده','داده']], fontSize: 16, headerFill: '#5b8def', rowFill: '#fff', borderColor: '#e2e8f0', textColor: '#0a0a0a' }),
+    railIcon: () => ({ type: 'icon', width: 120, height: 120, fill: '#5b8def', pathData: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z', scaleX: 3, scaleY: 3 })
+  };
+  Object.keys(defaults).forEach(id => {
+    const btn = $(id);
+    if (btn) btn.onclick = () => addElement(defaults[id]());
+  });
+
+  // Inspector tabs
+  document.querySelectorAll('.insp-tab').forEach(tab => {
+    tab.onclick = () => {
+      document.querySelectorAll('.insp-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      state.activeInspector = tab.dataset.tab;
+      renderInspector();
+    };
+  });
+
+  // Bottom bar
+  $('btnBg').onclick = () => {
+    const current = state.slides[state.currentSlide];
+    const newBg = prompt('رنگ پس‌زمینه (hex):', current.background || '#ffffff');
+    if (newBg && /^#[0-9a-f]{6}$/i.test(newBg)) {
+      current.background = newBg;
+      renderAll(); saveHistory();
+    }
+  };
+
+  // Context menu
+  $('ctx').onclick = e => {
+    const item = e.target.closest('[data-ctx]');
+    if (!item) return;
+    const act = item.dataset.ctx;
+    const slide = state.slides[state.currentSlide];
+    if (act === 'delete') {
+      slide.elements = slide.elements.filter(el => !state.selectedIds.includes(el.id));
+      state.selectedIds = [];
+    } else if (act === 'duplicate') {
+      const newIds = [];
+      state.selectedIds.forEach(id => {
+        const orig = slide.elements.find(el => el.id === id);
+        if (orig) {
+          const copy = JSON.parse(JSON.stringify(orig));
+          copy.id = 'el_' + Date.now() + Math.random().toString(36).slice(2, 6);
+          copy.x += 30; copy.y += 30;
+          slide.elements.push(copy);
+          newIds.push(copy.id);
+        }
+      });
+      state.selectedIds = newIds;
+    } else if (act === 'front') {
+      state.selectedIds.forEach(id => {
+        const idx = slide.elements.findIndex(el => el.id === id);
+        if (idx >= 0) slide.elements.push(slide.elements.splice(idx, 1)[0]);
+      });
+    } else if (act === 'back') {
+      state.selectedIds.forEach(id => {
+        const idx = slide.elements.findIndex(el => el.id === id);
+        if (idx >= 0) slide.elements.unshift(slide.elements.splice(idx, 1)[0]);
+      });
+    } else if (act === 'lock') {
+      state.selectedIds.forEach(id => {
+        const el = slide.elements.find(e => e.id === id);
+        if (el) el.locked = !el.locked;
+      });
+    } else if (act === 'edit') {
+      const el = slide.elements.find(e => e.id === state.selectedIds[0]);
+      if (el && el.type === 'text') {
+        const newText = prompt('متن:', el.text || '');
+        if (newText !== null) el.text = newText;
+      }
+    } else if (act === 'copy') {
+      const items = state.selectedIds.map(id => slide.elements.find(el => el.id === id)).filter(Boolean);
+      navigator.clipboard?.writeText(JSON.stringify(items));
+      toast('📋 کپی شد', 'success');
+    }
+    $('ctx').classList.remove('show');
+    renderAll(); saveHistory();
+  };
+
+  // JSON modal buttons
+  $('btnImport').onclick = () => importJSON($('jsonInput').value);
+  $('btnSample').onclick = () => { $('jsonInput').value = getSampleJSON(); };
+  $('btnExportView').onclick = () => { $('jsonOutput').value = exportJSON(); };
+  $('btnCopy').onclick = () => {
+    const v = $('jsonOutput').value || exportJSON();
+    navigator.clipboard?.writeText(v).then(() => toast('📋 کپی شد', 'success'));
+  };
+  $('btnDownload').onclick = () => {
+    const blob = new Blob([exportJSON()], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'nova-studio-' + Date.now() + '.json';
+    a.click();
+  };
+  $('btnLoadFile').onclick = () => $('fileInput').click();
+  $('fileInput').onchange = e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = ev => importJSON(ev.target.result);
+    r.readAsText(f);
+  };
+
+  // TTS
+  $('ttsRate').oninput = e => { $('ttsRateVal').textContent = parseFloat(e.target.value).toFixed(1) + 'x'; };
+  $('ttsPitch').oninput = e => { $('ttsPitchVal').textContent = parseFloat(e.target.value).toFixed(1); };
+  $('ttsPlay').onclick = () => speak($('ttsPreview').value);
+  $('ttsStop').onclick = stopTTS;
+  $('ttsSlide').onclick = speakSlide;
+
+  // Presenter controls
+  $('pPrev').onclick = presPrev;
+  $('pNext').onclick = presNext;
+  $('pExit').onclick = exitPresentation;
+  $('pTTS').onclick = speakSlide;
+  $('pBlack').onclick = () => {
+    const s = $('pSlide');
+    if (s.style.visibility === 'hidden') s.style.visibility = 'visible';
+    else s.style.visibility = 'hidden';
+  };
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (state.isPresenting) {
+      if (e.key === 'Escape') exitPresentation();
+      else if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); presNext(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); presPrev(); }
+      else if (e.key === 'r' || e.key === 'R') speakSlide();
+      else if (e.key === 'b' || e.key === 'B') $('pBlack').click();
+      return;
+    }
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    const mod = e.ctrlKey || e.metaKey;
+    if (mod && e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo(); }
+    else if (mod && (e.key === 'y' || (e.shiftKey && e.key === 'z'))) { e.preventDefault(); redo(); }
+    else if (mod && e.key === 's') { e.preventDefault(); autoSave(); toast('💾 ذخیره شد', 'success'); }
+    else if (e.key === 'Delete' || e.key === 'Backspace') {
+      if (state.selectedIds.length) {
+        e.preventDefault();
+        const slide = state.slides[state.currentSlide];
+        slide.elements = slide.elements.filter(el => !state.selectedIds.includes(el.id));
+        state.selectedIds = [];
+        renderAll(); saveHistory();
+      }
+    }
+    else if (e.key === 'Escape') { state.selectedIds = []; renderAll(); }
+    else if (e.key === 'F5') { e.preventDefault(); enterPresentation(); }
+    else if (e.key === 'r' || e.key === 'R') speakSlide();
+    else if (e.key === 'ArrowRight') { if (state.currentSlide < state.slides.length - 1) { state.currentSlide++; state.selectedIds = []; renderAll(); } }
+    else if (e.key === 'ArrowLeft') { if (state.currentSlide > 0) { state.currentSlide--; state.selectedIds = []; renderAll(); } }
+    // Arrow keys for selected element
+    else if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key) && state.selectedIds.length) {
+      e.preventDefault();
+      const step = e.shiftKey ? 10 : 1;
+      const slide = state.slides[state.currentSlide];
+      const el = slide.elements.find(el => el.id === state.selectedIds[0]);
+      if (el) {
+        if (e.key === 'ArrowRight') el.x += step;
+        if (e.key === 'ArrowLeft') el.x -= step;
+        if (e.key === 'ArrowDown') el.y += step;
+        if (e.key === 'ArrowUp') el.y -= step;
+        renderCanvas(); saveHistory();
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SAMPLE JSON (for demo)
+// ═══════════════════════════════════════════════════════════
+function getSampleJSON() {
+  return JSON.stringify({
+    slides: [
+      {
+        background: '#0a0a0a',
+        transition: 'fade',
+        transitionDuration: 0.8,
+        notes: 'خوش‌آمدگویی. با انرژی شروع کن.',
+        elements: [
+          { type: 'text', x: 160, y: 200, width: 1600, height: 40, text: 'ANNUAL REPORT — 2026', fontSize: 18, fontFamily: 'Dana', fill: '#737373', align: 'right', letterSpacing: 6, animation: { entrance: 'fadeIn' } },
+          { type: 'line', x: 160, y: 260, width: 240, height: 2, stroke: '#fafafa', strokeWidth: 2, animation: { entrance: 'fadeIn' } },
+          { type: 'text', x: 160, y: 340, width: 1600, height: 340, text: 'طراحی\nآینده.', fontSize: 220, fontWeight: 'bold', fontFamily: 'Dana', fill: '#fafafa', align: 'right', lineHeight: 1.0, animation: { entrance: 'fadeInUp' } },
+          { type: 'text', x: 160, y: 760, width: 1000, height: 100, text: 'مطالعه‌ای در مینیمالیسم، شفافیت و طراحی هدفمند.', fontSize: 32, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right', lineHeight: 1.5, animation: { entrance: 'fadeInUp' } },
+          { type: 'text', x: 160, y: 960, width: 1600, height: 40, text: 'ارائه توسط Nova Studio · اسفند ۱۴۰۳', fontSize: 18, fontFamily: 'Dana', fill: '#525252', align: 'right', animation: { entrance: 'fadeIn' } }
+        ]
+      },
+      {
+        background: '#fafafa',
+        transition: 'slideLeft',
+        transitionDuration: 0.6,
+        notes: 'فهرست مطالب. حداکثر ۶۰ ثانیه.',
+        elements: [
+          { type: 'text', x: 160, y: 140, width: 800, height: 30, text: '01 — فهرست', fontSize: 14, fontFamily: 'Dana', fill: '#737373', align: 'right', letterSpacing: 4 },
+          { type: 'text', x: 160, y: 200, width: 1000, height: 100, text: 'آنچه پوشش می‌دهیم.', fontSize: 72, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right', animation: { entrance: 'fadeInUp' } },
+          { type: 'text', x: 160, y: 400, width: 80, height: 60, text: '۰۱', fontSize: 20, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right' },
+          { type: 'line', x: 160, y: 470, width: 1600, height: 1, stroke: '#e5e5e5', strokeWidth: 1 },
+          { type: 'text', x: 160, y: 490, width: 1000, height: 60, text: 'فلسفه‌ی کمتر', fontSize: 40, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+          { type: 'text', x: 1400, y: 505, width: 360, height: 40, text: '۰۵ دقیقه', fontSize: 18, fontFamily: 'Dana', fill: '#737373', align: 'left' },
+          { type: 'text', x: 160, y: 570, width: 80, height: 60, text: '۰۲', fontSize: 20, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right' },
+          { type: 'line', x: 160, y: 640, width: 1600, height: 1, stroke: '#e5e5e5', strokeWidth: 1 },
+          { type: 'text', x: 160, y: 660, width: 1000, height: 60, text: 'سیستم‌های بصری', fontSize: 40, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+          { type: 'text', x: 1400, y: 675, width: 360, height: 40, text: '۰۸ دقیقه', fontSize: 18, fontFamily: 'Dana', fill: '#737373', align: 'left' },
+          { type: 'text', x: 160, y: 740, width: 80, height: 60, text: '۰۳', fontSize: 20, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right' },
+          { type: 'line', x: 160, y: 810, width: 1600, height: 1, stroke: '#e5e5e5', strokeWidth: 1 },
+          { type: 'text', x: 160, y: 830, width: 1000, height: 60, text: 'مطالعات موردی', fontSize: 40, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+          { type: 'text', x: 1400, y: 845, width: 360, height: 40, text: '۱۰ دقیقه', fontSize: 18, fontFamily: 'Dana', fill: '#737373', align: 'left' },
+          { type: 'text', x: 160, y: 910, width: 80, height: 60, text: '۰۴', fontSize: 20, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right' },
+          { type: 'line', x: 160, y: 980, width: 1600, height: 1, stroke: '#e5e5e5', strokeWidth: 1 },
+          { type: 'text', x: 160, y: 1000, width: 1000, height: 60, text: 'پرسش و پاسخ', fontSize: 40, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right' },
+          { type: 'text', x: 1400, y: 1015, width: 360, height: 40, text: 'باز', fontSize: 18, fontFamily: 'Dana', fill: '#737373', align: 'left' }
+        ]
+      },
+      {
+        background: '#fafafa',
+        transition: 'fade',
+        transitionDuration: 0.6,
+        notes: 'اعداد کلیدی. مقیاس و رشد را تأکید کن.',
+        elements: [
+          { type: 'text', x: 160, y: 140, width: 800, height: 30, text: 'آمار کلیدی', fontSize: 14, fontFamily: 'Dana', fill: '#737373', align: 'right', letterSpacing: 4 },
+          { type: 'text', x: 160, y: 200, width: 1200, height: 100, text: 'مرور یک سال.', fontSize: 64, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right', animation: { entrance: 'fadeInUp' } },
+          { type: 'text', x: 160, y: 480, width: 400, height: 140, text: '۲۴۸٪', fontSize: 120, fontWeight: 'bold', fontFamily: 'Dana', fill: '#5b8def', align: 'right', animation: { entrance: 'fadeInUp' } },
+          { type: 'line', x: 160, y: 640, width: 400, height: 2, stroke: '#0a0a0a', strokeWidth: 2 },
+          { type: 'text', x: 160, y: 670, width: 400, height: 80, text: 'رشد\nکاربران فعال', fontSize: 22, fontFamily: 'Dana', fill: '#737373', align: 'right', lineHeight: 1.5 },
+          { type: 'text', x: 680, y: 480, width: 400, height: 140, text: '۱۲.۴M', fontSize: 120, fontWeight: 'bold', fontFamily: 'Dana', fill: '#a78bfa', align: 'right', animation: { entrance: 'fadeInUp' } },
+          { type: 'line', x: 680, y: 640, width: 400, height: 2, stroke: '#0a0a0a', strokeWidth: 2 },
+          { type: 'text', x: 680, y: 670, width: 400, height: 80, text: 'جلسه\nدر ماه', fontSize: 22, fontFamily: 'Dana', fill: '#737373', align: 'right', lineHeight: 1.5 },
+          { type: 'text', x: 1200, y: 480, width: 400, height: 140, text: '۹۸.۷٪', fontSize: 120, fontWeight: 'bold', fontFamily: 'Dana', fill: '#f472b6', align: 'right', animation: { entrance: 'fadeInUp' } },
+          { type: 'line', x: 1200, y: 640, width: 400, height: 2, stroke: '#0a0a0a', strokeWidth: 2 },
+          { type: 'text', x: 1200, y: 670, width: 400, height: 80, text: 'رضایت\nمشتری', fontSize: 22, fontFamily: 'Dana', fill: '#737373', align: 'right', lineHeight: 1.5 }
+        ]
+      },
+      {
+        background: '#fafafa',
+        transition: 'slideRight',
+        transitionDuration: 0.6,
+        notes: 'نمودار رشد درآمد.',
+        elements: [
+          { type: 'text', x: 160, y: 140, width: 800, height: 30, text: 'رشد', fontSize: 14, fontFamily: 'Dana', fill: '#737373', align: 'right', letterSpacing: 4 },
+          { type: 'text', x: 160, y: 200, width: 1200, height: 100, text: 'پایدار. مرکب.', fontSize: 64, fontWeight: 'bold', fontFamily: 'Dana', fill: '#0a0a0a', align: 'right', animation: { entrance: 'fadeInUp' } },
+          { type: 'text', x: 160, y: 320, width: 1200, height: 60, text: 'درآمد ماهانه، ۱۲ ماه گذشته (هزار دلار)', fontSize: 22, fontFamily: 'Dana', fill: '#737373', align: 'right', animation: { entrance: 'fadeInUp' } },
+          { type: 'chart', x: 160, y: 420, width: 1600, height: 580, chartType: 'line', chartData: { labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], values: [45, 52, 61, 58, 72, 85, 91, 104, 118, 132, 148, 165] }, colors: ['#5b8def'], bgFill: '#fafafa', animation: { entrance: 'fadeInUp' } }
+        ]
+      },
+      {
+        background: '#0a0a0a',
+        transition: 'fade',
+        transitionDuration: 0.8,
+        notes: 'پایان. برای پرسش و پاسخ آماده باش.',
+        elements: [
+          { type: 'text', x: 160, y: 200, width: 1600, height: 40, text: 'THANK YOU', fontSize: 16, fontFamily: 'Dana', fill: '#737373', align: 'right', letterSpacing: 8, animation: { entrance: 'fadeIn' } },
+          { type: 'line', x: 160, y: 260, width: 120, height: 3, stroke: '#fafafa', strokeWidth: 3, animation: { entrance: 'fadeIn' } },
+          { type: 'text', x: 160, y: 340, width: 1600, height: 400, text: 'بیایید چیزی\nآرام بسازیم.', fontSize: 200, fontWeight: 'bold', fontFamily: 'Dana', fill: '#fafafa', align: 'right', lineHeight: 1.0, animation: { entrance: 'fadeInUp' } },
+          { type: 'text', x: 160, y: 830, width: 1400, height: 60, text: 'سوالات، نظرات، انتقادات — همه پذیرفته‌ایم.', fontSize: 26, fontFamily: 'Dana', fill: '#a3a3a3', align: 'right', animation: { entrance: 'fadeInUp' } }
+        ]
+      }
+    ]
+  }, null, 2);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+function init() {
+  // Try to restore from localStorage
+  const saved = localStorage.getItem('novaStudioPro');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      if (data.slides?.length) {
+        state.slides = data.slides;
+        state.currentSlide = data.currentSlide || 0;
+      }
+    } catch (e) {}
+  }
+
+  // If empty, use sample
+  if (!state.slides.length) {
+    const sample = JSON.parse(getSampleJSON());
+    importJSON(JSON.stringify(sample));
+  } else {
+    renderAll();
+  }
+
+  initTTS();
+  bindEvents();
+  saveHistory();
+  setTimeout(zoomFit, 100);
+
+  console.log('✅ Nova Studio Pro v10 — Ready');
+  console.log('Keys: F5 = Present · R = TTS · B = Black screen · Ctrl+Z/Y · Del');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+})();
+</script>
+</body>
+</html>

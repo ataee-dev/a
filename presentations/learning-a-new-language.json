@@ -1,0 +1,1871 @@
+{
+  "meta": {
+    "width": 1920,
+    "height": 1080,
+    "version": "10.0"
+  },
+  "slides": [
+    {
+      "id": "s_1792183274921dxz",
+      "background": "#0a0a0a",
+      "transition": "fade",
+      "transitionDuration": 0.8,
+      "notes": "Opening. Greet warmly.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 220,
+          "width": 1600,
+          "height": 40,
+          "text": "PRESENTATION · 2026",
+          "fontSize": 12,
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 8,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183274921zahs"
+        },
+        {
+          "type": "line",
+          "x": 160,
+          "y": 270,
+          "width": 40,
+          "height": 2,
+          "stroke": "#f97316",
+          "strokeWidth": 2,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.2
+          },
+          "id": "el_1792183274921knp3"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 380,
+          "width": 1594.3639921722113,
+          "height": 318.90410958904107,
+          "text": "Learning a\nNew Language",
+          "fontSize": 160,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "lineHeight": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183274921j90s"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 720,
+          "width": 1200,
+          "height": 60,
+          "text": "A Slow Path, Not a One-Night Event",
+          "fontSize": 28,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183274921afta"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 840,
+          "width": 1440,
+          "height": 1,
+          "fill": "#27272a",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_1792183274921n21s"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 880,
+          "width": 700,
+          "height": 40,
+          "text": "Hossein Ataei  &  Safari",
+          "fontSize": 18,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.9
+          },
+          "id": "el_1792183274921dw1g"
+        },
+        {
+          "type": "text",
+          "x": 1200,
+          "y": 885,
+          "width": 560,
+          "height": 40,
+          "text": "ENGLISH · NOVA STUDIO",
+          "fontSize": 12,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "right",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.9
+          },
+          "id": "el_17921832749216dw9"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183274921u6b",
+      "background": "#fafaf9",
+      "transition": "slideLeft",
+      "transitionDuration": 0.6,
+      "notes": "Introduction. Two principles.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "01",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_17921832749215vme"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Introduction",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183274921ojbx"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 120,
+          "text": "Where to Start.",
+          "fontSize": 96,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183274921xc34"
+        },
+        {
+          "type": "rect",
+          "x": 182.54403131115458,
+          "y": 460,
+          "width": 700,
+          "height": 250,
+          "fill": "#c4f08f",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183274921bqnp",
+          "color": "#c4f08f"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 460,
+          "width": 5,
+          "height": 250,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183274921o35k"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 500,
+          "width": 100,
+          "height": 30,
+          "text": "01",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.4
+          },
+          "id": "el_17921832749211fia"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 545,
+          "width": 620,
+          "height": 40,
+          "text": "Make your goal clear.",
+          "fontSize": 28,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_17921832749215z7z"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 600,
+          "width": 620,
+          "height": 100,
+          "text": "Speaking, travel, work, or study — decide first, then commit fully.",
+          "fontSize": 17,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_17921832749216zhe"
+        },
+        {
+          "type": "rect",
+          "x": 918.7866927592955,
+          "y": 461.87866927592955,
+          "width": 700,
+          "height": 250,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.45
+          },
+          "id": "el_1792183274921uzd7"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 460,
+          "width": 5,
+          "height": 250,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.45
+          },
+          "id": "el_1792183274921y745"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 500,
+          "width": 100,
+          "height": 30,
+          "text": "02",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.55
+          },
+          "id": "el_1792183274921dx1g"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 545,
+          "width": 620,
+          "height": 40,
+          "text": "Build a daily habit.",
+          "fontSize": 28,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.65
+          },
+          "id": "el_17921832749216x3p"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 600,
+          "width": 620,
+          "height": 100,
+          "text": "Small consistent actions beat occasional intense bursts of effort.",
+          "fontSize": 17,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.75
+          },
+          "id": "el_179218327492179p5"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 790,
+          "width": 1440,
+          "height": 1,
+          "fill": "#e7e5e4",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.85
+          },
+          "id": "el_1792183274921ztmu"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 850,
+          "width": 1440,
+          "height": 60,
+          "text": "Consistency beats speed — every single time.",
+          "fontSize": 32,
+          "fontStyle": "italic",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.95
+          },
+          "id": "el_1792183274921onve"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183274921jnx",
+      "background": "#0a0a0a",
+      "transition": "fade",
+      "transitionDuration": 0.7,
+      "notes": "Confucius quote.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "02",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_1792183274921j7ga"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "A Timeless Idea",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183274921qjkx"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 260,
+          "width": 200,
+          "height": 200,
+          "text": "\"",
+          "fontSize": 240,
+          "fontFamily": "Georgia",
+          "fill": "#27272a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.2
+          },
+          "id": "el_1792183274921x9g8"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 440,
+          "width": 1600,
+          "height": 320,
+          "text": "It does not matter how slowly you go as long as you do not stop.",
+          "fontSize": 84,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "lineHeight": 1.25,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183274921ijb9"
+        },
+        {
+          "type": "line",
+          "x": 160,
+          "y": 800,
+          "width": 40,
+          "height": 2,
+          "stroke": "#f97316",
+          "strokeWidth": 2,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.7
+          },
+          "id": "el_179218327492159um"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 840,
+          "width": 800,
+          "height": 40,
+          "text": "— Confucius",
+          "fontSize": 20,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "letterSpacing": 2,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_17921832749213pjw"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 920,
+          "width": 1600,
+          "height": 60,
+          "text": "Consistency is more important than speed.",
+          "fontSize": 26,
+          "fontStyle": "italic",
+          "fontFamily": "Dana",
+          "fill": "#71717a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1
+          },
+          "id": "el_17921832749220j2v"
+        }
+      ]
+    },
+    {
+      "id": "s_17921832749221ue",
+      "background": "#fafaf9",
+      "transition": "slideLeft",
+      "transitionDuration": 0.6,
+      "notes": "Methods 1-3.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "03",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_179218327492272im"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Methods · Part 1",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183274922zy81"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 120,
+          "text": "Simple Ways to Learn.",
+          "fontSize": 88,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183274922vxp0"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 440,
+          "width": 480,
+          "height": 440,
+          "fill": "#c4f08f",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183274922g89h",
+          "color": "#c4f08f"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 480,
+          "width": 100,
+          "height": 30,
+          "text": "01",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.4
+          },
+          "id": "el_1792183274922rf7c"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 530,
+          "width": 100,
+          "height": 100,
+          "text": "⏱",
+          "fontSize": 64,
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_1792183274922d2kw"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 650,
+          "width": 400,
+          "height": 80,
+          "text": "Practice 20–30 minutes every day.",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "lineHeight": 1.4,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.55
+          },
+          "id": "el_17921832749222wbk"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 745,
+          "width": 400,
+          "height": 120,
+          "text": "Small daily sessions beat weekly marathons.",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.65
+          },
+          "id": "el_17921832749221deb"
+        },
+        {
+          "type": "rect",
+          "x": 680,
+          "y": 440,
+          "width": 480,
+          "height": 440,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183274922cfj9"
+        },
+        {
+          "type": "text",
+          "x": 720,
+          "y": 480,
+          "width": 100,
+          "height": 30,
+          "text": "02",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_17921832749223yjf"
+        },
+        {
+          "type": "text",
+          "x": 720,
+          "y": 530,
+          "width": 100,
+          "height": 100,
+          "text": "🎧",
+          "fontSize": 64,
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.6
+          },
+          "id": "el_1792183274922xm20"
+        },
+        {
+          "type": "text",
+          "x": 720,
+          "y": 650,
+          "width": 400,
+          "height": 80,
+          "text": "Start with sounds and pronunciation.",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "lineHeight": 1.4,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.65
+          },
+          "id": "el_17921832749222u6j"
+        },
+        {
+          "type": "text",
+          "x": 720,
+          "y": 745,
+          "width": 400,
+          "height": 120,
+          "text": "Master common words before rare ones.",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.75
+          },
+          "id": "el_1792183274922n83m"
+        },
+        {
+          "type": "rect",
+          "x": 1200,
+          "y": 440,
+          "width": 480,
+          "height": 440,
+          "fill": "#c4f08f",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_1792183274922eqfv",
+          "color": "#c4f08f"
+        },
+        {
+          "type": "text",
+          "x": 1240,
+          "y": 480,
+          "width": 100,
+          "height": 30,
+          "text": "03",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.6
+          },
+          "id": "el_1792183274922gmjx"
+        },
+        {
+          "type": "text",
+          "x": 1240,
+          "y": 530,
+          "width": 100,
+          "height": 100,
+          "text": "✍",
+          "fontSize": 64,
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.7
+          },
+          "id": "el_17921832749227a6n"
+        },
+        {
+          "type": "text",
+          "x": 1240,
+          "y": 650,
+          "width": 400,
+          "height": 80,
+          "text": "Learn words in real sentences.",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "lineHeight": 1.4,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.75
+          },
+          "id": "el_1792183274922csgu"
+        },
+        {
+          "type": "text",
+          "x": 1240,
+          "y": 745,
+          "width": 400,
+          "height": 120,
+          "text": "Words in context stay; words alone are forgotten.",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.85
+          },
+          "id": "el_1792183274922dvgl"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183274922lql",
+      "background": "#fafaf9",
+      "transition": "slideLeft",
+      "transitionDuration": 0.6,
+      "notes": "Methods 4-6.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "04",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_1792183274922ts90"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "Methods · Part 2",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_17921832749228x51"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 120,
+          "text": "More Ways to Practice.",
+          "fontSize": 88,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183274922d75o"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 440,
+          "width": 700,
+          "height": 240,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183274922kku0"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 440,
+          "width": 5,
+          "height": 240,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_17921832749222wjh"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 480,
+          "width": 100,
+          "height": 60,
+          "text": "04",
+          "fontSize": 40,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.4
+          },
+          "id": "el_17921832749226mgp"
+        },
+        {
+          "type": "text",
+          "x": 290,
+          "y": 480,
+          "width": 560,
+          "height": 40,
+          "text": "Four core skills",
+          "fontSize": 26,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_1792183274922ajbp"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 555,
+          "width": 620,
+          "height": 100,
+          "text": "Listening · Speaking · Reading · Writing — practice all four.",
+          "fontSize": 17,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183274922svrr"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 440,
+          "width": 860,
+          "height": 240,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183274922mfjn"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 440,
+          "width": 5,
+          "height": 240,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183274922yfi6"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 480,
+          "width": 100,
+          "height": 60,
+          "text": "05",
+          "fontSize": 40,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_17921832749223xum"
+        },
+        {
+          "type": "text",
+          "x": 1030,
+          "y": 480,
+          "width": 720,
+          "height": 40,
+          "text": "Immerse through media",
+          "fontSize": 26,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_17921832749223iv1"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 555,
+          "width": 780,
+          "height": 100,
+          "text": "Movies, podcasts, songs, and easy books expose real language.",
+          "fontSize": 17,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.7
+          },
+          "id": "el_1792183274922sslv"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 720,
+          "width": 700,
+          "height": 240,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_17921832749228ije"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 720,
+          "width": 5,
+          "height": 240,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_17921832749226p4o"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 760,
+          "width": 100,
+          "height": 60,
+          "text": "06",
+          "fontSize": 40,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.6
+          },
+          "id": "el_1792183274922yjix"
+        },
+        {
+          "type": "text",
+          "x": 290,
+          "y": 760,
+          "width": 560,
+          "height": 40,
+          "text": "Speak with a partner",
+          "fontSize": 26,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.7
+          },
+          "id": "el_1792183274922v2yl"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 835,
+          "width": 620,
+          "height": 100,
+          "text": "Real conversation accelerates fluency faster than any textbook.",
+          "fontSize": 17,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.8
+          },
+          "id": "el_17921832749227nil"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 720,
+          "width": 860,
+          "height": 240,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_17921832749220y3d"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 720,
+          "width": 5,
+          "height": 240,
+          "fill": "#f97316",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183274922ju52"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 760,
+          "width": 100,
+          "height": 60,
+          "text": "07",
+          "fontSize": 40,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.7
+          },
+          "id": "el_1792183274922p46g"
+        },
+        {
+          "type": "text",
+          "x": 1030,
+          "y": 760,
+          "width": 720,
+          "height": 40,
+          "text": "Review monthly",
+          "fontSize": 26,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.8
+          },
+          "id": "el_1792183274922ocav"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 835,
+          "width": 780,
+          "height": 100,
+          "text": "Check progress, adjust the method — never the goal.",
+          "fontSize": 17,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.9
+          },
+          "id": "el_1792183274922j5ve"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183274922k28",
+      "background": "#0a0a0a",
+      "transition": "fade",
+      "transitionDuration": 0.8,
+      "notes": "Mandela quote.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "05",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_1792183274922arn7"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "A Powerful Truth",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183274922last"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 260,
+          "width": 200,
+          "height": 200,
+          "text": "\"",
+          "fontSize": 240,
+          "fontFamily": "Georgia",
+          "fill": "#27272a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.2
+          },
+          "id": "el_1792183274922fgoy"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 440,
+          "width": 1600,
+          "height": 320,
+          "text": "If you talk to a man in his own language, it goes to his heart.",
+          "fontSize": 80,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "lineHeight": 1.25,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183274922wska"
+        },
+        {
+          "type": "line",
+          "x": 160,
+          "y": 800,
+          "width": 40,
+          "height": 2,
+          "stroke": "#f97316",
+          "strokeWidth": 2,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.7
+          },
+          "id": "el_1792183274922wsyw"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 840,
+          "width": 800,
+          "height": 40,
+          "text": "— Nelson Mandela",
+          "fontSize": 20,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "letterSpacing": 2,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_1792183274922zp9q"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 920,
+          "width": 1600,
+          "height": 60,
+          "text": "Do not only study the language — live it.",
+          "fontSize": 26,
+          "fontStyle": "italic",
+          "fontFamily": "Dana",
+          "fill": "#71717a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1
+          },
+          "id": "el_1792183274922412k"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183274922vi2",
+      "background": "#fafaf9",
+      "transition": "fade",
+      "transitionDuration": 0.6,
+      "notes": "Conclusion. Four takeaways.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "06",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn"
+          },
+          "id": "el_1792183274922hcyy"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 140,
+          "width": 800,
+          "height": 40,
+          "text": "In Short",
+          "fontSize": 13,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "letterSpacing": 4,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_1792183274922no35"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 120,
+          "text": "Do a Little, Every Day.",
+          "fontSize": 96,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.2
+          },
+          "id": "el_1792183274922aqrw"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 440,
+          "width": 700,
+          "height": 200,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.3
+          },
+          "id": "el_1792183274922w05l"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 480,
+          "width": 100,
+          "height": 30,
+          "text": "01",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.4
+          },
+          "id": "el_1792183274922nyak"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 520,
+          "width": 620,
+          "height": 40,
+          "text": "Repetition with joy",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_1792183274922ur0e"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 565,
+          "width": 620,
+          "height": 60,
+          "text": "Practice should feel alive, not forced.",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183274922y10r"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 440,
+          "width": 700,
+          "height": 200,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_1792183274922q4rm"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 480,
+          "width": 100,
+          "height": 30,
+          "text": "02",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.5
+          },
+          "id": "el_1792183274922gg96"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 520,
+          "width": 620,
+          "height": 40,
+          "text": "Embrace mistakes",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183274922jfcv"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 565,
+          "width": 620,
+          "height": 60,
+          "text": "Errors are part of the learning curve.",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.7
+          },
+          "id": "el_17921832749226ro6"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 680,
+          "width": 700,
+          "height": 200,
+          "fill": "#ffffff",
+          "cornerRadius": 20,
+          "stroke": "#e7e5e4",
+          "strokeWidth": 1,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.5
+          },
+          "id": "el_1792183274922e115"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 720,
+          "width": 100,
+          "height": 30,
+          "text": "03",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.6
+          },
+          "id": "el_1792183274922juoj"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 760,
+          "width": 620,
+          "height": 40,
+          "text": "Change method, not goal",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.7
+          },
+          "id": "el_1792183274922kt8k"
+        },
+        {
+          "type": "text",
+          "x": 200,
+          "y": 805,
+          "width": 620,
+          "height": 60,
+          "text": "If it tires you, adjust the approach.",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.8
+          },
+          "id": "el_17921832749222d4r"
+        },
+        {
+          "type": "rect",
+          "x": 900,
+          "y": 680,
+          "width": 700,
+          "height": 200,
+          "fill": "#0a0a0a",
+          "cornerRadius": 20,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.6
+          },
+          "id": "el_1792183274922abmi"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 720,
+          "width": 100,
+          "height": 30,
+          "text": "04",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 3,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.7
+          },
+          "id": "el_1792183274922361c"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 760,
+          "width": 620,
+          "height": 40,
+          "text": "Start today",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.8
+          },
+          "id": "el_1792183274922nta9"
+        },
+        {
+          "type": "text",
+          "x": 940,
+          "y": 805,
+          "width": 620,
+          "height": 60,
+          "text": "Even 10 minutes counts as a win.",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#a1a1aa",
+          "align": "left",
+          "lineHeight": 1.7,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.9
+          },
+          "id": "el_17921832749225b0v"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 920,
+          "width": 1440,
+          "height": 1,
+          "fill": "#e7e5e4",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1
+          },
+          "id": "el_17921832749227415"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 950,
+          "width": 1440,
+          "height": 60,
+          "text": "Small steps become a real skill after a few months.",
+          "fontSize": 26,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#0a0a0a",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1.1
+          },
+          "id": "el_17921832749221oxb"
+        }
+      ]
+    },
+    {
+      "id": "s_1792183274922xbl",
+      "background": "#0a0a0a",
+      "transition": "fade",
+      "transitionDuration": 0.8,
+      "notes": "Closing.",
+      "elements": [
+        {
+          "type": "text",
+          "x": 160,
+          "y": 200,
+          "width": 1400,
+          "height": 40,
+          "text": "THANK YOU",
+          "fontSize": 13,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#f97316",
+          "align": "left",
+          "letterSpacing": 8,
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.1
+          },
+          "id": "el_17921832749224s77"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 240,
+          "width": 1400,
+          "height": 40,
+          "text": "For your attention",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.2
+          },
+          "id": "el_17921832749220ii3"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 400,
+          "width": 1596.242661448141,
+          "height": 335.69471624266146,
+          "text": "Start Today.\nSmall Steps.",
+          "fontSize": 180,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "lineHeight": 0.98,
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.4
+          },
+          "id": "el_17921832749223xj1"
+        },
+        {
+          "type": "rect",
+          "x": 160,
+          "y": 800,
+          "width": 1440,
+          "height": 1,
+          "fill": "#27272a",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 0.8
+          },
+          "id": "el_1792183274922266n"
+        },
+        {
+          "type": "text",
+          "x": 160,
+          "y": 850,
+          "width": 800,
+          "height": 40,
+          "text": "Hossein Ataei  &  Safari",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "fontFamily": "Dana",
+          "fill": "#fafafa",
+          "align": "left",
+          "animation": {
+            "entrance": "fadeInUp",
+            "delay": 0.9
+          },
+          "id": "el_1792183274922sg79"
+        },
+        {
+          "type": "text",
+          "x": 1200,
+          "y": 855,
+          "width": 560,
+          "height": 40,
+          "text": "Any questions?",
+          "fontSize": 16,
+          "fontFamily": "Dana",
+          "fill": "#6b7280",
+          "align": "right",
+          "animation": {
+            "entrance": "fadeIn",
+            "delay": 1
+          },
+          "id": "el_1792183274922lxxb"
+        }
+      ]
+    }
+  ]
+}
