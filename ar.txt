@@ -1,0 +1,1109 @@
+"""
+Aureon Execution Engine v2 -- the "Computer Execution Layer" (hands and feet)
+=============================================================================
+
+Receives JSON "Aureon Action Contracts", validates them strictly, performs the
+requested mouse / keyboard / window / file operation, verifies the visual
+outcome, and returns a structured JSON report.
+
+Requirements
+------------
+    Python 3.9+
+    pip install pyautogui pynput Pillow ImageHash pyperclip pygetwindow psutil
+
+Platform notes
+--------------
+* Windows is the primary target. DPI awareness, multi-monitor lookup and
+  active-process detection use Win32 APIs through ctypes.
+* ``pygetwindow`` only supports window control on Windows (and partially
+  macOS). Where it is unavailable, ``window.*`` actions and ``requires_focus``
+  fail closed with a clear error instead of silently skipping the check.
+* On macOS, grant Accessibility and Screen Recording permission to the host.
+
+Action contract (input)
+-----------------------
+    {
+      "action_id":   "act_002",                 # [A-Za-z0-9_.-], max 64 chars
+      "type":        "keyboard.type",
+      "params":      {...},                     # per-action schema, see below
+      "constraints": {...},                     # see CONSTRAINT_SCHEMA
+      "metadata":    {...}                      # free-form, never executed
+    }
+
+Unknown top-level fields, params and constraints are REJECTED. This is
+deliberate: a misspelled constraint such as ``require_focus`` must never be
+silently ignored.
+
+Coordinates are normalised (0.0-1.0 of the primary monitor) unless
+``coord_type`` is ``"absolute"`` (whole pixels on the virtual desktop).
+
+Supported actions
+-----------------
+    mouse.click     x, y, [coord_type, button, clicks, move_duration_ms]
+    mouse.move      x, y, [coord_type, duration_ms]
+    mouse.drag      from_x, from_y, to_x, to_y, [coord_type, duration_ms]
+    mouse.scroll    direction, [amount, x, y, coord_type]
+    keyboard.type   text, [interval_ms, mode = "paste" | "keystroke"]
+    keyboard.hotkey keys
+    window.focus / window.minimize / window.maximize / window.close
+                    title_contains
+    file.copy       source, destination, [overwrite]   (overwrite needs confirm)
+    file.move       source, destination                (needs confirm)
+    file.delete     path, [recursive]                  (needs confirm)
+
+Security model (read this before deploying)
+-------------------------------------------
+* Action allowlist, strict schemas, bounded numeric ranges.
+* Hotkey allowlist plus a blocklist of high-risk chords (Win+R, Alt+F4, ...).
+* Forbidden screen zones are checked for every target AND every point on a
+  planned movement path before the pointer moves.
+* File operations are confined to ``file_roots`` (default: ``base_dir``), the
+  audit log directory is protected, and delete/move require
+  ``constraints.confirm == true``.
+* Emergency failsafe: parking the pointer at (0, 0) aborts the action. During
+  smooth movement the engine also aborts if the pointer is pulled away from the
+  planned path (a human grabbed the mouse).
+* Every event is written to ``logs/audit_ledger.log`` as hash-chained JSON.
+  Typed text is never logged, only its length.
+
+Known limitations
+-----------------
+* Timeouts are real, but a Python thread cannot be force-killed. The engine
+  sets a cancel flag and injects an exception with
+  ``PyThreadState_SetAsyncExc``; both take effect only when the worker is
+  running Python code. A worker blocked inside a native call cannot be
+  interrupted: the engine then reports the timeout, releases held inputs, and
+  refuses further actions until that worker exits.
+* Only TEXT clipboard contents survive ``keyboard.type`` in paste mode
+  (pyperclip limitation). Images/files on the clipboard are not restored.
+* The smooth cursor movement exists for visual clarity and reliable UI
+  hover/drag handling. It is not designed to defeat bot detection, and it
+  should not be used for that.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import ctypes
+import hashlib
+import json
+import logging
+import logging.handlers
+import math
+import os
+import platform
+import random
+import re
+import shutil
+import threading
+import time
+import uuid
+from dataclasses import asdict, dataclass, field
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Callable, Iterable, Optional, Union
+
+import imagehash
+import psutil
+import pyautogui
+import pyperclip
+from PIL import Image, ImageChops
+
+try:  # Low-level mouse events. Optional: falls back to pyautogui.
+    from pynput import mouse as pynput_mouse
+except Exception:  # pragma: no cover - headless / unsupported platform
+    pynput_mouse = None  # type: ignore[assignment]
+
+try:  # Window control. Unsupported on Linux.
+    import pygetwindow as gw
+except Exception:  # pragma: no cover - platform dependent
+    gw = None  # type: ignore[assignment]
+
+__all__ = [
+    "ActionContract", "ExecutionReport", "CoordinateEngine", "MonitorInfo",
+    "InputSimulator", "VisualVerifier", "SafetyGuard", "WindowManager",
+    "AsyncActionExecutor", "AureonExecutionEngine", "FailsafeTriggered",
+    "SafetyViolation", "ActionAborted",
+]
+
+_SYSTEM = platform.system()
+IS_WINDOWS = _SYSTEM == "Windows"
+IS_MACOS = _SYSTEM == "Darwin"
+
+_LOG = logging.getLogger("aureon.execution")
+
+
+# =============================================================================
+# Exceptions and small helpers
+# =============================================================================
+
+class FailsafeTriggered(RuntimeError):
+    """Raised when the emergency stop (pointer at (0, 0) / user takeover) fires."""
+
+
+class SafetyViolation(RuntimeError):
+    """Raised when an action violates a configured safety restriction."""
+
+
+class ActionAborted(BaseException):
+    """Injected into a timed-out worker thread.
+
+    Derives from BaseException so that ordinary ``except Exception`` blocks in
+    library code cannot swallow the abort.
+    """
+
+
+_thread_ctx = threading.local()
+
+
+def _raise_if_cancelled() -> None:
+    """Cooperative cancellation point: raise if this worker's deadline passed."""
+    event = getattr(_thread_ctx, "cancel_event", None)
+    if event is not None and event.is_set():
+        raise ActionAborted("Action cancelled after timeout.")
+
+
+def _is_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _is_num(value: Any) -> bool:
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and math.isfinite(value)
+    )
+
+
+def _is_within(path: Path, root: Path) -> bool:
+    """True if ``path`` equals ``root`` or lies beneath it (both resolved)."""
+    return path == root or root in path.parents
+
+
+def _safe_id(value: Any) -> str:
+    """Make an arbitrary action id safe for log records and file names."""
+    cleaned = re.sub(r"[^A-Za-z0-9_.\-]", "_", str(value))[:64]
+    return cleaned or "unknown"
+
+
+def _extract_action_id(raw: Any) -> str:
+    if isinstance(raw, dict) and isinstance(raw.get("action_id"), str):
+        return _safe_id(raw["action_id"])
+    return "unknown"
+
+
+# =============================================================================
+# Strict schema machinery (shared by params and constraints)
+# =============================================================================
+
+@dataclass(frozen=True)
+class _Spec:
+    """Declarative description of one validated field."""
+
+    kind: str  # "bool" | "int" | "num" | "str" | "enum" | "keys"
+    required: bool = False
+    default: Any = None
+    lo: Optional[float] = None
+    hi: Optional[float] = None
+    choices: tuple = ()
+    min_len: int = 0
+    max_len: int = 4096
+    strip: bool = False
+
+
+def _validate_value(name: str, value: Any, spec: _Spec) -> Any:
+    """Validate one value against its spec and return the cleaned value."""
+    kind = spec.kind
+    if kind == "bool":
+        if not isinstance(value, bool):
+            raise ValueError(f"'{name}' must be a boolean.")
+        return value
+    if kind in ("int", "num"):
+        ok = _is_int(value) if kind == "int" else _is_num(value)
+        if not ok:
+            raise ValueError(
+                f"'{name}' must be {'an integer' if kind == 'int' else 'a finite number'}."
+            )
+        if spec.lo is not None and value < spec.lo:
+            raise ValueError(f"'{name}' must be >= {spec.lo:g}.")
+        if spec.hi is not None and value > spec.hi:
+            raise ValueError(f"'{name}' must be <= {spec.hi:g}.")
+        return value
+    if kind == "str":
+        if not isinstance(value, str):
+            raise ValueError(f"'{name}' must be a string.")
+        text = value.strip() if spec.strip else value
+        if "\x00" in text:
+            raise ValueError(f"'{name}' must not contain NUL characters.")
+        if not spec.min_len <= len(text) <= spec.max_len:
+            raise ValueError(
+                f"'{name}' length must be between {spec.min_len} and {spec.max_len}."
+            )
+        return text
+    if kind == "enum":
+        if not isinstance(value, str) or value not in spec.choices:
+            raise ValueError(f"'{name}' must be one of {list(spec.choices)}.")
+        return value
+    if kind == "keys":
+        if not isinstance(value, list) or not all(isinstance(k, str) for k in value):
+            raise ValueError(f"'{name}' must be a list of strings.")
+        return list(value)
+    raise ValueError(f"Unsupported schema kind '{kind}' for '{name}'.")
+
+
+def _apply_schema(label: str, data: Any, schema: dict[str, _Spec]) -> dict[str, Any]:
+    """Reject unknown keys, enforce required keys, fill defaults."""
+    if not isinstance(data, dict):
+        raise ValueError(f"'{label}' must be an object.")
+    unknown = sorted(str(k) for k in set(data) - set(schema))
+    if unknown:
+        raise ValueError(f"Unknown {label} field(s): {unknown}.")
+    cleaned: dict[str, Any] = {}
+    for name, spec in schema.items():
+        if name in data:
+            cleaned[name] = _validate_value(name, data[name], spec)
+        elif spec.required:
+            raise ValueError(f"Missing required {label} field '{name}'.")
+        else:
+            cleaned[name] = spec.default
+    return cleaned
+
+
+_COORD_TYPE = _Spec("enum", default="relative", choices=("relative", "absolute"))
+_COORD = _Spec("num", required=True)
+_COORD_OPT = _Spec("num")
+_DURATION = lambda default: _Spec("int", default=default, lo=0, hi=10_000)  # noqa: E731
+_TITLE = _Spec("str", required=True, min_len=1, max_len=200, strip=True)
+_PATH = _Spec("str", required=True, min_len=1, max_len=1024, strip=True)
+
+CONSTRAINT_SCHEMA: dict[str, _Spec] = {
+    "timeout_ms": _Spec("int", default=30_000, lo=100, hi=300_000),
+    "requires_focus": _Spec("bool", default=False),
+    "target_window": _Spec("str", min_len=1, max_len=200, strip=True),
+    "target_process": _Spec("str", min_len=1, max_len=128, strip=True),
+    "confirm": _Spec("bool", default=False),
+    "require_screen_change": _Spec("bool", default=False),
+    "wait_for_change_ms": _Spec("int", default=0, lo=0, hi=60_000),
+    "settle_ms": _Spec("int", default=150, lo=0, hi=5_000),
+}
+
+ACTION_SCHEMAS: dict[str, dict[str, _Spec]] = {
+    "mouse.click": {
+        "x": _COORD, "y": _COORD, "coord_type": _COORD_TYPE,
+        "button": _Spec("enum", default="left", choices=("left", "right", "middle")),
+        "clicks": _Spec("int", default=1, lo=1, hi=3),
+        "move_duration_ms": _DURATION(200),
+    },
+    "mouse.move": {
+        "x": _COORD, "y": _COORD, "coord_type": _COORD_TYPE,
+        "duration_ms": _DURATION(300),
+    },
+    "mouse.drag": {
+        "from_x": _COORD, "from_y": _COORD, "to_x": _COORD, "to_y": _COORD,
+        "coord_type": _COORD_TYPE, "duration_ms": _DURATION(600),
+    },
+    "mouse.scroll": {
+        "direction": _Spec("enum", required=True, choices=("up", "down", "left", "right")),
+        "amount": _Spec("int", default=3, lo=1, hi=20),
+        "x": _COORD_OPT, "y": _COORD_OPT, "coord_type": _COORD_TYPE,
+    },
+    "keyboard.type": {
+        "text": _Spec("str", required=True, max_len=10_000),
+        "interval_ms": _Spec("int", default=20, lo=0, hi=2_000),
+        "mode": _Spec("enum", default="paste", choices=("paste", "keystroke")),
+    },
+    "keyboard.hotkey": {"keys": _Spec("keys", required=True)},
+    "window.focus": {"title_contains": _TITLE},
+    "window.minimize": {"title_contains": _TITLE},
+    "window.maximize": {"title_contains": _TITLE},
+    "window.close": {"title_contains": _TITLE},
+    "file.copy": {
+        "source": _PATH, "destination": _PATH,
+        "overwrite": _Spec("bool", default=False),
+    },
+    "file.move": {"source": _PATH, "destination": _PATH},
+    "file.delete": {"path": _PATH, "recursive": _Spec("bool", default=False)},
+}
+
+SUPPORTED_ACTIONS: frozenset[str] = frozenset(ACTION_SCHEMAS)
+CONFIRM_REQUIRED_ACTIONS: frozenset[str] = frozenset({"file.move", "file.delete"})
+
+_CONTRACT_FIELDS = frozenset({"action_id", "type", "params", "constraints", "metadata"})
+_ACTION_ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.\-]{0,63}")
+_ACTION_TYPE_RE = re.compile(r"[a-z][a-z_]{0,31}\.[a-z][a-z_]{0,31}")
+
+
+# =============================================================================
+# Data classes
+# =============================================================================
+
+@dataclass
+class ActionContract:
+    """Validated incoming action ("Aureon Action Contract")."""
+
+    action_id: str
+    type: str
+    params: dict[str, Any] = field(default_factory=dict)
+    constraints: dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    @classmethod
+    def from_dict(cls, data: Any) -> "ActionContract":
+        """Strictly type-check ``data`` and build a contract.
+
+        ``constraints`` is returned fully populated with defaults. ``params``
+        is only checked to be an object here; the per-action schema is applied
+        by the engine once the action type has passed the allowlist.
+
+        Raises:
+            ValueError: on any structural or type violation.
+        """
+        if not isinstance(data, dict):
+            raise ValueError("Action must be a JSON object.")
+        unknown = sorted(str(k) for k in set(data) - _CONTRACT_FIELDS)
+        if unknown:
+            raise ValueError(f"Unknown top-level field(s): {unknown}.")
+
+        action_id = data.get("action_id")
+        if not isinstance(action_id, str) or not _ACTION_ID_RE.fullmatch(action_id):
+            raise ValueError(
+                "'action_id' must be 1-64 chars of letters, digits, '_', '-' or '.'."
+            )
+        action_type = data.get("type")
+        if not isinstance(action_type, str) or not _ACTION_TYPE_RE.fullmatch(action_type):
+            raise ValueError("'type' must look like 'category.name' (e.g. 'mouse.click').")
+        for key in ("params", "constraints", "metadata"):
+            if key in data and not isinstance(data[key], dict):
+                raise ValueError(f"'{key}' must be an object.")
+
+        constraints = _apply_schema("constraints", data.get("constraints", {}), CONSTRAINT_SCHEMA)
+        if constraints["requires_focus"] and not constraints["target_window"]:
+            raise ValueError("constraints.requires_focus needs constraints.target_window.")
+
+        return cls(
+            action_id=action_id,
+            type=action_type,
+            params=dict(data.get("params", {})),
+            constraints=constraints,
+            metadata=dict(data.get("metadata", {})),
+        )
+
+
+@dataclass
+class ExecutionReport:
+    """Structured result returned for every attempted action."""
+
+    action_id: str
+    status: str  # "success" | "failed" | "validated" (dry run)
+    execution_time_ms: int
+    result: dict[str, Any]
+    errors: Optional[str] = None
+    session_id: str = ""
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable dict."""
+        return asdict(self)
+
+
+# =============================================================================
+# Win32 structures (harmless to define on other platforms)
+# =============================================================================
+
+class _POINT(ctypes.Structure):
+    _fields_ = [("x", ctypes.c_int32), ("y", ctypes.c_int32)]
+
+
+class _RECT(ctypes.Structure):
+    _fields_ = [
+        ("left", ctypes.c_int32), ("top", ctypes.c_int32),
+        ("right", ctypes.c_int32), ("bottom", ctypes.c_int32),
+    ]
+
+
+class _MONITORINFO(ctypes.Structure):
+    _fields_ = [
+        ("cbSize", ctypes.c_uint32), ("rcMonitor", _RECT),
+        ("rcWork", _RECT), ("dwFlags", ctypes.c_uint32),
+    ]
+
+
+_user32_handle: Any = None
+
+
+def _user32() -> Any:
+    """Private user32 handle (avoids clashing with other libraries' argtypes)."""
+    global _user32_handle
+    if _user32_handle is None:
+        _user32_handle = ctypes.WinDLL("user32")  # type: ignore[attr-defined]
+    return _user32_handle
+
+
+# =============================================================================
+# CoordinateEngine
+# =============================================================================
+
+@dataclass(frozen=True)
+class MonitorInfo:
+    """Origin and size of a monitor in virtual-desktop pixels."""
+
+    origin_x: int
+    origin_y: int
+    width: int
+    height: int
+    is_primary: bool
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+class CoordinateEngine:
+    """Coordinate conversion, DPI handling and multi-monitor lookup."""
+
+    _dpi_aware: bool = False
+
+    @staticmethod
+    def relative_to_absolute(
+        x: float, y: float, screen_width: int, screen_height: int
+    ) -> tuple[int, int]:
+        """Convert normalised (0.0-1.0) coordinates to pixel coordinates."""
+        if not (_is_num(x) and _is_num(y) and 0.0 <= x <= 1.0 and 0.0 <= y <= 1.0):
+            raise ValueError("Relative coordinates must be numbers between 0.0 and 1.0.")
+        if screen_width <= 0 or screen_height <= 0:
+            raise ValueError("Screen dimensions must be positive.")
+        return (
+            min(screen_width - 1, round(x * (screen_width - 1))),
+            min(screen_height - 1, round(y * (screen_height - 1))),
+        )
+
+    @classmethod
+    def enable_dpi_awareness(cls) -> bool:
+        """Make this process DPI aware so input coordinates are physical pixels.
+
+        Idempotent. Returns True when the process is DPI aware afterwards.
+        pyautogui usually sets system awareness on import; this upgrades it to
+        per-monitor awareness when the host has not already fixed a mode.
+        """
+        if not IS_WINDOWS:
+            return False
+        if cls._dpi_aware:
+            return True
+        try:
+            shcore = ctypes.windll.shcore  # type: ignore[attr-defined]
+            awareness = ctypes.c_int(-1)
+            if shcore.GetProcessDpiAwareness(0, ctypes.byref(awareness)) == 0 and awareness.value != 0:
+                cls._dpi_aware = True
+                return True
+            if shcore.SetProcessDpiAwareness(2) == 0:  # PROCESS_PER_MONITOR_DPI_AWARE
+                cls._dpi_aware = True
+                return True
+        except Exception:
+            _LOG.debug("shcore DPI awareness API unavailable.", exc_info=True)
+        try:
+            cls._dpi_aware = bool(_user32().SetProcessDPIAware())
+        except Exception:
+            cls._dpi_aware = False
+        return cls._dpi_aware
+
+    @staticmethod
+    def get_dpi_scale() -> float:
+        """Return the system DPI scale factor (1.0 == 96 DPI)."""
+        if not IS_WINDOWS:
+            return 1.0
+        try:
+            user32 = _user32()
+            dpi = int(user32.GetDpiForSystem()) if hasattr(user32, "GetDpiForSystem") else 96
+            return max(1.0, dpi / 96.0) if dpi else 1.0
+        except Exception:
+            return 1.0
+
+    @classmethod
+    def apply_dpi_scaling(cls, x: int, y: int, physical: bool = False) -> tuple[int, int]:
+        """Return coordinates in the space the OS input APIs expect.
+
+        The process is made DPI aware, after which
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+Aureon Execution Engine - Interactive Test Suite
+-----------------------------------------------
+این برنامه برای تست دستی و بدون نیاز به مدل هوش مصنوعی طراحی شده است.
+"""
+
+import json
+import time
+import os
+import sys
+
+# اضافه کردن مسیر فعلی به sys.path برای پیدا کردن موتور
+current_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
+
+try:
+    from aureon_execution_engine_v2 import AureonExecutionEngine
+except ImportError:
+    print("خطا: فایل aureon_execution_engine_v2.py پیدا نشد.")
+    print("لطفاً مطمئن شوید هر دو فایل در یک پوشه هستند.")
+    sys.exit(1)
+
+def print_menu():
+    print("\n" + "="*50)
+    print("🤖 منوی تست موتور اجرای آریون (بدون مدل)")
+    print("="*50)
+    print("1. تست ماوس: حرکت به مرکز صفحه و کلیک چپ")
+    print("2. تست ماوس: حرکت انسانی به گوشه بالا-راست")
+    print("3. تست ماوس: اسکرول به پایین")
+    print("4. تست ماوس: کشیدن و رها کردن (Drag & Drop)")
+    print("5. تست کیبورد: تایپ متن (Paste Mode)")
+    print("6. تست کیبورد: فشردن کلید ترکیبی (Ctrl + C)")
+    print("7. تست پنجره: باز کردن Notepad و فوکوس روی آن")
+    print("8. تست پنجره: مینیمایز کردن Notepad")
+    print("9. تست فایل: کپی کردن یک فایل (نیاز به تایید)")
+    print("10. تست امنیت: تلاش برای رفتن به مختصات ممنوعه (باید خطا بدهد)")
+    print("11. تست امنیت: تلاش برای حذف فایل بدون تایید (باید خطا بدهد)")
+    print("0. خروج")
+    print("="*50)
+
+def main():
+    print("🚀 در حال راه‌اندازی موتور آریون...")
+    
+    # ما یک منطقه ممنوعه در گوشه بالا-چپ (0,0 تا 50,50) تعریف می‌کنیم تا تست امنیت انجام شود.
+    forbidden_zones = [{"left": 0, "top": 0, "right": 50, "bottom": 50}]
+    
+    # پوشه پایه برای لاگ‌ها و فایل‌های تست
+    base_dir = os.path.join(current_dir, "aureon_test_env")
+    os.makedirs(base_dir, exist_ok=True)
+    
+    engine = AureonExecutionEngine(base_dir=base_dir, forbidden_zones=forbidden_zones)
+    print(f"✅ موتور راه‌اندازی شد. لاگ‌ها در: {base_dir}/logs")
+
+    while True:
+        print_menu()
+        choice = input("👉 یک گزینه را انتخاب کنید (0-11): ").strip()
+
+        if choice == "0":
+            print("خداحافظ!")
+            break
+
+        action = {
+            "action_id": f"test_{int(time.time())}",
+            "type": "",
+            "params": {},
+            "constraints": {"timeout_ms": 5000}
+        }
+
+        try:
+            if choice == "1":
+                action["type"] = "mouse.click"
+                action["params"] = {"x": 0.5, "y": 0.5, "coord_type": "relative", "button": "left"}
+                print("🖱️  حرکت به مرکز و کلیک...")
+                
+            elif choice == "2":
+                action["type"] = "mouse.move"
+                action["params"] = {"x": 0.9, "y": 0.1, "coord_type": "relative", "duration_ms": 1500}
+                print("🖱️  حرکت انسانی به بالا-راست...")
+
+            elif choice == "3":
+                action["type"] = "mouse.scroll"
+                action["params"] = {"direction": "down", "amount": 5}
+                print("🖱️  اسکرول به پایین...")
+
+            elif choice == "4":
+                action["type"] = "mouse.drag"
+                action["params"] = {
+                    "from_x": 0.3, "from_y": 0.3, 
+                    "to_x": 0.7, "to_y": 0.7, 
+                    "coord_type": "relative", "duration_ms": 1000
+                }
+                print("🖱️  کشیدن از بالا-چپ به پایین-راست...")
+
+            elif choice == "5":
+                action["type"] = "keyboard.type"
+                text = input("👉 متنی که می‌خواهید تایپ شود را وارد کنید: ")
+                action["params"] = {"text": text, "mode": "paste"}
+                print(f"⌨️  تایپ متن: {text}")
+
+            elif choice == "6":
+                action["type"] = "keyboard.hotkey"
+                action["params"] = {"keys": ["ctrl", "c"]}
+                print("⌨️  فشردن Ctrl + C (متن انتخاب شده باید کپی شود)...")
+
+            elif choice == "7":
+                action["type"] = "window.focus"
+                action["params"] = {"title_contains": "Notepad"}
+                print("🪟  تلاش برای فوکوس روی Notepad...")
+                print("   (لطفاً مطمئن شوید Notepad باز است)")
+
+            elif choice == "8":
+                action["type"] = "window.minimize"
+                action["params"] = {"title_contains": "Notepad"}
+                print("🪟  مینیمایز کردن Notepad...")
+
+            elif choice == "9":
+                # ساخت یک فایل تست
+                test_file = os.path.join(base_dir, "test_source.txt")
+                with open(test_file, "w") as f:
+                    f.write("This is a test file for Aureon.")
+                
+                action["type"] = "file.copy"
+                action["params"] = {
+                    "source": "test_source.txt",
+                    "destination": "test_destination.txt",
+                    "overwrite": True
+                }
+                action["constraints"]["confirm"] = True # نیاز به تایید
+                print(f"📁  کپی فایل از test_source.txt به test_destination.txt...")
+
+            elif choice == "10":
+                action["type"] = "mouse.click"
+                # مختصات مطلق در گوشه بالا-چپ (منطقه ممنوعه)
+                action["params"] = {"x": 10, "y": 10, "coord_type": "absolute", "button": "left"}
+                print("🛡️  تلاش برای کلیک در منطقه ممنوعه... (انتظار می‌رود خطا بدهد)")
+
+            elif choice == "11":
+                action["type"] = "file.delete"
+                action["params"] = {"path": "test_source.txt"}
+                # confirm را False می‌گذاریم تا خطا بدهد
+                action["constraints"]["confirm"] = False
+                print("🛡️  تلاش برای حذف بدون تایید... (انتظار می‌رود خطا بدهد)")
+
+            else:
+                print("❌ گزینه نامعتبر است.")
+                continue
+
+            # اجرای دستور
+            print("\n⏳ در حال اجرا...")
+            result = engine.execute(action)
+            
+            # نمایش خروجی
+            print("\n📄 نتیجه اجرا:")
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+            
+            if result["status"] == "success":
+                print("✅ عملیات با موفقیت انجام شد.")
+            else:
+                print(f"❌ عملیات شکست خورد. دلیل: {result.get('errors')}")
+
+        except Exception as e:
+            print(f"\n💥 خطای غیرمنتظره در حین اجرا: {e}")
+
+        input("\nبرای ادامه کلید Enter را فشار دهید...")
+
+if __name__ == "__main__":
+    # اطمینان از فعال بودن Failsafe (ماوس را به گوشه بالا-چپ ببرید تا متوقف شود)
+    import pyautogui
+    pyautogui.FAILSAFE = True
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Aureon</title>
+
+<style>
+/* ───────────── 1. DESIGN TOKENS ───────────── */
+:root{
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --bg-0:#08080b;
+  --ink:#f5f5f7;
+  --ink-2:rgba(245,245,247,.62);
+  --ink-3:rgba(245,245,247,.42);
+
+  --cyan:#5ff0ff;
+  --blue:#2a9dff;
+  --violet:#8a6bff;
+  --lilac:#b48cff;
+  --deep-purple:#3b1a8a;
+  --purple:#6a2bd8;
+  --magenta:#ff3fb4;
+  --rose:#ffc9ef;
+  
+  --glass-fill: rgba(255,255,255,.08);
+  --glass-fill-hi: rgba(255,255,255,.13);
+  --glass-border: rgba(255,255,255,.15);
+  --glass-blur: 30px;
+  --shadow-panel: 0 20px 60px rgba(0,0,0,.5);
+
+  --orb: 170px;
+  --r-panel: 24px;
+  --r-dock: 28px;
+
+  --ease-spring: cubic-bezier(0.2, 0.9, 0.3, 1.4);
+  --ease-out: cubic-bezier(.22,.8,.24,1);
+  --ease-inout: cubic-bezier(.65,0,.35,1);
+  --t-state: .9s;
+}
+
+@property --c1{syntax:'<color>';inherits:true;initial-value:#5ff0ff}
+@property --c2{syntax:'<color>';inherits:true;initial-value:#8a6bff}
+@property --c3{syntax:'<color>';inherits:true;initial-value:#b48cff}
+@property --c4{syntax:'<color>';inherits:true;initial-value:#ffc9ef}
+@property --morph{syntax:'<number>';inherits:true;initial-value:0}
+@property --ca{syntax:'<number>';inherits:true;initial-value:1.4}
+
+/* ───────────── 2. BASE ───────────── */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; overflow:hidden; background:var(--bg-0); color:var(--ink);
+  font-family:var(--font); font-size:15px; -webkit-font-smoothing:antialiased;
+  -webkit-user-select:none; user-select:none;
+}
+button{font:inherit;color:inherit}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#app{position:fixed;inset:0;overflow:hidden}
+
+/* ───────────── 3. STATE PALETTES ───────────── */
+#app{
+  transition: --c1 var(--t-state) var(--ease-inout), --c2 var(--t-state) var(--ease-inout),
+              --c3 var(--t-state) var(--ease-inout), --c4 var(--t-state) var(--ease-inout),
+              --morph 1.1s var(--ease-inout), --ca var(--t-state) var(--ease-inout);
+}
+#app[data-state="idle"]{
+  --c1:var(--cyan); --c2:var(--violet); --c3:var(--lilac); --c4:var(--rose);
+  --morph:0; --ca:1.4;
+}
+#app[data-state="listening"]{
+  --c1:#3df2ff; --c2:var(--blue); --c3:#7f7bff; --c4:#b9fbff;
+  --morph:.75; --ca:2.4;
+}
+#app[data-state="thinking"]{
+  --c1:var(--purple); --c2:var(--magenta); --c3:var(--deep-purple); --c4:#b05cff;
+  --morph:0; --ca:1.4;
+}
+#app[data-state="speaking"]{
+  --c1:var(--magenta); --c2:var(--cyan); --c3:#a56bff; --c4:var(--rose);
+  --morph:1; --ca:3.4;
+}
+
+/* ───────────── 3b. POSITIONS ───────────── */
+#app{--os:1; --px:0px; --py:-20px; --amb:1}
+#app[data-pos="left"]  {--px:clamp(-300px, -26vw, -120px)}
+#app[data-pos="island"]{--os:.26; --py:calc(-50vh + 62px); --amb:.5}
+#app[data-pos="corner"]{--os:.5; --px:calc(50vw - 104px); --py:calc(50vh - 190px); --amb:.6}
+@media (max-width:760px){#app[data-pos="left"]{--px:0px}}
+
+/* ───────────── 4. ENVIRONMENT ───────────── */
+.wallpaper{
+  position:absolute; inset:-12%;
+  background-image: url('https://media.512pixels.net/downloads/macos-wallpapers-thumbs/27-Golden-Gate-thumb.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: #1a1a1a;
+  filter: blur(50px) saturate(1.2) brightness(0.8);
+  animation: wallDrift 90s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes wallDrift{to{transform:translate3d(-2.5%,1.5%,0) scale(1.04)}}
+
+.stars{
+  position:absolute; inset:0; opacity:.6;
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,.55), transparent 55%),
+    radial-gradient(1px 1px at 120px 90px, rgba(255,255,255,.35), transparent 55%),
+    radial-gradient(1.2px 1.2px at 200px 160px, rgba(190,230,255,.5), transparent 55%),
+    radial-gradient(1px 1px at 70px 200px, rgba(255,230,255,.4), transparent 55%),
+    radial-gradient(1px 1px at 260px 40px, rgba(255,255,255,.3), transparent 55%);
+  background-size:271px 263px, 337px 331px, 389px 397px, 433px 419px, 503px 491px;
+  -webkit-mask-image:radial-gradient(120% 100% at 50% 40%, #000 30%, transparent 90%);
+          mask-image:radial-gradient(120% 100% at 50% 40%, #000 30%, transparent 90%);
+}
+.grain{
+  position:absolute; inset:0; opacity:.06; mix-blend-mode:overlay; pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(90% 80% at 50% 45%, transparent 55%, rgba(0,0,0,.4))}
+
+/* ───────────── 5. MENU BAR ───────────── */
+.menubar{
+  position:absolute; top:0; left:0; right:0; height:28px; z-index:30;
+  display:flex; align-items:center; justify-content:space-between; padding:0 14px;
+  background:rgba(18,18,22,.42);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(1.6); backdrop-filter:blur(var(--glass-blur)) saturate(1.6);
+  border-bottom:1px solid rgba(255,255,255,.06); font-size:13px; font-weight:500;
+}
+.menubar .brand{display:flex;align-items:center;gap:8px;font-weight:600}
+.glyph{width:13px;height:13px;border-radius:50%;background:conic-gradient(from 200deg,var(--cyan),var(--violet),var(--magenta),var(--cyan));box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
+.menubar .right{display:flex;align-items:center;gap:14px;color:var(--ink-2)}
+.icon-btn{background:none;border:0;padding:4px;border-radius:6px;cursor:pointer;color:var(--ink-2);display:grid;place-items:center}
+.icon-btn:hover{color:var(--ink);background:rgba(255,255,255,.08)}
+.icon-btn .slash{opacity:0}
+.icon-btn[aria-pressed="true"] .slash{opacity:1}
+.icon-btn[aria-pressed="true"] .wavepath{opacity:.3}
+
+/* Preview controls */
+.controls{
+  position:absolute; z-index:30; top:40px; right:14px; display:flex; flex-direction:column; align-items:flex-end; gap:6px;
+  opacity:.5; transition:opacity .3s;
+}
+.controls:hover,.controls:focus-within{opacity:1}
+.pill{
+  display:flex; gap:2px; padding:3px; border-radius:999px;
+  background:var(--glass-fill); border:1px solid var(--glass-border);
+  -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px);
+}
+.pill button{background:none;border:0;padding:5px 12px;border-radius:999px;font-size:12px;color:var(--ink-2);cursor:pointer}
+.pill button[aria-pressed="true"]{background:rgba(255,255,255,.16);color:#fff}
+
+/* ───────────── 6. THE ORB ───────────── */
+.stage{
+  position:absolute; left:50%; top:50%; width:0; height:0; z-index:10;
+  transform:translate(var(--px), var(--py)); transition:transform 1s var(--ease-out);
+}
+.orb{
+  position:absolute; width:var(--orb); height:var(--orb); left:calc(var(--orb) * -.5); top:calc(var(--orb) * -.5); pointer-events:none;
+  transform:scale(var(--os)); transition:transform 1s var(--ease-out);
+}
+.orb > *{position:absolute}
+.orb-hit{
+  inset:0; z-index:6; pointer-events:auto; border:0; padding:0; background:transparent; border-radius:50%; cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.orb-hit:focus-visible{outline:2px solid rgba(255,255,255,.8); outline-offset:10px}
+
+.wave{left:50%; top:50%; width:360px; height:360px; transform:translate(-50%,-50%)}
+
+.float{inset:0; animation:float 7s ease-in-out infinite; will-change:transform}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.breath{inset:0; animation:breathe 2.8s ease-in-out infinite alternate; will-change:transform}
+@keyframes breathe{from{transform:scale(1)}to{transform:scale(1.05)}}
+.amp{inset:0; will-change:transform}
+.amp > *{position:absolute}
+
+.glassgroup{
+  inset:0; transition:transform 1s var(--ease-out), opacity .8s ease; will-change:transform,opacity;
+}
+#app[data-state="thinking"] .glassgroup{opacity:0; transform:scale(.55)}
+
+.glass,.rim{animation:morph 7s ease-in-out infinite}
+#app[data-state="speaking"] .glass,#app[data-state="speaking"] .rim{animation-duration:3.6s}
+@keyframes morph{
+  0%,100%{border-radius:50%}
+  25%{border-radius:
+    calc(50% + var(--morph) * 9%) calc(50% - var(--morph) * 9%) calc(50% + var(--morph) * -7%) calc(50% - var(--morph) * -7%) /
+    calc(50% + var(--morph) * 8%) calc(50% + var(--morph) * -9%) calc(50% - var(--morph) * -9%) calc(50% - var(--morph) * 8%)}
+  50%{border-radius:
+    calc(50% + var(--morph) * -8%) calc(50% - var(--morph) * -8%) calc(50% + var(--morph) * 8%) calc(50% - var(--morph) * 8%) /
+    calc(50% + var(--morph) * -9%) calc(50% + var(--morph) * 7%) calc(50% - var(--morph) * 7%) calc(50% - var(--morph) * -9%)}
+  75%{border-radius:
+    calc(50% + var(--morph) * 7%) calc(50% - var(--morph) * 7%) calc(50% + var(--morph) * 10%) calc(50% - var(--morph) * 10%) /
+    calc(50% + var(--morph) * 6%) calc(50% + var(--morph) * 9%) calc(50% - var(--morph) * 9%) calc(50% - var(--morph) * 6%)}
+}
+
+.glass{
+  inset:0; overflow:hidden; isolation:isolate; border-radius:50%;
+  background:radial-gradient(circle at 50% 62%, #261b58 0%, #0d0a22 62%, #05040d 100%);
+}
+.glass > *{position:absolute}
+.g-sweep{
+  inset:-35%; filter:blur(22px); opacity:.95;
+  background:conic-gradient(from 0deg, var(--c1), var(--c2), var(--c3), var(--c4), var(--c1));
+  animation:spin 26s linear infinite; will-change:transform;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.g-blob{width:70%;height:70%;border-radius:50%;filter:blur(14px);mix-blend-mode:screen;opacity:.85;will-change:transform}
+.g-blob.b1{top:-10%;left:-8%;background:radial-gradient(circle at 40% 40%, var(--c1), transparent 68%);animation:drift1 11s ease-in-out infinite alternate}
+.g-blob.b2{bottom:-12%;right:-10%;background:radial-gradient(circle at 60% 60%, var(--c2), transparent 68%);animation:drift2 13s ease-in-out infinite alternate}
+.g-blob.b3{top:25%;left:30%;width:48%;height:48%;background:radial-gradient(circle, var(--c3), transparent 68%);animation:drift3 9s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(28%,18%) scale(1.25)}}
+@keyframes drift2{to{transform:translate(-24%,-20%) scale(1.15)}}
+@keyframes drift3{to{transform:translate(-30%,26%) scale(.8)}}
+.g-film{
+  inset:-20%; mix-blend-mode:overlay; opacity:.6; filter:blur(10px);
+  background:conic-gradient(from 90deg, rgba(255,90,170,.6), rgba(90,255,230,.5), rgba(255,240,140,.4), rgba(140,110,255,.6), rgba(255,90,170,.6));
+  animation:spin 38s linear infinite reverse; will-change:transform;
+}
+.g-core{inset:0;background:radial-gradient(circle at 50% 50%, rgba(8,6,24,.5) 0%, rgba(8,6,24,.22) 38%, transparent 64%)}
+.g-lens{inset:0;background:radial-gradient(circle at 50% 50%, transparent 52%, rgba(255,255,255,.10) 74%, rgba(255,255,255,.36) 94%, rgba(255,255,255,.5) 100%)}
+.g-shade{inset:0;border-radius:50%;box-shadow:
+  inset 0 -22px 38px -6px rgba(30,10,90,.65),
+  inset 0 14px 28px -8px rgba(255,255,255,.22),
+  inset 0 0 0 1px rgba(255,255,255,.18)}
+.g-spec.s1{left:14%;top:7%;width:46%;height:28%;border-radius:50%;transform:rotate(-28deg);filter:blur(2px);opacity:.8;
+  background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.06))}
+.g-spec.s2{left:24%;top:14%;width:9%;height:9%;border-radius:50%;background:radial-gradient(circle,#fff,transparent 70%);filter:blur(.5px)}
+.g-caustic{left:22%;bottom:6%;width:56%;height:18%;border-radius:50%;filter:blur(4px);
+  background:radial-gradient(ellipse at 50% 100%, rgba(255,255,255,.35), transparent 70%)}
+.g-edge{
+  inset:0; border-radius:50%; mix-blend-mode:screen; will-change:transform;
+  background:conic-gradient(from 0deg, transparent 0 4%, rgba(255,255,255,.85) 10%, transparent 24%, transparent 52%, rgba(255,255,255,.55) 62%, transparent 74%, transparent);
+  -webkit-mask:radial-gradient(closest-side, transparent 93%, #000 96.5%, #000 99%, transparent 100%);
+          mask:radial-gradient(closest-side, transparent 93%, #000 96.5%, #000 99%, transparent 100%);
+  animation:spin 16s linear infinite;
+}
+.g-dots{
+  inset:0; opacity:0; transition:opacity 1s ease; mix-blend-mode:overlay;
+  background-image:radial-gradient(circle, rgba(255,255,255,.9) 0 .8px, transparent 1.2px); background-size:5px 5px;
+  -webkit-mask-image:radial-gradient(closest-side, transparent 30%, #000 95%); mask-image:radial-gradient(closest-side, transparent 30%, #000 95%);
+}
+#app[data-state="listening"] .g-dots,#app[data-state="speaking"] .g-dots{opacity:.5}
+.rim{inset:0;border-radius:50%;mix-blend-mode:screen;pointer-events:none}
+.rim.r{box-shadow:0 0 0 1.5px rgba(255,70,140,.55), 0 0 10px rgba(255,70,140,.35);
+  transform:translate(calc(var(--ca) * 1px), calc(var(--ca) * -.5px))}
+.rim.b{box-shadow:0 0 0 1.5px rgba(70,200,255,.55), 0 0 10px rgba(70,200,255,.35);
+  transform:translate(calc(var(--ca) * -1px), calc(var(--ca) * .5px))}
+
+.cloud{left:-30px;top:-30px;width:230px;height:230px;opacity:0;transition:opacity .7s ease;pointer-events:none}
+#app[data-state="thinking"] .cloud{opacity:1}
+
+.tap{inset:0;border-radius:50%;border:2px solid rgba(255,255,255,.5);opacity:0;pointer-events:none}
+
+/* Dynamic-Island capsule & Exclusive Glow */
+.island{
+  position:absolute; left:0; top:0; width:112px; height:46px; margin:-23px 0 0 -56px; border-radius:999px; overflow:hidden;
+  background:linear-gradient(180deg,#17171d,#060608);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.13), inset 0 1px 0 rgba(255,255,255,.24), 0 14px 40px rgba(0,0,0,.6);
+  opacity:0; pointer-events:none;
+  transition:opacity .6s ease, width .8s var(--ease-spring), margin-left .8s var(--ease-spring);
+}
+.island::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(120% 90% at 50% -20%, rgba(255,255,255,.16), transparent 60%)}
+#app[data-pos="island"] .island{opacity:1}
+#app[data-pos="island"][data-state="listening"] .island{width:230px;margin-left:-115px}
+#app[data-pos="island"][data-state="thinking"] .island{width:168px;margin-left:-84px}
+#app[data-pos="island"][data-state="speaking"] .island{width:250px;margin-left:-125px}
+
+/* Refined Prism effect for the Island */
+.prism{
+  position:absolute; left:8%; right:8%; top:62%; height:4px; border-radius:4px; filter:blur(1.5px); opacity:0; mix-blend-mode:screen;
+  background:linear-gradient(90deg,transparent,#ff4d4d 14%,#ffa84d 28%,#fff04d 42%,#5dff7d 56%,#4de1ff 70%,#5d7dff 84%,#c04dff 94%,transparent);
+  transition:opacity .6s; animation:prismSlide 3.8s ease-in-out infinite alternate;
+}
+@keyframes prismSlide{from{transform:translateX(-4%) scaleX(.95)}to{transform:translateX(4%) scaleX(1.05)}}
+#app:not([data-state="idle"]) .prism{opacity:.95}
+#app[data-pos="island"] .wave,#app[data-pos="island"] .hint,#app[data-pos="corner"] .hint{display:none}
+
+/* ───────────── 7. CONVERSATION PANEL & CHAT INPUT ───────────── */
+.panel{
+  position:absolute; left:50%; bottom:calc(var(--orb) * var(--os) / 2 + 44px); z-index:12;
+  width:max-content; min-width:320px; max-width:min(540px, calc(100vw - 32px));
+  padding:14px 22px 16px; border-radius:var(--r-panel); overflow:hidden;
+  background:linear-gradient(180deg, var(--glass-fill-hi), var(--glass-fill));
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(1.6); backdrop-filter:blur(var(--glass-blur)) saturate(1.6);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--shadow-panel), inset 0 1px 0 rgba(255,255,255,.18);
+  transform:translate(-50%,28px) scale(.94); transform-origin:50% 100%; opacity:0; pointer-events:none;
+  transition:transform .35s var(--ease-out), opacity .25s ease;
+}
+.panel::before{
+  content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:radial-gradient(120% 140% at 50% 130%, color-mix(in srgb, var(--c1) 24%, transparent), transparent 60%);
+}
+.panel.show{
+  transform:translate(-50%,0) scale(1); opacity:1; pointer-events:auto;
+  transition:transform .7s var(--ease-spring), opacity .35s ease;
+}
+#app[data-pos="island"] .panel{bottom:auto;top:42px;transform:translate(-50%,-24px) scale(.94);transform-origin:50% 0}
+#app[data-pos="island"] .panel.show{transform:translate(-50%,0) scale(1)}
+#app[data-pos="corner"] .panel{left:68px;max-width:min(400px,calc(100vw - 60px));transform:translate(-100%,28px) scale(.94);transform-origin:100% 100%}
+#app[data-pos="corner"] .panel.show{transform:translate(-100%,0) scale(1)}
+@media (min-width:761px){
+  #app[data-pos="left"] .panel{bottom:auto;top:0;left:calc(var(--orb) * var(--os) / 2 + 60px);max-width:min(460px,44vw);transform:translate(-24px,-50%) scale(.95);transform-origin:0 50%}
+  #app[data-pos="left"] .panel.show{transform:translate(0,-50%) scale(1)}
+}
+.p-label{position:relative;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--ink-2);margin-bottom:4px}
+.p-dot{width:7px;height:7px;border-radius:50%;background:var(--c1);box-shadow:0 0 10px var(--c1)}
+.p-text{position:relative;font-size:17px;line-height:1.45;font-weight:450;letter-spacing:-.005em;min-height:1.45em;-webkit-user-select:text;user-select:text;margin-bottom:12px;}
+.p-text::after{content:"";display:inline-block;width:2px;height:1.05em;margin-left:3px;vertical-align:-.16em;border-radius:1px;background:var(--c1);animation:blink 1s steps(1) infinite}
+.p-text.ph{color:var(--ink-3)}
+#app[data-state="thinking"] .p-text::after{display:none}
+@keyframes blink{50%{opacity:0}}
+.dots{display:inline-flex;gap:3px;margin-left:5px;vertical-align:middle}
+.dots i{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.3;animation:dotPulse 1.2s ease-in-out infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes dotPulse{40%{opacity:1;transform:translateY(-2px)}}
+
+.chat-form {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 12px;
+}
+.chat-input {
+  flex: 1;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 999px;
+  padding: 10px 16px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s, background 0.3s;
+}
+.chat-input::placeholder { color: rgba(255,255,255,0.4); }
+.chat-input:focus {
+  border-color: var(--c1);
+  background: rgba(0,0,0,0.4);
+}
+.chat-send {
+  background: var(--c1);
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-spring), background 0.3s;
+}
+.chat-send:hover {
+  transform: scale(1.1);
+  background: #fff;
+}
+.chat-send svg { width: 18px; height: 18px; }
+
+/* ───────────── 8. WAKE HINT ───────────── */
+.hint{
+  position:absolute; left:50%; top:calc(var(--orb) * var(--os) / 2 + 44px); transform:translateX(-50%);
+  margin:0; white-space:nowrap; font-size:13px; color:var(--ink-2); opacity:0;
+  transition:opacity .5s ease; pointer-events:none;
+}
+#app[data-state="idle"] .hint{opacity:1; transition-delay:1.1s}
+kbd{
+  font:inherit; font-size:12px; padding:2px 7px; margin:0 2px; border-radius:6px;
+  background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+/* ───────────── 9. DOCK ───────────── */
+.dock{position:absolute; left:50%; bottom:16px; transform:translateX(-50%); z-index:20}
+.dock ul{
+  list-style:none; margin:0; padding:9px 12px; display:flex; align-items:flex-end; gap:14px;
+  border-radius:var(--r-dock);
+  background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.07));
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(1.7); backdrop-filter:blur(var(--glass-blur)) saturate(1.7);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--shadow-panel), inset 0 1px 0 rgba(255,255,255,.2);
+}
+.dock li{display:b
+
+
+
