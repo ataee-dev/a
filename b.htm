@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2878e5">
+<title>مدرسه‌یار | بازطراحی iOS · نسخه Hybrid</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+:root{--bg:#f4f7f6;--surface:#fff;--surface2:#f7faf9;--text:#172b27;--muted:#71817c;--line:#e5ece9;--green:#16745a;--green2:#0f5945;--mint:#e8f5ef;--blue:#3978c8;--bluebg:#edf4ff;--orange:#bd7a28;--orangebg:#fff5e7;--red:#c24e4e;--redbg:#fff0ef;--purple:#7656b5;--purplebg:#f3effb;--shadow:0 10px 35px #183d3010;--radius:17px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Vazirmatn,Tahoma,sans-serif;font-size:14px}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}a{color:inherit;text-decoration:none}.hidden{display:none!important}
+.login-wrap{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:#f5f8f6}.login-art{background:linear-gradient(145deg,#0d382e,#17644e 65%,#278568);color:white;padding:7vw;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}.login-art:before,.login-art:after{content:"";position:absolute;border:1px solid #ffffff20;border-radius:50%;width:480px;height:480px;left:-130px;top:15%}.login-art:after{width:650px;height:650px;left:-210px;top:8%}.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px;position:relative;z-index:1}.brand-mark{width:43px;height:43px;border-radius:14px;background:#ffffff20;display:grid;place-items:center;font-size:23px}.art-copy{position:relative;z-index:1;max-width:500px}.art-copy h1{font-size:clamp(30px,4vw,50px);line-height:1.55;margin:0 0 16px}.art-copy p{color:#d3e7df;font-size:16px;line-height:2.2}.art-points{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}.art-points span{border:1px solid #ffffff30;background:#ffffff12;padding:9px 13px;border-radius:30px;font-size:12px}.login-panel{display:flex;align-items:center;justify-content:center;padding:35px}.login-card{width:min(430px,100%)}.login-card h2{font-size:27px;margin:0 0 8px}.sub{color:var(--muted);line-height:2;margin:0 0 28px}.field{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}.field label{font-weight:600;font-size:13px}.field input,.field select,.field textarea,.toolbar input,.toolbar select{width:100%;border:1px solid var(--line);background:var(--surface);padding:12px 13px;border-radius:11px;outline:none;color:var(--text)}.field input:focus,.field select:focus,.field textarea:focus{border-color:#5aa98b;box-shadow:0 0 0 3px #16745a13}.password-box{position:relative}.password-box input{padding-left:48px}.eye{position:absolute;left:10px;top:7px;background:transparent;color:var(--muted);padding:6px}.btn{padding:10px 15px;border-radius:10px;background:var(--green);color:white;font-weight:600;transition:.2s}.btn:hover{background:var(--green2);transform:translateY(-1px)}.btn.full{width:100%;padding:13px}.btn.light{background:var(--mint);color:var(--green)}.btn.outline{background:white;color:var(--text);border:1px solid var(--line)}.btn.danger{background:var(--redbg);color:var(--red)}.btn.small{padding:7px 10px;font-size:12px}.login-hint{background:#f2f7f4;border:1px dashed #c9ddd2;padding:12px;border-radius:12px;color:#5c7068;font-size:12px;line-height:2;margin-top:20px}.login-error{color:var(--red);font-size:12px;margin-top:10px;min-height:18px}
+.app{min-height:100vh}.topbar{height:70px;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 25px;position:sticky;top:0;z-index:20}.top-left,.top-right{display:flex;align-items:center;gap:13px}.topbar .brand{font-size:17px}.topbar .brand-mark{width:38px;height:38px;background:var(--mint);color:var(--green)}.icon-btn{width:38px;height:38px;border-radius:11px;background:var(--surface2);color:var(--muted);font-size:17px;position:relative}.avatar{width:36px;height:36px;border-radius:50%;background:var(--mint);color:var(--green);display:grid;place-items:center;font-weight:800}.user-meta{line-height:1.5}.user-meta b{font-size:12px;display:block}.user-meta small{color:var(--muted);font-size:10px}.layout{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1700px;margin:auto}.sidebar{padding:22px 15px;border-left:1px solid var(--line);min-height:calc(100vh - 70px);background:var(--surface);position:sticky;top:70px;height:calc(100vh - 70px);overflow:auto}.side-label{font-size:10px;color:#9aa7a2;font-weight:700;padding:12px 12px 7px}.nav-btn{width:100%;display:flex;align-items:center;gap:12px;text-align:right;background:transparent;color:#64746e;padding:11px 12px;border-radius:11px;margin:2px 0;font-weight:500}.nav-btn .ico{width:22px;text-align:center;font-size:17px}.nav-btn:hover{background:var(--surface2);color:var(--green)}.nav-btn.active{background:var(--mint);color:var(--green);font-weight:700}.side-bottom{border-top:1px solid var(--line);margin-top:20px;padding-top:15px}.main{padding:27px;min-width:0}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}.page-head h1{font-size:23px;margin:0 0 5px}.page-head p{margin:0;color:var(--muted);font-size:12px}.head-actions{display:flex;gap:8px;flex-wrap:wrap}.grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px}.stat,.panel,.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.stat{padding:17px;display:flex;align-items:center;gap:13px}.stat-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;font-size:20px}.stat small{color:var(--muted);display:block;font-size:11px}.stat strong{font-size:23px;display:block;margin-top:3px}.green{background:var(--mint);color:var(--green)}.blue{background:var(--bluebg);color:var(--blue)}.orange{background:var(--orangebg);color:var(--orange)}.purple{background:var(--purplebg);color:var(--purple)}.red{background:var(--redbg);color:var(--red)}.cols{grid-template-columns:1.35fr 1fr}.panel{padding:18px;margin-bottom:16px;min-width:0}.panel-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.panel-title h3{font-size:14px;margin:0}.panel-title small{color:var(--muted)}.list{display:flex;flex-direction:column}.list-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.list-row:last-child{border:0}.list-row b{font-size:12px}.list-row small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.pill{display:inline-flex;align-items:center;border-radius:30px;padding:5px 9px;font-size:10px;background:var(--surface2);color:var(--muted);white-space:nowrap}.pill.ok{background:var(--mint);color:var(--green)}.pill.warn{background:var(--orangebg);color:var(--orange)}.pill.bad{background:var(--redbg);color:var(--red)}.pill.info{background:var(--bluebg);color:var(--blue)}.toolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.toolbar input{max-width:260px;padding:9px 12px}.toolbar select{width:auto;min-width:130px;padding:9px 12px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:650px;background:var(--surface)}th,td{text-align:right;padding:12px 13px;border-bottom:1px solid var(--line);font-size:12px;white-space:nowrap}th{background:var(--surface2);color:#66766f;font-weight:700;font-size:11px}tr:last-child td{border-bottom:0}tbody tr:hover{background:#fbfdfc}.empty{text-align:center;color:var(--muted);padding:35px}.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.tab{padding:8px 13px;border-radius:9px;background:var(--surface2);color:var(--muted);font-size:12px}.tab.active{background:var(--mint);color:var(--green);font-weight:700}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.form-grid .field{margin:0}.field.fullrow{grid-column:1/-1}.field textarea{min-height:90px;resize:vertical}.actions{display:flex;gap:7px;align-items:center}.notice{padding:12px 14px;border-radius:12px;background:var(--bluebg);color:#3567a4;font-size:12px;line-height:2;margin-bottom:15px}.notice.warn{background:var(--orangebg);color:#94601e}.progress{height:7px;background:#edf1ef;border-radius:20px;overflow:hidden;margin-top:7px}.progress span{height:100%;display:block;background:var(--green);border-radius:20px}.modal-back{position:fixed;inset:0;background:#10251f77;z-index:50;display:grid;place-items:center;padding:18px}.modal{width:min(600px,100%);max-height:90vh;overflow:auto;background:var(--surface);border-radius:18px;padding:22px;box-shadow:0 25px 80px #0003}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal-head h3{margin:0}.close{background:var(--surface2);border-radius:9px;width:32px;height:32px}.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.toast{position:fixed;bottom:22px;left:22px;background:#183d31;color:white;padding:12px 18px;border-radius:12px;z-index:90;box-shadow:var(--shadow);font-size:12px;animation:up .25s}@keyframes up{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}.mobile-menu{display:none}.profile-card{display:flex;align-items:center;gap:12px}.big-avatar{width:54px;height:54px;border-radius:17px;background:var(--mint);display:grid;place-items:center;color:var(--green);font-size:23px;font-weight:800}.muted{color:var(--muted)}.quick-grid{grid-template-columns:repeat(3,1fr)}.quick{padding:16px;border:1px solid var(--line);border-radius:13px;background:var(--surface2);text-align:right}.quick span{font-size:20px}.quick b{display:block;margin-top:8px;font-size:12px}.quick small{color:var(--muted);font-size:10px}.calendar-box{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{padding:10px 3px;border-radius:8px;text-align:center;background:var(--surface2);font-size:11px}.day.today{background:var(--mint);color:var(--green);font-weight:800}.login-footer{font-size:11px;color:var(--muted);margin-top:22px;text-align:center}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:220px minmax(0,1fr)}.main{padding:20px}.cols{grid-template-columns:1fr}}
+@media(max-width:720px){.login-wrap{grid-template-columns:1fr}.login-art{display:none}.login-panel{min-height:100vh;padding:22px}.topbar{padding:0 13px;height:62px}.topbar .brand{font-size:14px}.user-meta{display:none}.layout{display:block}.sidebar{position:fixed;z-index:30;right:-270px;top:62px;width:250px;height:calc(100vh - 62px);transition:.25s;box-shadow:var(--shadow)}.sidebar.open{right:0}.mobile-menu{display:grid}.main{padding:17px 13px}.page-head{align-items:flex-start}.page-head h1{font-size:20px}.stats{gap:9px}.stat{padding:12px;gap:9px}.stat-icon{width:36px;height:36px}.stat strong{font-size:19px}.quick-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.field.fullrow{grid-column:auto}.head-actions .btn{font-size:11px;padding:8px 10px}}
+@media print{.topbar,.sidebar,.head-actions,.toolbar,.btn,.icon-btn{display:none!important}.layout{display:block}.main{padding:0}.panel,.stat{box-shadow:none;break-inside:avoid}body{background:white}}
+</style>
+</head>
+<body>
+<section id="loginScreen" class="login-wrap">
+  <div class="login-art">
+    <div class="brand"><div class="brand-mark">✦</div><span>مدرسه‌یار</span></div>
+    <div class="art-copy"><h1>مدرسه‌ای منظم‌تر،<br>آموزشی هوشمندتر.</h1><p>همه امور آموزشی مدرسه در یک فضای امن و یکپارچه؛ از دفتر کلاسی و نمرات تا تکالیف، آزمون‌ها، مشاوره و ارتباط با خانواده.</p></div>
+    <div class="art-points"><span>دفتر کلاسی دیجیتال</span><span>کارنامه و تحلیل</span><span>ارتباط خانواده</span><span>مدیریت یکپارچه</span></div>
+  </div>
+  <div class="login-panel"><div class="login-card">
+    <div class="brand" style="color:var(--green);margin-bottom:28px"><div class="brand-mark">✦</div><span>مدرسه‌یار</span></div>
+    <h2>خوش آمدید</h2><p class="sub">برای ورود به پنل اختصاصی خود، اطلاعات حساب را وارد کنید.</p>
+    <form id="loginForm">
+      <div class="field"><label for="username">نام کاربری</label><input id="username" autocomplete="username" placeholder="نام کاربری خود را وارد کنید" required></div>
+      <div class="field"><label for="password">رمز عبور</label><div class="password-box"><input id="password" type="password" autocomplete="current-password" placeholder="رمز عبور" required><button type="button" class="eye" onclick="togglePassword()">◉</button></div></div>
+      <div class="field"><label for="loginRole">ورود به عنوان</label><select id="loginRole"><option value="admin">مدیر مدرسه</option><option value="teacher">دبیر</option><option value="student">دانش‌آموز</option><option value="counselor">مشاور</option><option value="parent">والدین</option><option value="deputy">معاون</option></select></div>
+      <button class="btn full" type="submit">ورود به سامانه ←</button><div id="loginError" class="login-error"></div>
+    </form>
+    <div class="login-hint"><b>حساب‌های آزمایشی برای مشاهده امکانات:</b><br>مدیر: admin / 1234<br>دبیر: teacher / 1234 (پس از ورود، انتخاب کلاس و درس)<br>دانش‌آموز: student / 1234<br>مشاور: counselor / 1234<br>والدین: parent / 1234<br>معاون: deputy / 1234</div>
+    <div class="login-footer">نسخه نمایشی قابل اجرا در مرورگر · اطلاعات روی همین دستگاه ذخیره می‌شود</div>
+  </div></div>
+</section>
+<section id="appScreen" class="app hidden">
+<header class="topbar">
+ <div class="top-left"><button class="icon-btn mobile-menu" onclick="toggleSidebar()">☰</button><div class="brand"><div class="brand-mark">✦</div><span>مدرسه‌یار</span></div><span class="pill ok">سال تحصیلی ۱۴۰۵–۱۴۰۶</span></div>
+ <div class="top-right"><button class="icon-btn" title="اعلان‌ها" onclick="navigate('notifications')">♧</button><div class="avatar" id="topAvatar">م</div><div class="user-meta"><b id="topName">مدیر مدرسه</b><small id="topRole">مدیریت سامانه</small></div><button class="icon-btn" title="خروج" onclick="logout()">↪</button></div>
+</header>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="side-label">نمای کلی</div>
+ <button class="nav-btn active" data-page="dashboard" onclick="navigate('dashboard')"><span class="ico">⌂</span>داشبورد</button>
+ <div class="side-label">آموزش و کلاس</div>
+ <button class="nav-btn" data-page="classes" onclick="navigate('classes')"><span class="ico">▤</span>کلاس‌ها و دفتر کلاسی</button>
+ <button class="nav-btn" data-page="attendance" onclick="navigate('attendance')"><span class="ico">◷</span>حضور و غیاب</button>
+ <button class="nav-btn" data-page="grades" onclick="navigate('grades')"><span class="ico">▦</span>دفتر نمرات</button>
+ <button class="nav-btn" data-page="behavior" onclick="navigate('behavior')"><span class="ico">☆</span>مثبت و منفی</button>
+ <button class="nav-btn" data-page="lessons" onclick="navigate('lessons')"><span class="ico">▧</span>گزارش تدریس</button>
+ <button class="nav-btn" data-page="homework" onclick="navigate('homework')"><span class="ico">✎</span>تکالیف</button>
+ <button class="nav-btn" data-page="exams" onclick="navigate('exams')"><span class="ico">▣</span>آزمون‌ها</button>
+ <div class="side-label">پیگیری و ارتباط</div>
+ <button class="nav-btn" data-page="report" onclick="navigate('report')"><span class="ico">▥</span>کارنامه و پرونده</button>
+ <button class="nav-btn" data-page="counseling" onclick="navigate('counseling')"><span class="ico">♡</span>مشاوره</button>
+ <button class="nav-btn" data-page="messages" onclick="navigate('messages')"><span class="ico">✉</span>پیام‌ها</button>
+ <button class="nav-btn" data-page="calendar" onclick="navigate('calendar')"><span class="ico">▦</span>برنامه و تقویم</button>
+ <button class="nav-btn" data-page="notifications" onclick="navigate('notifications')"><span class="ico">♧</span>اطلاعیه‌ها</button>
+ <div class="side-label">مدیریت</div>
+ <button class="nav-btn" data-page="users" onclick="navigate('users')"><span class="ico">♙</span>کاربران مدرسه</button>
+ <button class="nav-btn" data-page="reports" onclick="navigate('reports')"><span class="ico">▤</span>گزارش‌های مدیریتی</button>
+ <button class="nav-btn" data-page="settings" onclick="navigate('settings')"><span class="ico">⚙</span>تنظیمات</button>
+ <div class="side-bottom"><button class="nav-btn" onclick="logout()"><span class="ico">↪</span>خروج از حساب</button></div>
+</aside>
+<main class="main" id="main"></main>
+</div></section>
+<div id="modalRoot"></div><div id="toastRoot"></div>
+<script>
+const $=id=>document.getElementById(id);
+const roleNames={admin:'مدیر مدرسه',deputy:'معاون مدرسه',teacher:'دبیر',student:'دانش‌آموز',counselor:'مشاور',parent:'والدین'};
+const demoUsers={admin:{pass:'1234',name:'مدیر مدرسه',role:'admin'},deputy:{pass:'1234',name:'معاون آموزشی',role:'deputy'},teacher:{pass:'1234',name:'خانم احمدی',role:'teacher'},student:{pass:'1234',name:'حسین عطایی',role:'student'},counselor:{pass:'1234',name:'مشاور تحصیلی',role:'counselor'},parent:{pass:'1234',name:'والد دانش‌آموز',role:'parent'}};
+const defaultStudents=[
+{id:1,name:'حسین عطایی',code:'1101',class:'یازدهم ریاضی ۱',parent:'والد حسین',phone:'۰۹۱۲۱۲۳۴۵۶۷'},
+{id:2,name:'آرمان رضایی',code:'1102',class:'یازدهم ریاضی ۱',parent:'والد آرمان',phone:'۰۹۱۲۲۲۲۲۲۲۲'},
+{id:3,name:'پارسا محمدی',code:'1103',class:'یازدهم ریاضی ۱',parent:'والد پارسا',phone:'۰۹۱۲۳۳۳۳۳۳۳'},
+{id:4,name:'امیرحسین کریمی',code:'1104',class:'یازدهم ریاضی ۱',parent:'والد امیرحسین',phone:'۰۹۱۲۴۴۴۴۴۴۴'},
+{id:5,name:'محمدطاها احمدی',code:'1105',class:'یازدهم ریاضی ۱',parent:'والد محمدطاها',phone:'۰۹۱۲۵۵۵۵۵۵۵'},
+{id:6,name:'علی موسوی',code:'1106',class:'یازدهم ریاضی ۱',parent:'والد علی',phone:'۰۹۱۲۶۶۶۶۶۶۶'},
+{id:7,name:'سینا جعفری',code:'1107',class:'یازدهم ریاضی ۱',parent:'والد سینا',phone:'۰۹۱۲۷۷۷۷۷۷۷'},
+{id:8,name:'رضا حیدری',code:'1108',class:'یازدهم ریاضی ۱',parent:'والد رضا',phone:'۰۹۱۲۸۸۸۸۸۸۸'}
+];
+let db, currentUser=null, currentPage='dashboard';
+function loadDB(){try{db=JSON.parse(localStorage.getItem('madreseyar_db'))}catch(e){}if(!db)db={students:defaultStudents,classes:[{name:'یازدهم ریاضی ۱',grade:'یازدهم',field:'ریاضی‌فیزیک',count:28},{name:'یازدهم تجربی ۱',grade:'یازدهم',field:'علوم تجربی',count:30},{name:'دوازدهم ریاضی ۱',grade:'دوازدهم',field:'ریاضی‌فیزیک',count:26}],attendance:[],grades:[],behaviors:[],lessons:[],homework:[{id:1,title:'تمرین فصل دوم حسابان',subject:'حسابان',class:'یازدهم ریاضی ۱',due:'۱۴۰۵/۰۸/۲۸',status:'منتشر شده',description:'تمرین‌های صفحه ۴۵ تا ۴۸ کتاب حل شود.'}],exams:[{id:1,title:'آزمونک تابع',subject:'حسابان',date:'۱۴۰۵/۰۸/۲۹',type:'آنلاین',class:'یازدهم ریاضی ۱'}],messages:[],notifications:[{title:'به سامانه مدرسه‌یار خوش آمدید',body:'این نسخه نمایشی برای آشنایی با امکانات سامانه است.',date:'امروز'}],counseling:[],events:[],users:[],settings:{school:'دبیرستان دوره دوم',year:'۱۴۰۵–۱۴۰۶'}};saveDB()}
+function saveDB(){localStorage.setItem('madreseyar_db',JSON.stringify(db))}
+function toast(msg){$('toastRoot').innerHTML='<div class="toast">'+esc(msg)+'</div>';setTimeout(()=>$('toastRoot').innerHTML='',2800)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function togglePassword(){let p=$('password');p.type=p.type==='password'?'text':'password'}
+$('loginForm').addEventListener('submit',e=>{e.preventDefault();let u=$('username').value.trim(),p=$('password').value,r=$('loginRole').value;let account=demoUsers[u];if(!account||account.pass!==p||account.role!==r){$('loginError').textContent='اطلاعات ورود صحیح نیست. حساب آزمایشی مناسب را انتخاب کنید.';return}currentUser={...account,username:u};sessionStorage.setItem('madreseyar_user',JSON.stringify(currentUser));showApp()});
+function showApp(){if(!currentUser)return;$('loginScreen').classList.add('hidden');$('appScreen').classList.remove('hidden');$('topName').textContent=currentUser.name;$('topRole').textContent=roleNames[currentUser.role];$('topAvatar').textContent=currentUser.name[0];applyRoleMenu();navigate('dashboard')}
+function logout(){currentUser=null;sessionStorage.removeItem('madreseyar_user');$('appScreen').classList.add('hidden');$('loginScreen').classList.remove('hidden');$('password').value='';$('loginError').textContent=''}
+function applyRoleMenu(){let role=currentUser.role;let allowed={admin:null,deputy:['dashboard','classes','attendance','grades','behavior','lessons','homework','exams','report','messages','calendar','notifications','users','reports','settings'],teacher:['dashboard','classes','attendance','grades','behavior','lessons','homework','exams','report','messages','calendar','notifications'],student:['dashboard','grades','behavior','homework','exams','report','messages','calendar','notifications'],parent:['dashboard','grades','attendance','behavior','homework','report','messages','calendar','notifications'],counselor:['dashboard','report','counseling','attendance','behavior','messages','calendar','notifications','reports']};document.querySelectorAll('.nav-btn[data-page]').forEach(b=>{b.classList.toggle('hidden',allowed[role]&&!allowed[role].includes(b.dataset.page))})}
+function toggleSidebar(){$('sidebar').classList.toggle('open')}
+function navigate(page){currentPage=page;document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));$('sidebar').classList.remove('open');renderPage()}
+function canEdit(){return ['admin','deputy','teacher'].includes(currentUser.role)}
+function isAdmin(){return ['admin','deputy'].includes(currentUser.role)}
+function pageHead(title,desc,actions=''){return `<div class="page-head"><div><h1>${title}</h1><p>${desc}</p></div><div class="head-actions">${actions}</div></div>`}
+function stat(label,value,icon,color,sub=''){return `<div class="stat"><div class="stat-icon ${color}">${icon}</div><div><small>${label}</small><strong>${value}</strong>${sub?`<small>${sub}</small>`:''}</div></div>`}
+function panel(title,body,extra=''){return `<section class="panel"><div class="panel-title"><h3>${title}</h3>${extra}</div>${body}</section>`}
+function btn(label,fn,cls='btn',icon=''){return `<button class="${cls}" onclick="${fn}">${icon?icon+' ':''}${label}</button>`}
+function renderPage(){let pages={dashboard:dashboardPage,classes:classesPage,attendance:attendancePage,grades:gradesPage,behavior:behaviorPage,lessons:lessonsPage,homework:homeworkPage,exams:examsPage,report:reportPage,counseling:counselingPage,messages:messagesPage,calendar:calendarPage,notifications:notificationsPage,users:usersPage,reports:reportsPage,settings:settingsPage};$('main').innerHTML=(pages[currentPage]||dashboardPage)()}
+function dashboardPage(){let role=currentUser.role,student= db.students[0];let todayCount=db.attendance.filter(x=>x.date===today()).length;let actions=`${canEdit()?btn('＋ ثبت سریع','openQuickModal()'):''}${btn('چاپ داشبورد','window.print()','btn outline')}`;
+let intro=role==='student'?`سلام ${currentUser.name}، به پنل آموزشی خودت خوش آمدی.`:role==='parent'?'وضعیت آموزشی فرزندتان را در یک نگاه دنبال کنید.':role==='teacher'?'امروز می‌توانید کلاس‌ها، حضور و غیاب و تکالیف خود را مدیریت کنید.':'نمای کلی فعالیت‌ها و وضعیت آموزشی مدرسه.';
+let body=`${pageHead('داشبورد',intro,actions)}<div class="grid stats">${stat('دانش‌آموزان',db.students.length,'♙','green','اطلاعات نمونه')}${stat('کلاس‌های فعال',db.classes.length,'▤','blue','در سال تحصیلی جاری')}${stat('ثبت‌های حضور و غیاب',db.attendance.length,'◷','orange','تمام جلسات')}${stat('تکالیف منتشرشده',db.homework.length,'✎','purple','قابل پیگیری')}</div><div class="grid cols">${panel('دسترسی سریع',`<div class="grid quick-grid">${quick('◷','ثبت حضور و غیاب','attendance')}${quick('▦','ثبت نمره','grades')}${quick('☆','ثبت مثبت و منفی','behavior')}${quick('✎','تعریف تکلیف','homework')}${quick('▣','ساخت آزمون','exams')}${quick('♡','پرونده مشاوره','counseling')}</div>`)}${panel('آخرین فعالیت‌ها',activityList())}</div><div class="grid cols">${panel('تکالیف اخیر',homeworkList())}${panel('اطلاعیه‌های مدرسه',notificationList())}</div>`;
+return body}
+function quick(icon,label,page){return `<button class="quick" onclick="navigate('${page}')"><span>${icon}</span><b>${label}</b><small>ورود به بخش</small></button>`}
+function activityList(){let arr=[...db.notifications.map(x=>({title:x.title,desc:x.date||'اطلاعیه'})),...db.grades.slice(-3).map(x=>({title:'ثبت نمره '+x.subject,desc:x.student+' · '+x.date})),...db.attendance.slice(-3).map(x=>({title:'ثبت حضور و غیاب',desc:x.class+' · '+x.date}))].slice(-6).reverse();return arr.length?`<div class="list">${arr.map(x=>`<div class="list-row"><div><b>${esc(x.title)}</b><small>${esc(x.desc)}</small></div><span class="pill info">فعالیت</span></div>`).join('')}</div>`:'<div class="empty">هنوز فعالیتی ثبت نشده است.</div>'}
+function homeworkList(){return db.homework.length?`<div class="list">${db.homework.slice(-4).reverse().map(x=>`<div class="list-row"><div><b>${esc(x.title)}</b><small>${esc(x.subject)} · مهلت ${esc(x.due)}</small></div><span class="pill warn">${esc(x.status)}</span></div>`).join('')}</div>`:'<div class="empty">تکلیفی وجود ندارد.</div>'}
+function notificationList(){return db.notifications.length?`<div class="list">${db.notifications.slice(-4).reverse().map(x=>`<div class="list-row"><div><b>${esc(x.title)}</b><small>${esc(x.body)}</small></div><span class="pill info">${esc(x.date)}</span></div>`).join('')}</div>`:'<div class="empty">اطلاعیه‌ای ثبت نشده است.</div>'}
+function classesPage(){return `${pageHead('کلاس‌ها و دفتر کلاسی','مدیریت کلاس‌ها، دروس و جلسات آموزشی',isAdmin()?btn('＋ کلاس جدید','openClassModal()'): '')}<div class="grid stats">${stat('تعداد کلاس‌ها',db.classes.length,'▤','blue')}${stat('دانش‌آموزان',db.students.length,'♙','green')}${stat('جلسات ثبت‌شده',db.lessons.length,'▧','purple')}${stat('دبیران فعال','—','♧','orange')}</div>${panel('فهرست کلاس‌ها',`<div class="table-wrap"><table><thead><tr><th>نام کلاس</th><th>پایه</th><th>رشته</th><th>تعداد دانش‌آموز</th><th>عملیات</th></tr></thead><tbody>${db.classes.map((c,i)=>`<tr><td><b>${esc(c.name)}</b></td><td>${esc(c.grade)}</td><td>${esc(c.field)}</td><td>${c.count}</td><td><div class="actions">${btn('دفتر کلاس',`openClassDetail(${i})`,'btn small light')}${btn('حضور و غیاب',`navigate('attendance')`,'btn small outline')}</div></td></tr>`).join('')}</tbody></table></div>`)}`}
+function openClassDetail(i){let c=db.classes[i];modal('دفتر کلاسی · '+c.name,`<div class="grid quick-grid">${quick('◷','حضور و غیاب','attendance')}${quick('▦','دفتر نمرات','grades')}${quick('▧','گزارش تدریس','lessons')}</div><p class="muted">پایه ${esc(c.grade)} · رشته ${esc(c.field)} · ${c.count} دانش‌آموز</p>`,'')}
+function attendancePage(){let rows=db.attendance.slice().reverse();return `${pageHead('حضور و غیاب','ثبت و پیگیری وضعیت حضور دانش‌آموزان در هر جلسه',canEdit()?btn('＋ ثبت حضور و غیاب','openAttendanceModal()'): '')}${panel('خلاصه',`<div class="grid stats">${stat('کل ثبت‌ها',rows.length,'◷','blue')}${stat('حاضر',rows.filter(x=>x.status==='حاضر').length,'✓','green')}${stat('غایب',rows.filter(x=>x.status==='غایب').length,'×','red')}${stat('تأخیر',rows.filter(x=>x.status==='تأخیر').length,'⌚','orange')}</div>`)}${panel('سوابق حضور و غیاب',`<div class="toolbar"><input id="attendanceSearch" placeholder="جست‌وجوی نام یا کلاس..." oninput="filterTable('attendanceTable',this.value)"><button class="btn outline small" onclick="window.print()">چاپ گزارش</button></div><div class="table-wrap"><table id="attendanceTable"><thead><tr><th>دانش‌آموز</th><th>کلاس</th><th>درس</th><th>تاریخ</th><th>وضعیت</th><th>توضیحات</th></tr></thead><tbody>${rows.length?rows.map(x=>`<tr><td>${esc(x.student)}</td><td>${esc(x.class)}</td><td>${esc(x.subject)}</td><td>${esc(x.date)}</td><td><span class="pill ${x.status==='حاضر'?'ok':x.status==='غایب'?'bad':'warn'}">${esc(x.status)}</span></td><td>${esc(x.note||'—')}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">هنوز موردی ثبت نشده است.</td></tr>'}</tbody></table></div>`)}`}
+function gradesPage(){let rows=db.grades.slice().reverse();return `${pageHead('دفتر نمرات','ثبت نمرات مستمر، آزمون، فعالیت و ارزیابی پایانی',canEdit()?btn('＋ ثبت نمره','openGradeModal()'): '')}${panel('عملکرد نمرات',`<div class="grid stats">${stat('تعداد نمرات ثبت‌شده',rows.length,'▦','blue')}${stat('میانگین ثبت‌ها',rows.length?(rows.reduce((a,x)=>a+Number(x.score),0)/rows.length).toFixed(2):'—','∑','green')}${stat('بالاترین نمره',rows.length?Math.max(...rows.map(x=>+x.score)):'—','↑','purple')}${stat('کمترین نمره',rows.length?Math.min(...rows.map(x=>+x.score)):'—','↓','orange')}</div>`)}${panel('جدول نمرات',`<div class="toolbar"><input placeholder="جست‌وجوی دانش‌آموز..." oninput="filterTable('gradeTable',this.value)"><button class="btn outline small" onclick="window.print()">چاپ دفتر نمرات</button></div><div class="table-wrap"><table id="gradeTable"><thead><tr><th>دانش‌آموز</th><th>درس</th><th>نوع ارزیابی</th><th>نمره</th><th>از</th><th>تاریخ</th><th>توضیحات</th></tr></thead><tbody>${rows.length?rows.map(x=>`<tr><td>${esc(x.student)}</td><td>${esc(x.subject)}</td><td>${esc(x.type)}</td><td><b>${esc(x.score)}</b></td><td>${esc(x.max)}</td><td>${esc(x.date)}</td><td>${esc(x.note||'—')}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">نمره‌ای ثبت نشده است.</td></tr>'}</tbody></table></div>`)}`}
+function behaviorPage(){let rows=db.behaviors.slice().reverse();return `${pageHead('مثبت و منفی','ثبت فعالیت‌های مثبت، تذکرها و سوابق رفتاری',canEdit()?btn('＋ ثبت مورد جدید','openBehaviorModal()'): '')}${panel('گزارش امتیازهای رفتاری',`<div class="grid stats">${stat('کل موارد',rows.length,'☆','blue')}${stat('مثبت',rows.filter(x=>x.kind==='مثبت').length,'＋','green')}${stat('منفی',rows.filter(x=>x.kind==='منفی').length,'−','red')}${stat('امتیاز خالص',rows.reduce((a,x)=>a+(x.kind==='مثبت'?1:-1)*Number(x.points),0),'∑','purple')}</div>`)}${panel('سوابق رفتاری',`<div class="table-wrap"><table><thead><tr><th>دانش‌آموز</th><th>نوع</th><th>عنوان</th><th>امتیاز</th><th>تاریخ</th><th>ثبت‌کننده</th><th>توضیحات</th></tr></thead><tbody>${rows.length?rows.map(x=>`<tr><td>${esc(x.student)}</td><td><span class="pill ${x.kind==='مثبت'?'ok':'bad'}">${x.kind}</span></td><td>${esc(x.title)}</td><td>${x.points}</td><td>${esc(x.date)}</td><td>${esc(x.by)}</td><td>${esc(x.note||'—')}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">موردی ثبت نشده است.</td></tr>'}</tbody></table></div>`)}`}
+function lessonsPage(){let rows=db.lessons.slice().reverse();return `${pageHead('گزارش تدریس روزانه','ثبت محتوای تدریس‌شده، صفحات کتاب و برنامه جلسه بعد',canEdit()?btn('＋ ثبت گزارش تدریس','openLessonModal()'): '')}${panel('دفتر ثبت تدریس',`<div class="table-wrap"><table><thead><tr><th>درس</th><th>کلاس</th><th>تاریخ</th><th>موضوع تدریس</th><th>صفحات</th><th>تکلیف جلسه بعد</th></tr></thead><tbody>${rows.length?rows.map(x=>`<tr><td>${esc(x.subject)}</td><td>${esc(x.class)}</td><td>${esc(x.date)}</td><td>${esc(x.topic)}</td><td>${esc(x.pages||'—')}</td><td>${esc(x.next||'—')}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">گزارشی ثبت نشده است.</td></tr>'}</tbody></table></div>`)}`}
+function homeworkPage(){return `${pageHead('تکالیف','تعریف تکلیف، تعیین مهلت و پیگیری تحویل دانش‌آموزان',canEdit()?btn('＋ تکلیف جدید','openHomeworkModal()'): '')}${panel('تکالیف منتشرشده',`<div class="list">${db.homework.length?db.homework.slice().reverse().map(x=>`<div class="list-row"><div><b>${esc(x.title)}</b><small>${esc(x.subject)} · ${esc(x.class)} · مهلت: ${esc(x.due)}<br>${esc(x.description||'')}</small></div><div class="actions"><span class="pill warn">${esc(x.status)}</span>${canEdit()?btn('حذف',`deleteItem('homework',${x.id})`,'btn small danger'):''}</div></div>`).join(''):'<div class="empty">تکلیفی وجود ندارد.</div>'}</div>`)}`}
+function examsPage(){return `${pageHead('آزمون‌ها','مدیریت آزمون‌های آنلاین و حضوری، زمان‌بندی و نتایج',canEdit()?btn('＋ آزمون جدید','openExamModal()'): '')}${panel('آزمون‌های برنامه‌ریزی‌شده',`<div class="table-wrap"><table><thead><tr><th>عنوان آزمون</th><th>درس</th><th>کلاس</th><th>تاریخ</th><th>نوع</th><th>عملیات</th></tr></thead><tbody>${db.exams.length?db.exams.slice().reverse().map(x=>`<tr><td><b>${esc(x.title)}</b></td><td>${esc(x.subject)}</td><td>${esc(x.class)}</td><td>${esc(x.date)}</td><td><span class="pill info">${esc(x.type)}</span></td><td>${canEdit()?btn('حذف',`deleteItem('exams',${x.id})`,'btn small danger'):'—'}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">آزمونی تعریف نشده است.</td></tr>'}</tbody></table></div>`)}`}
+function reportPage(){let grades=db.grades;let avg=grades.length?(grades.reduce((a,x)=>a+Number(x.score)/Number(x.max)*20,0)/grades.length).toFixed(2):'—';let student=currentUser.role==='student'?currentUser.name:db.students[0]?.name;let my=grades.filter(x=>x.student===student);return `${pageHead('کارنامه و پرونده تحصیلی','نمای کلی سوابق آموزشی، ارزیابی‌ها و عملکرد دانش‌آموز',btn('چاپ کارنامه','window.print()','btn outline'))}<div class="panel"><div class="profile-card"><div class="big-avatar">${(student||'د')[0]}</div><div><b>${esc(student||'دانش‌آموز')}</b><div class="muted" style="font-size:11px;margin-top:5px">یازدهم ریاضی · سال تحصیلی ۱۴۰۵–۱۴۰۶</div></div><span class="pill ok" style="margin-right:auto">پرونده فعال</span></div></div><div class="grid stats">${stat('میانگین نمرات ثبت‌شده',avg,'∑','green')}${stat('تعداد ارزیابی‌ها',my.length,'▦','blue')}${stat('غیبت‌ها',db.attendance.filter(x=>x.student===student&&x.status==='غایب').length,'◷','orange')}${stat('موارد رفتاری',db.behaviors.filter(x=>x.student===student).length,'☆','purple')}</div>${panel('ریز نمرات',`<div class="table-wrap"><table><thead><tr><th>درس</th><th>نوع</th><th>نمره</th><th>از</th><th>تاریخ</th></tr></thead><tbody>${(currentUser.role==='student'?my:grades).length?(currentUser.role==='student'?my:grades).map(x=>`<tr><td>${esc(x.subject)}</td><td>${esc(x.type)}</td><td>${esc(x.score)}</td><td>${esc(x.max)}</td><td>${esc(x.date)}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">هنوز نمره‌ای ثبت نشده است.</td></tr>'}</tbody></table></div>`)}`}
+function counselingPage(){let rows=db.counseling.slice().reverse();return `${pageHead('مشاوره تحصیلی','ثبت جلسات، برنامه مطالعاتی و پیگیری وضعیت دانش‌آموزان', ['admin','deputy','counselor'].includes(currentUser.role)?btn('＋ ثبت جلسه','openCounselModal()'): '')}${panel('جلسات و پیگیری‌ها',`<div class="table-wrap"><table><thead><tr><th>دانش‌آموز</th><th>تاریخ</th><th>موضوع</th><th>برنامه یا توصیه</th><th>پیگیری بعدی</th></tr></thead><tbody>${rows.length?rows.map(x=>`<tr><td>${esc(x.student)}</td><td>${esc(x.date)}</td><td>${esc(x.topic)}</td><td>${esc(x.plan)}</td><td>${esc(x.follow||'—')}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">جلسه‌ای ثبت نشده است.</td></tr>'}</tbody></table></div>`)}`}
+function messagesPage(){return `${pageHead('پیام‌ها','ارتباط داخلی با دبیران، مشاور و مسئولان مدرسه',btn('＋ پیام جدید','openMessageModal()'))}${panel('گفتگوها',`<div class="list">${db.messages.length?db.messages.slice().reverse().map(x=>`<div class="list-row"><div><b>${esc(x.to)} · ${esc(x.subject)}</b><small>${esc(x.body)}</small></div><span class="pill info">${esc(x.date)}</span></div>`).join(''):'<div class="empty">پیامی وجود ندارد. برای شروع گفتگو پیام جدید بسازید.</div>'}</div>`)}`}
+function calendarPage(){return `${pageHead('برنامه و تقویم آموزشی','نمایش برنامه هفتگی، آزمون‌ها و رویدادهای مدرسه',isAdmin()?btn('＋ رویداد جدید','openEventModal()'): '')}${panel('برنامه هفتگی نمونه',`<div class="table-wrap"><table><thead><tr><th>روز</th><th>زنگ اول</th><th>زنگ دوم</th><th>زنگ سوم</th><th>زنگ چهارم</th></tr></thead><tbody>${[['شنبه','حسابان','فیزیک','شیمی','هندسه'],['یکشنبه','ادبیات','حسابان','عربی','ورزش'],['دوشنبه','فیزیک','شیمی','زبان','دینی'],['سه‌شنبه','هندسه','حسابان','آمار','آزمایشگاه'],['چهارشنبه','شیمی','فیزیک','نگارش','آمادگی دفاعی']].map(r=>`<tr>${r.map(v=>`<td>${v}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`)}${panel('رویدادها و امتحانات',`<div class="list">${[...db.events,...db.exams.map(x=>({title:x.title,date:x.date,kind:'آزمون '+x.subject}))].map(x=>`<div class="list-row"><div><b>${esc(x.title)}</b><small>${esc(x.kind||'رویداد مدرسه')}</small></div><span class="pill info">${esc(x.date)}</span></div>`).join('')||'<div class="empty">رویدادی ثبت نشده است.</div>'}</div>`)}`}
+function notificationsPage(){return `${pageHead('اطلاعیه‌ها','اعلان‌های آموزشی، اداری و پیام‌های عمومی مدرسه',isAdmin()?btn('＋ اطلاعیه جدید','openNotificationModal()'): '')}${panel('اطلاعیه‌های مدرسه',notificationList())}`}
+function usersPage(){return `${pageHead('کاربران مدرسه','مدیریت دانش‌آموزان و نقش‌های کاربری سامانه',btn('＋ افزودن دانش‌آموز','openStudentModal()'))}${panel('فهرست دانش‌آموزان',`<div class="toolbar"><input placeholder="جست‌وجوی دانش‌آموز..." oninput="filterTable('usersTable',this.value)"><button class="btn outline small" onclick="exportStudents()">خروجی CSV</button></div><div class="table-wrap"><table id="usersTable"><thead><tr><th>کد</th><th>نام و نام خانوادگی</th><th>کلاس</th><th>نام والد</th><th>شماره تماس</th></tr></thead><tbody>${db.students.map(x=>`<tr><td>${esc(x.code)}</td><td><b>${esc(x.name)}</b></td><td>${esc(x.class)}</td><td>${esc(x.parent)}</td><td>${esc(x.phone)}</td></tr>`).join('')}</tbody></table></div>`)}`}
+function reportsPage(){return `${pageHead('گزارش‌های مدیریتی','گزارش کلی از عملکرد آموزشی و فعالیت‌های مدرسه',btn('چاپ گزارش','window.print()','btn outline'))}<div class="grid stats">${stat('دانش‌آموزان',db.students.length,'♙','green')}${stat('کلاس‌ها',db.classes.length,'▤','blue')}${stat('نمرات ثبت‌شده',db.grades.length,'▦','purple')}${stat('غیبت‌های ثبت‌شده',db.attendance.filter(x=>x.status==='غایب').length,'◷','red')}</div>${panel('وضعیت تکمیل اطلاعات',`<div class="list">${[['دفتر حضور و غیاب',db.attendance.length],['دفتر نمرات',db.grades.length],['گزارش تدریس',db.lessons.length],['موارد انضباطی',db.behaviors.length],['تکالیف',db.homework.length],['جلسات مشاوره',db.counseling.length]].map(x=>`<div class="list-row"><b>${x[0]}</b><span class="pill info">${x[1]} مورد ثبت‌شده</span></div>`).join('')}</div>`)}`}
+function settingsPage(){return `${pageHead('تنظیمات سامانه','تنظیمات مدرسه، اطلاعات حساب و مدیریت داده‌ها')}${panel('مشخصات مدرسه',`<div class="form-grid"><div class="field"><label>نام مدرسه</label><input id="schoolName" value="${esc(db.settings.school)}"></div><div class="field"><label>سال تحصیلی</label><input id="schoolYear" value="${esc(db.settings.year)}"></div></div><div style="margin-top:14px">${btn('ذخیره تنظیمات',"saveSettings()")}</div>`)}${panel('مدیریت اطلاعات',`<div class="notice warn">این نسخه آزمایشی اطلاعات را در حافظه مرورگر همین دستگاه ذخیره می‌کند. برای استفاده واقعی مدرسه باید سرور، پایگاه داده مرکزی، احراز هویت امن و پشتیبان‌گیری راه‌اندازی شود.</div><div class="actions">${btn('خروجی پشتیبان JSON','backupDB()','btn light')}${btn('بازیابی پشتیبان','restoreDB()','btn outline')}${btn('پاک‌سازی داده‌های آزمایشی','resetDB()','btn danger')}</div>`)}`}
+function today(){return new Date().toLocaleDateString('fa-IR')}
+function modal(title,body,submit=''){ $('modalRoot').innerHTML=`<div class="modal-back" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-head"><h3>${title}</h3><button class="close" onclick="closeModal()">×</button></div>${body}${submit?`<div class="modal-foot"><button class="btn outline" onclick="closeModal()">انصراف</button><button class="btn" onclick="${submit}">ذخیره اطلاعات</button></div>`:''}</div></div>`}
+function closeModal(){$('modalRoot').innerHTML=''}
+function studentOptions(){return db.students.map(s=>`<option>${esc(s.name)}</option>`).join('')}
+function classOptions(){return db.classes.map(c=>`<option>${esc(c.name)}</option>`).join('')}
+function field(label,id,placeholder='',type='text',extra=''){return `<div class="field"><label>${label}</label><input id="${id}" type="${type}" placeholder="${placeholder}" ${extra}></div>`}
+function selectField(label,id,options){return `<div class="field"><label>${label}</label><select id="${id}">${options}</select></div>`}
+function openAttendanceModal(){modal('ثبت حضور و غیاب',`<div class="form-grid">${selectField('کلاس','aClass',classOptions())}${selectField('دانش‌آموز','aStudent',studentOptions())}${selectField('درس','aSubject',['حسابان','فیزیک','شیمی','هندسه','آمار','ادبیات','عربی','زبان'].map(x=>`<option>${x}</option>`).join(''))}${selectField('وضعیت','aStatus',['حاضر','غایب','تأخیر','غیبت موجه','خروج از کلاس'].map(x=>`<option>${x}</option>`).join(''))}${field('تاریخ','aDate',today())}${field('توضیحات','aNote','اختیاری')}</div>`,'saveAttendance()')}
+function saveAttendance(){db.attendance.push({id:Date.now(),class:$('aClass').value,student:$('aStudent').value,subject:$('aSubject').value,status:$('aStatus').value,date:$('aDate').value,note:$('aNote').value});saveDB();closeModal();renderPage();toast('حضور و غیاب ثبت شد.')}
+function openGradeModal(){modal('ثبت نمره جدید',`<div class="form-grid">${selectField('دانش‌آموز','gStudent',studentOptions())}${selectField('درس','gSubject',['حسابان','فیزیک','شیمی','هندسه','آمار','ادبیات','عربی','زبان'].map(x=>`<option>${x}</option>`).join(''))}${selectField('نوع ارزیابی','gType',['مستمر','آزمونک','شفاهی','کتبی','پروژه','میان‌ترم','پایانی'].map(x=>`<option>${x}</option>`).join(''))}${field('نمره','gScore','مثلاً ۱۸','number','min="0" max="100" step="0.25"')}${field('نمره از','gMax','۲۰','number','min="1" value="20"')}${field('تاریخ','gDate',today())}<div class="field fullrow"><label>توضیحات</label><textarea id="gNote" placeholder="توضیحات اختیاری"></textarea></div></div>`,'saveGrade()')}
+function saveGrade(){let score=+$('gScore').value,max=+$('gMax').value;if(!Number.isFinite(score)||!max||score<0||score>max){toast('نمره باید بین صفر و سقف نمره باشد.');return}db.grades.push({id:Date.now(),student:$('gStudent').value,subject:$('gSubject').value,type:$('gType').value,score,max,date:$('gDate').value,note:$('gNote').value});saveDB();closeModal();renderPage();toast('نمره ثبت شد.')}
+function openBehaviorModal(){modal('ثبت مثبت یا منفی',`<div class="form-grid">${selectField('دانش‌آموز','bStudent',studentOptions())}${selectField('نوع مورد','bKind','<option>مثبت</option><option>منفی</option>')}${field('عنوان','bTitle','مثلاً مشارکت فعال')}${field('امتیاز','bPoints','۱','number','min="1" value="1"')}${field('تاریخ','bDate',today())}<div class="field fullrow"><label>توضیحات</label><textarea id="bNote"></textarea></div></div>`,'saveBehavior()')}
+function saveBehavior(){db.behaviors.push({id:Date.now(),student:$('bStudent').value,kind:$('bKind').value,title:$('bTitle').value,points:$('bPoints').value||1,date:$('bDate').value,note:$('bNote').value,by:currentUser.name});saveDB();closeModal();renderPage();toast('مورد رفتاری ثبت شد.')}
+function openLessonModal(){modal('ثبت گزارش تدریس',`<div class="form-grid">${selectField('کلاس','lClass',classOptions())}${selectField('درس','lSubject',['حسابان','فیزیک','شیمی','هندسه','آمار','ادبیات'].map(x=>`<option>${x}</option>`).join(''))}${field('تاریخ','lDate',today())}${field('صفحات کتاب','lPages','مثلاً ۴۵ تا ۴۸')}<div class="field fullrow"><label>موضوع تدریس‌شده</label><textarea id="lTopic"></textarea></div><div class="field fullrow"><label>تکلیف جلسه بعد</label><textarea id="lNext"></textarea></div></div>`,'saveLesson()')}
+function saveLesson(){db.lessons.push({id:Date.now(),class:$('lClass').value,subject:$('lSubject').value,date:$('lDate').value,pages:$('lPages').value,topic:$('lTopic').value,next:$('lNext').value});saveDB();closeModal();renderPage();toast('گزارش تدریس ذخیره شد.')}
+function openHomeworkModal(){modal('تعریف تکلیف جدید',`<div class="form-grid">${field('عنوان تکلیف','hTitle','عنوان')}${selectField('درس','hSubject',['حسابان','فیزیک','شیمی','هندسه','آمار','ادبیات'].map(x=>`<option>${x}</option>`).join(''))}${selectField('کلاس','hClass',classOptions())}${field('مهلت تحویل','hDue','۱۴۰۵/۰۹/۰۱') }<div class="field fullrow"><label>توضیحات تکلیف</label><textarea id="hDesc"></textarea></div></div>`,'saveHomework()')}
+function saveHomework(){db.homework.push({id:Date.now(),title:$('hTitle').value,subject:$('hSubject').value,class:$('hClass').value,due:$('hDue').value,description:$('hDesc').value,status:'منتشر شده'});db.notifications.push({title:'تکلیف جدید: '+$('hTitle').value,body:'تکلیف جدید برای '+$('hClass').value+' منتشر شد.',date:today()});saveDB();closeModal();renderPage();toast('تکلیف منتشر شد.')}
+function openExamModal(){modal('تعریف آزمون',`<div class="form-grid">${field('عنوان آزمون','eTitle','عنوان آزمون')}${selectField('درس','eSubject',['حسابان','فیزیک','شیمی','هندسه','آمار','ادبیات'].map(x=>`<option>${x}</option>`).join(''))}${selectField('کلاس','eClass',classOptions())}${field('تاریخ برگزاری','eDate','۱۴۰۵/۰۹/۰۱')}${selectField('نوع آزمون','eType','<option>حضوری</option><option>آنلاین</option>')}</div><div class="notice" style="margin-top:13px">در این نسخه امکان زمان‌بندی و ثبت آزمون وجود دارد. موتور اجرای آزمون آنلاین و تصحیح خودکار باید در نسخه متصل به سرور پیاده‌سازی شود.</div>`,'saveExam()')}
+function saveExam(){db.exams.push({id:Date.now(),title:$('eTitle').value,subject:$('eSubject').value,class:$('eClass').value,date:$('eDate').value,type:$('eType').value});saveDB();closeModal();renderPage();toast('آزمون ثبت شد.')}
+function openCounselModal(){modal('ثبت جلسه مشاوره',`<div class="form-grid">${selectField('دانش‌آموز','cStudent',studentOptions())}${field('تاریخ جلسه','cDate',today())}${field('موضوع','cTopic','موضوع جلسه')}${field('پیگیری بعدی','cFollow','تاریخ پیگیری') }<div class="field fullrow"><label>برنامه یا توصیه مشاور</label><textarea id="cPlan"></textarea></div></div>`,'saveCounsel()')}
+function saveCounsel(){db.counseling.push({id:Date.now(),student:$('cStudent').value,date:$('cDate').value,topic:$('cTopic').value,follow:$('cFollow').value,plan:$('cPlan').value});saveDB();closeModal();renderPage();toast('جلسه مشاوره ثبت شد.')}
+function openMessageModal(){modal('ارسال پیام',`<div class="form-grid">${selectField('گیرنده','mTo','<option>مدیر مدرسه</option><option>معاون آموزشی</option><option>دبیر ریاضی</option><option>مشاور تحصیلی</option><option>والدین</option><option>دانش‌آموز</option>')}${field('موضوع','mSubject','موضوع پیام')}<div class="field fullrow"><label>متن پیام</label><textarea id="mBody"></textarea></div></div>`,'saveMessage()')}
+function saveMessage(){db.messages.push({id:Date.now(),to:$('mTo').value,subject:$('mSubject').value,body:$('mBody').value,date:today(),from:currentUser.name});saveDB();closeModal();renderPage();toast('پیام ثبت شد.')}
+function openNotificationModal(){modal('اطلاعیه جدید',`<div class="form-grid">${field('عنوان اطلاعیه','nTitle','عنوان')}${selectField('مخاطبان','nAudience','<option>همه مدرسه</option><option>دبیران</option><option>دانش‌آموزان</option><option>والدین</option>')}<div class="field fullrow"><label>متن اطلاعیه</label><textarea id="nBody"></textarea></div></div>`,'saveNotification()')}
+function saveNotification(){db.notifications.push({title:$('nTitle').value,body:$('nBody').value,date:today(),audience:$('nAudience').value});saveDB();closeModal();renderPage();toast('اطلاعیه منتشر شد.')}
+function openClassModal(){modal('ایجاد کلاس',`<div class="form-grid">${field('نام کلاس','clName','مثلاً یازدهم ریاضی ۲')}${selectField('پایه','clGrade',['دهم','یازدهم','دوازدهم'].map(x=>`<option>${x}</option>`).join(''))}${selectField('رشته','clField','<option>ریاضی‌فیزیک</option><option>علوم تجربی</option><option>علوم انسانی</option>')}${field('تعداد دانش‌آموز','clCount','۳۰','number','min="1" value="30"')}</div>`,'saveClass()')}
+function saveClass(){db.classes.push({name:$('clName').value,grade:$('clGrade').value,field:$('clField').value,count:+$('clCount').value||0});saveDB();closeModal();renderPage();toast('کلاس ایجاد شد.')}
+function openStudentModal(){modal('افزودن دانش‌آموز',`<div class="form-grid">${field('نام و نام خانوادگی','sName','نام دانش‌آموز')}${field('کد دانش‌آموزی','sCode','کد')}${selectField('کلاس','sClass',classOptions())}${field('نام والد','sParent','نام والد')}${field('شماره تماس','sPhone','شماره تماس')}</div>`,'saveStudent()')}
+function saveStudent(){db.students.push({id:Date.now(),name:$('sName').value,code:$('sCode').value,class:$('sClass').value,parent:$('sParent').value,phone:$('sPhone').value});saveDB();closeModal();renderPage();toast('دانش‌آموز اضافه شد.')}
+function openEventModal(){modal('ثبت رویداد',`<div class="form-grid">${field('عنوان رویداد','vTitle','عنوان')}${field('تاریخ','vDate','تاریخ')}${field('نوع','vKind','مثلاً جلسه اولیا')}</div>`,'saveEvent()')}
+function saveEvent(){db.events.push({title:$('vTitle').value,date:$('vDate').value,kind:$('vKind').value});saveDB();closeModal();renderPage();toast('رویداد ثبت شد.')}
+function openQuickModal(){let opts=`<button class="quick" onclick="closeModal();openAttendanceModal()">◷<b>حضور و غیاب</b></button><button class="quick" onclick="closeModal();openGradeModal()">▦<b>ثبت نمره</b></button><button class="quick" onclick="closeModal();openBehaviorModal()">☆<b>مثبت و منفی</b></button>`;modal('ثبت سریع',`<div class="grid quick-grid">${opts}</div>`,'')}
+function deleteItem(key,id){if(!confirm('این مورد حذف شود؟'))return;db[key]=db[key].filter(x=>x.id!==id);saveDB();renderPage();toast('مورد حذف شد.')}
+function filterTable(id,q){let t=$(id);if(!t)return;[...t.querySelectorAll('tbody tr')].forEach(r=>r.style.display=r.innerText.includes(q)?'':'none')}
+function saveSettings(){db.settings.school=$('schoolName').value;db.settings.year=$('schoolYear').value;saveDB();toast('تنظیمات ذخیره شد.')}
+function backupDB(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='madreseyar-backup.json';a.click();URL.revokeObjectURL(a.href);toast('فایل پشتیبان آماده شد.')}
+function restoreDB(){let inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';inp.onchange=()=>{let f=inp.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{db=JSON.parse(r.result);saveDB();renderPage();toast('پشتیبان بازیابی شد.')}catch(e){toast('فایل پشتیبان معتبر نیست.')}};r.readAsText(f)};inp.click()}
+function resetDB(){if(!confirm('تمام اطلاعات ذخیره‌شده این نسخه پاک شود؟'))return;localStorage.removeItem('madreseyar_db');loadDB();renderPage();toast('اطلاعات آزمایشی بازنشانی شد.')}
+function exportStudents(){let csv='کد,نام,کلاس,والد,تلفن\n'+db.students.map(s=>[s.code,s.name,s.class,s.parent,s.phone].map(v=>'"'+String(v||'').replace(/"/g,'""')+'"').join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='students.csv';a.click();URL.revokeObjectURL(a.href)}
+loadDB();try{let u=JSON.parse(sessionStorage.getItem('madreseyar_user'));if(u&&demoUsers[u.username]){currentUser=u;showApp()}}catch(e){}
+</script>
+
+<style>
+/* SchoolYar experience upgrade */
+:root{--ease:cubic-bezier(.2,.75,.25,1)}
+body{background:radial-gradient(ellipse at 8% 0%,#eaf5ef 0,transparent 32%),var(--bg)}
+.stat,.panel,.quick,.nav-btn,.btn,.tile{transition:transform .22s var(--ease),box-shadow .22s var(--ease),background .22s,border-color .22s}
+.stat:hover,.panel:hover{box-shadow:0 14px 36px #183d3018}
+.quick:hover{transform:translateY(-3px);border-color:#a8d4bf;box-shadow:0 10px 24px #16745a12}
+.main{animation:pageIn .35s var(--ease) both}
+@keyframes pageIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.stat{animation:cardIn .45s var(--ease) both}
+.stat:nth-child(2){animation-delay:.04s}.stat:nth-child(3){animation-delay:.08s}.stat:nth-child(4){animation-delay:.12s}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+.class-hero{background:linear-gradient(120deg,#103f33,#187354);color:white;border-radius:20px;padding:22px 24px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;box-shadow:0 14px 35px #12553b20}
+.class-hero h2{margin:0 0 5px;font-size:20px}.class-hero p{margin:0;color:#d4e9df;font-size:12px}
+.class-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.class-card{border:1px solid var(--line);background:white;border-radius:17px;padding:18px;text-align:right;cursor:pointer;transition:.22s;box-shadow:var(--shadow)}
+.class-card:hover{transform:translateY(-4px);border-color:#9bcbb4;box-shadow:0 15px 30px #143e3018}
+.class-card .class-icon{width:43px;height:43px;border-radius:14px;background:var(--mint);color:var(--green);display:grid;place-items:center;font-size:21px;margin-bottom:14px}
+.class-card b{display:block;font-size:14px}.class-card small{color:var(--muted);display:block;margin-top:6px;line-height:1.9}
+.class-chip{display:inline-flex;padding:6px 10px;border-radius:9px;background:#ffffff20;color:white;font-size:11px;margin-top:12px}
+.context-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;border:1px solid #cfe4d8;background:#f0f8f3;border-radius:13px;margin-bottom:16px}
+.context-strip b{font-size:12px}.context-strip small{display:block;color:var(--muted);margin-top:3px}
+.context-strip .btn{white-space:nowrap}
+.modal-back{backdrop-filter:blur(5px);animation:fadeIn .18s}.modal{animation:modalIn .25s var(--ease)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes modalIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+@media(max-width:800px){.class-hero{align-items:flex-start;flex-direction:column}.context-strip{align-items:flex-start;flex-direction:column}.context-strip .btn{width:100%}}
+</style>
+<script>
+/* داده‌های آموزشی و تخصیص کلاس به دبیر */
+(function(){
+  const oldLoad=loadDB;
+  loadDB=function(){
+    oldLoad();
+    db.teacherAssignments=db.teacherAssignments||[
+      {teacher:'teacher',class:'یازدهم ریاضی ۱',subject:'حسابان'},
+      {teacher:'teacher',class:'یازدهم ریاضی ۱',subject:'هندسه'},
+      {teacher:'teacher',class:'یازدهم تجربی ۱',subject:'ریاضی'},
+      {teacher:'teacher',class:'دوازدهم ریاضی ۱',subject:'حسابان'}
+    ];
+    db.classes.forEach(c=>{if(!c.students)c.students=db.students.filter(s=>s.class===c.name).length||c.count||0});
+    saveDB();
+  };
+  window.activeClass=window.activeClass||null;
+  window.activeSubject=window.activeSubject||null;
+  window.studentClass=()=>currentUser?.role==='student'||currentUser?.role==='parent'?'یازدهم ریاضی ۱':null;
+  window.myAssignments=()=>db.teacherAssignments.filter(a=>a.teacher===currentUser?.username);
+  window.myClassNames=()=>[...new Set(myAssignments().map(a=>a.class))];
+  window.isClassMember=(name)=>!['teacher','student','parent'].includes(currentUser?.role) || (currentUser.role==='teacher'?myClassNames().includes(name):name===studentClass());
+  const originalShowApp=showApp;
+  showApp=function(){
+    originalShowApp();
+    if(currentUser.role==='teacher'){
+      activeClass=null;activeSubject=null;renderClassPicker();
+    }else if(['student','parent'].includes(currentUser.role)){
+      activeClass=studentClass();activeSubject=null;
+    }
+  };
+  window.renderClassPicker=function(){
+    const assigned=myAssignments();
+    $('main').innerHTML=`<div class="page-head"><div><h1>کلاس‌های من</h1><p>برای ورود به دفتر کلاسی، یکی از کلاس‌های اختصاص‌یافته به خود را انتخاب کنید.</p></div></div>
+    <div class="notice">معاون یا مدیر مدرسه، کلاس‌ها و درس‌های شما را تعریف می‌کند. هر کلاس می‌تواند چند دبیر و هر دبیر چند کلاس داشته باشد.</div>
+    <div class="class-grid">${assigned.map((a,i)=>{let c=db.classes.find(x=>x.name===a.class)||{};return `<button class="class-card" onclick="selectTeachingClass('${esc(a.class)}','${esc(a.subject)}')"><span class="class-icon">▤</span><b>${esc(a.class)}</b><small>${esc(a.subject)} · ${esc(c.grade||'')} · ${esc(c.field||'')}</small><span class="pill ok" style="margin-top:12px">ورود به دفتر این درس ←</span></button>`}).join('')||'<div class="empty">هنوز کلاسی به حساب شما تخصیص داده نشده است. با معاون آموزشی تماس بگیرید.</div>'}</div>`;
+  };
+  window.selectTeachingClass=function(cls,subject){
+    if(!myAssignments().some(a=>a.class===cls&&a.subject===subject)){toast('این کلاس برای حساب شما تعریف نشده است.');return}
+    activeClass=cls;activeSubject=subject;currentPage='dashboard';document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page==='dashboard'));renderPage();
+  };
+  window.changeActiveClass=function(){renderClassPicker()};
+  const oldNavigate=navigate;
+  navigate=function(page){
+    if(currentUser?.role==='teacher'&&!activeClass&&page!=='classes'){renderClassPicker();return}
+    oldNavigate(page);
+  };
+  const oldRender=renderPage;
+  renderPage=function(){
+    oldRender();
+    if(currentUser?.role==='teacher'&&activeClass){
+      const main=$('main');
+      const strip=`<div class="context-strip"><div><b>دفتر فعال: ${esc(activeClass)}</b><small>درس: ${esc(activeSubject||'همه درس‌ها')} · اطلاعات این صفحه برای کلاس انتخاب‌شده است.</small></div><button class="btn light small" onclick="changeActiveClass()">تعویض کلاس / درس</button></div>`;
+      main.insertAdjacentHTML('afterbegin',strip);
+    }
+    if(['student','parent'].includes(currentUser?.role)){
+      $('main').insertAdjacentHTML('afterbegin',`<div class="context-strip"><div><b>پرونده آموزشی · ${esc(studentClass())}</b><small>${currentUser.role==='parent'?'نمایش اطلاعات فرزند شما':'نمایش اطلاعات تحصیلی شما'}</small></div></div>`);
+    }
+  };
+  const baseClassesPage=classesPage;
+  classesPage=function(){
+    if(currentUser.role==='teacher'){
+      const as=myAssignments();
+      return `${pageHead('کلاس‌ها و دفتر کلاسی','کلاس‌ها و درس‌هایی که توسط معاون یا مدیر به شما سپرده شده‌اند.',btn('تعویض کلاس فعال','changeActiveClass()','btn outline'))}<div class="class-grid">${as.map(a=>`<button class="class-card" onclick="selectTeachingClass('${esc(a.class)}','${esc(a.subject)}')"><span class="class-icon">▤</span><b>${esc(a.class)}</b><small>${esc(a.subject)}</small><span class="pill ok" style="margin-top:12px">باز کردن دفتر کلاس</span></button>`).join('')}</div>`;
+    }
+    if(['student','parent'].includes(currentUser.role))return `${pageHead('کلاس من','اطلاعات کلاس و برنامه آموزشی')}${panel(studentClass(),`<p>پایه و رشته: یازدهم · ریاضی‌فیزیک</p><p>برای مشاهده نمرات، تکالیف، حضور و غیاب و آزمون‌ها از منوی کناری استفاده کنید.</p>`)}`;
+    return `${baseClassesPage()}${isAdmin()?panel('تخصیص دبیر به کلاس و درس',`<p class="muted">برای هر دبیر می‌توانید چند کلاس و چند درس تعریف کنید. دبیر پس از ورود، فقط همین کلاس‌ها را در فهرست خود می‌بیند.</p>${btn('＋ تخصیص جدید','openAssignmentModal()')}<div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>حساب دبیر</th><th>کلاس</th><th>درس</th><th>عملیات</th></tr></thead><tbody>${db.teacherAssignments.map((a,i)=>`<tr><td>${esc(a.teacher)}</td><td>${esc(a.class)}</td><td>${esc(a.subject)}</td><td>${btn('حذف',`removeAssignment(${i})`,'btn small danger')}</td></tr>`).join('')}</tbody></table></div>`):''}`;
+  };
+  window.openAssignmentModal=function(){
+    const teachers=Object.entries(demoUsers).filter(([u,x])=>x.role==='teacher').map(([u,x])=>`<option value="${u}">${esc(x.name)} (${u})</option>`).join('');
+    modal('تخصیص دبیر به کلاس و درس',`<div class="form-grid">${selectField('دبیر','asTeacher',teachers)}${selectField('کلاس','asClass',classOptions())}${selectField('درس','asSubject',['حسابان','هندسه','فیزیک','شیمی','ریاضی','آمار','ادبیات','عربی','زبان'].map(x=>`<option>${x}</option>`).join(''))}</div><div class="notice" style="margin-top:12px">تخصیص‌ها در این نسخه نمایشی در همین مرورگر ذخیره می‌شوند.</div>`,'saveAssignment()');
+  };
+  window.saveAssignment=function(){
+    const item={teacher:$('asTeacher').value,class:$('asClass').value,subject:$('asSubject').value};
+    if(db.teacherAssignments.some(a=>a.teacher===item.teacher&&a.class===item.class&&a.subject===item.subject)){toast('این تخصیص از قبل وجود دارد.');return}
+    db.teacherAssignments.push(item);saveDB();closeModal();renderPage();toast('کلاس و درس به دبیر تخصیص داده شد.');
+  };
+  window.removeAssignment=function(i){if(!confirm('تخصیص حذف شود؟'))return;db.teacherAssignments.splice(i,1);saveDB();renderPage();toast('تخصیص حذف شد.')};
+  /* نمایش اطلاعات محدود به کلاس انتخابی در بخش‌های دفتر دبیر */
+  const scoped=(key)=>db[key].filter(x=>!activeClass||!x.class||x.class===activeClass);
+  const wrapPage=(fn,key)=>function(){const backup=db[key];db[key]=scoped(key);try{return fn()}finally{db[key]=backup}};
+  attendancePage=wrapPage(attendancePage,'attendance');
+  gradesPage=wrapPage(gradesPage,'grades');
+  behaviorPage=wrapPage(behaviorPage,'behaviors');
+  lessonsPage=wrapPage(lessonsPage,'lessons');
+  homeworkPage=wrapPage(homeworkPage,'homework');
+  examsPage=wrapPage(examsPage,'exams');
+  /* برای ثبت‌های جدید، کلاس فعال به‌صورت پیش‌فرض انتخاب شود. */
+  const oldOpenAttendance=openAttendanceModal;
+  openAttendanceModal=function(){oldOpenAttendance();if(activeClass&&$('aClass'))$('aClass').value=activeClass};
+  const oldOpenLesson=openLessonModal;
+  openLessonModal=function(){oldOpenLesson();if(activeClass&&$('lClass'))$('lClass').value=activeClass};
+  const oldOpenHomework=openHomeworkModal;
+  openHomeworkModal=function(){oldOpenHomework();if(activeClass&&$('hClass'))$('hClass').value=activeClass};
+  const oldOpenExam=openExamModal;
+  openExamModal=function(){oldOpenExam();if(activeClass&&$('eClass'))$('eClass').value=activeClass};
+  const oldOpenGrade=openGradeModal;
+  openGradeModal=function(){oldOpenGrade();if(activeClass&&$('gStudent')){const opts=[...$('gStudent').options];const s=db.students.find(x=>x.class===activeClass);if(s)$('gStudent').value=s.name}};
+  /* مدیریت حساب‌های آزمایشی: هر دو نقش مدیریتی مجاز به تخصیص هستند. */
+  const oldApply=applyRoleMenu;
+  applyRoleMenu=function(){oldApply();if(currentUser?.role==='teacher'){document.querySelectorAll('.nav-btn[data-page]').forEach(b=>{if(['classes','dashboard','attendance','grades','behavior','lessons','homework','exams','messages','calendar','notifications'].includes(b.dataset.page))b.classList.remove('hidden')})}};
+})();
+</script>
+
+
+<style id="schoolyar-ios-redesign">
+:root{
+ --bg:#f4f6fb;--surface:#fff;--surface2:#f8f9fd;--text:#172033;--muted:#7a8498;
+ --line:#e7eaf1;--green:#2878e5;--green2:#165fc3;--mint:#eaf2ff;--blue:#2878e5;
+ --bluebg:#edf4ff;--orange:#b7791f;--orangebg:#fff5e6;--red:#d34b58;--redbg:#fff0f1;
+ --purple:#7656c8;--purplebg:#f2efff;--shadow:0 8px 28px rgba(24,39,75,.055);--radius:20px;
+}
+body{background:linear-gradient(180deg,#f8f9fc 0%,#f1f4fa 100%);color:var(--text)}
+.topbar{height:72px;background:rgba(255,255,255,.88);backdrop-filter:blur(18px);border-color:#e9edf4}
+.topbar .brand-mark{background:#eaf2ff;color:#2878e5}
+.sidebar{border-left-color:#e9edf4}
+.nav-btn{border-radius:13px;padding:12px 13px}
+.nav-btn.active{background:#eaf2ff;color:#216bd0}
+.btn{background:#2878e5;border-radius:12px;box-shadow:0 4px 12px #2878e51b}
+.btn:hover{background:#165fc3}
+.btn.light{background:#eaf2ff;color:#216bd0;box-shadow:none}
+.btn.outline{background:#fff;box-shadow:none}
+.stat,.panel,.tile{border-color:#e9edf4;border-radius:20px;box-shadow:0 8px 28px rgba(24,39,75,.045)}
+.stat{padding:18px}
+.stat-icon{border-radius:15px}
+.panel{padding:20px}
+.quick,.class-card{border-radius:17px;background:#fff;border-color:#e9edf4}
+.quick:hover,.class-card:hover{border-color:#b9d2f6;box-shadow:0 12px 28px #2b66b20e}
+.modal{border-radius:24px;padding:24px}
+.modal-back{background:rgba(18,29,49,.38);backdrop-filter:blur(9px)}
+.field input,.field select,.field textarea,.toolbar input,.toolbar select{border-radius:13px;border-color:#e5e9f1;background:#fbfcff}
+.context-strip{background:#edf4ff;border-color:#dce9ff;border-radius:16px}
+.class-hero{background:linear-gradient(120deg,#185bb2,#438eea);border-radius:22px}
+.ios-hero{padding:24px;border-radius:22px;background:linear-gradient(120deg,#175db7,#448feb);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:18px;box-shadow:0 14px 34px #246bc51e}
+.ios-hero h2{margin:0 0 7px;font-size:21px}.ios-hero p{margin:0;color:#e6f0ff;font-size:12px;line-height:2}
+.ios-hero .hero-mark{width:58px;height:58px;border-radius:19px;background:#ffffff20;display:grid;place-items:center;font-size:27px}
+.metric-card{padding:17px 18px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.metric-card small{color:var(--muted);display:block}.metric-card strong{font-size:25px;display:block;margin:7px 0 3px}.metric-card span{font-size:11px;color:var(--muted)}
+.chart-bars{height:150px;display:flex;align-items:end;gap:12px;padding:12px 4px 0}
+.chart-bars .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:end}
+.chart-bars .bar{width:min(34px,70%);border-radius:9px 9px 4px 4px;background:linear-gradient(180deg,#69a7f4,#2878e5);min-height:4px;transition:height .4s}
+.chart-bars small{font-size:10px;color:var(--muted)}
+.progress-line{height:8px;border-radius:20px;background:#edf0f6;overflow:hidden}.progress-line span{height:100%;display:block;border-radius:20px;background:#3988eb}
+.class-card{min-height:172px}
+.class-card .class-icon{background:#edf4ff;color:#2878e5;border-radius:15px}
+.badge-soft{display:inline-flex;padding:5px 9px;border-radius:30px;background:#edf4ff;color:#2878e5;font-size:10px}
+.section-kicker{font-size:11px;font-weight:700;color:#8a94a7;margin:4px 0 12px}
+.bottom-nav{display:none}
+.student-row{display:flex;align-items:center;gap:10px}
+.student-avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:12px;background:#edf4ff;color:#2878e5;font-weight:800}
+.action-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.action-tile{background:#f8faff;border:1px solid #e9edf4;border-radius:15px;padding:14px;text-align:right;color:var(--text)}
+.action-tile b{display:block;font-size:12px;margin-top:8px}.action-tile span{font-size:19px;color:#2878e5}
+@media(max-width:720px){
+ body{padding-bottom:76px}.topbar{height:62px;padding:0 12px}.layout{display:block}.sidebar{display:none}
+ .main{padding:16px 12px 24px}.page-head{flex-direction:column}.page-head h1{font-size:20px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat{padding:12px}.stat strong{font-size:19px}
+ .ios-hero{padding:18px;align-items:flex-start}.ios-hero h2{font-size:18px}.ios-hero .hero-mark{width:46px;height:46px}
+ .action-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .bottom-nav{display:flex;position:fixed;z-index:45;bottom:0;right:0;left:0;height:70px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border-top:1px solid #e8ebf2;justify-content:space-around;gap:4px}
+ .bottom-nav button{background:transparent;color:#8a94a7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:55px;font-size:10px;border-radius:12px;padding:4px}
+ .bottom-nav button.active{color:#2878e5;background:#edf4ff}.bottom-nav button span{font-size:19px}
+ .modal-back{align-items:end;padding:0}.modal{width:100%;max-height:88vh;border-radius:24px 24px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
+ .quick-grid{grid-template-columns:repeat(2,1fr)}.class-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .class-card{padding:14px;min-height:155px}.class-card b{font-size:12px}.context-strip{padding:12px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+
+
+<script id="schoolyar-functional-redesign">
+/* SchoolYar v2 — front-end prototype, local-first storage */
+(function(){
+ const $id=(id)=>document.getElementById(id);
+ const safe=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const list=(key)=>Array.isArray(db[key])?db[key]:[];
+ const countInClass=(name)=>list('students').filter(s=>s.class===name).length;
+ const assignments=()=>list('teacherAssignments');
+ const isTeacher=()=>currentUser?.role==='teacher';
+ const isManager=()=>['admin','deputy'].includes(currentUser?.role);
+ const selectedClass=()=>isTeacher()?window.activeClass:null;
+ const inScope=(items)=>!selectedClass()?items:items.filter(x=>x.class===selectedClass());
+ const roleStudent=()=>list('students').find(s=>s.name===currentUser?.name)||list('students')[0];
+ const toastSafe=(m)=>typeof toast==='function'?toast(m):alert(m);
+ const chart=(values,labels)=>`<div class="chart-bars">${values.map((v,i)=>`<div class="bar-col"><div class="bar" style="height:${Math.max(5,Math.min(100,Number(v)||0))}%"></div><small>${safe(labels[i]||'')}</small></div>`).join('')}</div>`;
+ const metric=(label,value,sub,icon)=>`<div class="metric-card"><small>${safe(label)}</small><strong>${safe(value)}</strong><span>${safe(sub||'')}</span></div>`;
+ const classStudents=(name)=>list('students').filter(s=>s.class===name);
+ const studentClassName=()=>currentUser?.role==='parent'?'یازدهم ریاضی ۱':(roleStudent()?.class||'یازدهم ریاضی ۱');
+ const teacherClasses=()=>[...new Set(assignments().filter(a=>a.teacher===currentUser?.username).map(a=>a.class))];
+ const ensureClassContext=(record)=>{if(isTeacher()&&window.activeClass)record.class=window.activeClass;return record};
+
+ // Normalize legacy demo data without destroying user content.
+ const oldSaveDB=saveDB;
+ saveDB=function(){try{db.schemaVersion=2;db.classes.forEach(c=>c.count=countInClass(c.name));oldSaveDB()}catch(e){console.error(e);toastSafe('ذخیره‌سازی انجام نشد؛ فضای ذخیره‌سازی مرورگر را بررسی کنید.')}};
+ db.students=list('students');db.classes=list('classes');db.teacherAssignments=list('teacherAssignments');
+ db.classes.forEach(c=>c.count=countInClass(c.name));
+
+ // Responsive tab bar: only quick routes visible on small screens.
+ function mountBottomNav(){
+   if($id('bottomNav'))return;
+   const n=document.createElement('nav');n.id='bottomNav';n.className='bottom-nav';
+   n.innerHTML=`<button data-go="dashboard" onclick="navigate('dashboard')"><span>⌂</span>خانه</button>
+   <button data-go="classes" onclick="navigate('classes')"><span>▤</span>${isTeacher()?'کلاس‌ها':'کلاس'}</button>
+   <button data-go="grades" onclick="navigate('grades')"><span>▦</span>نمرات</button>
+   <button data-go="messages" onclick="navigate('messages')"><span>✉</span>پیام‌ها</button>
+   <button data-go="notifications" onclick="navigate('notifications')"><span>♧</span>اعلان</button>`;
+   document.body.appendChild(n);
+ }
+ function updateBottomNav(){const n=$id('bottomNav');if(!n)return;n.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.go===currentPage))}
+ const baseShowApp=showApp;
+ showApp=function(){
+   baseShowApp();
+   mountBottomNav();
+   if(isTeacher()){window.activeClass=null;window.activeSubject=null;renderClassPicker()}
+   updateBottomNav();
+ };
+ const baseNavigate=navigate;
+ navigate=function(page){baseNavigate(page);updateBottomNav()};
+
+ // Teacher landing: assigned classes as the first screen.
+ window.renderClassPicker=function(){
+   const as=assignments().filter(a=>a.teacher===currentUser?.username);
+   const unique=[...new Map(as.map(a=>[a.class+'|'+a.subject,a])).values()];
+   $id('main').innerHTML=`<div class="ios-hero"><div><h2>کلاس‌های من</h2><p>کلاس و درس موردنظر را انتخاب کنید تا دفتر همان کلاس باز شود.</p></div><div class="hero-mark">▤</div></div>
+   <div class="grid stats">${metric('کلاس‌های فعال',new Set(unique.map(a=>a.class)).size,'کلاس تخصیص‌یافته','▤')}${metric('درس‌های من',unique.length,'تخصیص آموزشی','▦')}</div>
+   <div class="class-grid">${unique.map(a=>{const c=list('classes').find(x=>x.name===a.class)||{};return `<button class="class-card" onclick="selectTeachingClass('${safe(a.class)}','${safe(a.subject)}')"><span class="class-icon">▤</span><b>${safe(a.class)}</b><small>${safe(a.subject)} · ${safe(c.grade||'')}</small><span class="badge-soft" style="margin-top:12px">ورود به دفتر ←</span></button>`}).join('')||'<div class="panel empty">هنوز کلاسی به حساب شما تخصیص داده نشده است. از مدیر یا معاون بخواهید تخصیص را ثبت کند.</div>'}</div>`;
+   updateBottomNav();
+ };
+ window.selectTeachingClass=function(cls,subject){
+   if(!assignments().some(a=>a.teacher===currentUser?.username&&a.class===cls&&a.subject===subject)){toastSafe('این کلاس به حساب شما تخصیص داده نشده است.');return}
+   window.activeClass=cls;window.activeSubject=subject;currentPage='dashboard';renderPage();updateBottomNav();
+ };
+ window.changeActiveClass=function(){window.activeClass=null;window.activeSubject=null;renderClassPicker()};
+
+ // Dashboard tailored to the logged-in role.
+ dashboardPage=function(){
+   const role=currentUser?.role;
+   if(role==='teacher'&&!window.activeClass)return `<div class="ios-hero"><div><h2>خوش آمدید، ${safe(currentUser.name)}</h2><p>برای شروع کار، یکی از کلاس‌های تخصیص‌یافته را انتخاب کنید.</p></div><div class="hero-mark">✦</div></div>${btn('مشاهده کلاس‌های من',"renderClassPicker()")}`;
+   if(role==='teacher'){
+     const cls=window.activeClass, students=classStudents(cls), grades=inScope(list('grades')), att=inScope(list('attendance'));
+     const avg=grades.length?(grades.reduce((s,x)=>s+(+x.score||0),0)/grades.length).toFixed(1):'—';
+     return `<div class="ios-hero"><div><h2>سلام ${safe(currentUser.name)}</h2><p>دفتر ${safe(cls)} · درس ${safe(window.activeSubject||'—')}<br>وضعیت کلاس و کارهای آموزشی در یک نگاه</p></div><div class="hero-mark">▤</div></div>
+     <div class="grid stats">${metric('دانش‌آموزان',students.length,'عضو این کلاس','♙')}${metric('میانگین نمرات',avg,'از نمرات ثبت‌شده','∑')}${metric('ثبت حضور',att.length,'سوابق این کلاس','◷')}${metric('تکالیف',inScope(list('homework')).length,'تکالیف تعریف‌شده','✎')}</div>
+     <div class="panel"><div class="panel-title"><h3>دسترسی سریع دفتر کلاس</h3><button class="btn outline small" onclick="changeActiveClass()">تعویض کلاس</button></div><div class="action-grid">
+     <button class="action-tile" onclick="navigate('attendance')"><span>◷</span><b>حضور و غیاب</b></button><button class="action-tile" onclick="navigate('grades')"><span>▦</span><b>دفتر نمرات</b></button><button class="action-tile" onclick="navigate('homework')"><span>✎</span><b>تکالیف</b></button><button class="action-tile" onclick="navigate('exams')"><span>▣</span><b>آزمون‌ها</b></button><button class="action-tile" onclick="navigate('lessons')"><span>▧</span><b>گزارش تدریس</b></button><button class="action-tile" onclick="openClassDetailByName('${safe(cls)}')"><span>♙</span><b>فهرست دانش‌آموزان</b></button></div></div>
+     ${panel('دانش‌آموزان کلاس',students.slice(0,6).map(s=>`<div class="list-row"><div class="student-row"><span class="student-avatar">${safe((s.name||'?')[0])}</span><div><b>${safe(s.name)}</b><small>کد ${safe(s.code)}</small></div></div><span class="pill info">${safe(s.class)}</span></div>`).join('')||'<div class="empty">هنوز دانش‌آموزی در این کلاس ثبت نشده است.</div>')}`;
+   }
+   if(role==='student'||role==='parent'){
+     const s=roleStudent(), cls=s?.class||studentClassName(), myGrades=list('grades').filter(g=>g.student===s?.name), myAtt=list('attendance').filter(a=>a.student===s?.name);
+     const avg=myGrades.length?(myGrades.reduce((a,g)=>a+(+g.score||0),0)/myGrades.length).toFixed(1):'—';
+     return `<div class="ios-hero"><div><h2>${role==='parent'?'پرونده آموزشی فرزند':'سلام '+safe(currentUser.name)}</h2><p>کلاس ${safe(cls)} · خلاصه وضعیت آموزشی و فعالیت‌های اخیر</p></div><div class="hero-mark">✦</div></div>
+     <div class="grid stats">${metric('نمرات ثبت‌شده',myGrades.length,'در دفتر آموزشی','▦')}${metric('میانگین نمرات',avg,'بر اساس نمرات ثبت‌شده','∑')}${metric('سوابق حضور',myAtt.length,'ثبت‌های حضور و غیاب','◷')}${metric('تکالیف فعال',list('homework').filter(h=>h.class===cls).length,'ویژه کلاس شما','✎')}</div>
+     <div class="grid cols">${panel('آخرین نمرات',myGrades.slice(-5).reverse().map(g=>`<div class="list-row"><div><b>${safe(g.subject)}</b><small>${safe(g.type||'ارزیابی')} · ${safe(g.date||'')}</small></div><strong>${safe(g.score)} / ${safe(g.max)}</strong></div>`).join('')||'<div class="empty">هنوز نمره‌ای ثبت نشده است.</div>')}${panel('تکالیف کلاس',list('homework').filter(h=>h.class===cls).slice(-5).reverse().map(h=>`<div class="list-row"><div><b>${safe(h.title)}</b><small>${safe(h.subject)} · مهلت ${safe(h.due)}</small></div><span class="pill warn">${safe(h.status||'فعال')}</span></div>`).join('')||'<div class="empty">تکلیف فعالی وجود ندارد.</div>')}</div>`;
+   }
+   const total=list('students').length, classes=list('classes').length, grades=list('grades'), att=list('attendance');
+   const avg=grades.length?(grades.reduce((a,g)=>a+(+g.score||0),0)/grades.length).toFixed(1):'—';
+   const attendanceRate=att.length?Math.round(att.filter(a=>a.status==='حاضر').length/att.length*100):0;
+   const actions=isManager()?`<div class="action-grid"><button class="action-tile" onclick="navigate('classes')"><span>▤</span><b>مدیریت کلاس‌ها</b></button><button class="action-tile" onclick="navigate('users')"><span>♙</span><b>دانش‌آموزان</b></button><button class="action-tile" onclick="navigate('attendance')"><span>◷</span><b>حضور و غیاب</b></button><button class="action-tile" onclick="navigate('reports')"><span>▥</span><b>گزارش مدیریتی</b></button></div>`:'';
+   return `<div class="ios-hero"><div><h2>داشبورد مدیریت مدرسه</h2><p>${safe(db.settings?.school||'مدرسه‌یار')} · سال تحصیلی ${safe(db.settings?.year||'۱۴۰۵–۱۴۰۶')}<br>نمای کلی عملکرد آموزشی و اجرایی مدرسه</p></div><div class="hero-mark">✦</div></div>
+   <div class="grid stats">${metric('دانش‌آموزان',total,'پرونده ثبت‌شده','♙')}${metric('کلاس‌های فعال',classes,'در سال تحصیلی جاری','▤')}${metric('میانگین نمرات',avg,'از نمرات ثبت‌شده','∑')}${metric('حضور ثبت‌شده',attendanceRate+'٪','نرخ حضور در ثبت‌های موجود','◷')}</div>
+   <div class="grid cols"><div class="panel"><div class="panel-title"><h3>عملکرد کلاس‌ها</h3><small>تعداد دانش‌آموزان</small></div>${chart(list('classes').map(c=>countInClass(c.name)*4),list('classes').map(c=>c.name.replace('یازدهم ','').replace('دوازدهم ','دوازدهم ')))}</div>
+   <div class="panel"><div class="panel-title"><h3>دسترسی مدیریتی</h3><small>عملیات پرتکرار</small></div>${actions}</div></div>
+   <div class="grid cols">${panel('آخرین فعالیت‌ها',list('notifications').slice(-4).reverse().map(n=>`<div class="list-row"><div><b>${safe(n.title)}</b><small>${safe(n.body||'')}</small></div><span class="pill info">${safe(n.date||'')}</span></div>`).join('')||'<div class="empty">فعالیتی ثبت نشده است.</div>')}${panel('نیازمند پیگیری',`<div class="list-row"><div><b>دانش‌آموزان بدون کلاس</b><small>پرونده‌هایی که کلاس معتبر ندارند</small></div><strong>${list('students').filter(s=>!list('classes').some(c=>c.name===s.class)).length}</strong></div><div class="list-row"><div><b>کلاس‌های بدون دبیر</b><small>کلاس‌هایی که تخصیص دبیر ندارند</small></div><strong>${list('classes').filter(c=>!assignments().some(a=>a.class===c.name)).length}</strong></div>`)}</div>`;
+ };
+
+ // Class directory: management view for admin/deputy, personal office for teacher.
+ classesPage=function(){
+   if(isTeacher()){
+     const as=assignments().filter(a=>a.teacher===currentUser.username);
+     return `${pageHead('کلاس‌های من','کلاس‌ها و درس‌های تخصیص‌یافته به شما',btn('انتخاب کلاس دیگر','changeActiveClass()','btn outline'))}<div class="class-grid">${as.map(a=>`<button class="class-card" onclick="selectTeachingClass('${safe(a.class)}','${safe(a.subject)}')"><span class="class-icon">▤</span><b>${safe(a.class)}</b><small>${safe(a.subject)}</small><span class="badge-soft">باز کردن دفتر</span></button>`).join('')}</div>`;
+   }
+   if(!isManager())return `${pageHead('کلاس من','نمای کلی کلاس آموزشی')}${panel(studentClassName(),`<p>دانش‌آموزان این کلاس: ${countInClass(studentClassName())}</p>`)}`;
+   const rows=list('classes').map((c,i)=>`<tr><td><b>${safe(c.name)}</b></td><td>${safe(c.grade)}</td><td>${safe(c.field)}</td><td><b>${countInClass(c.name)}</b></td><td>${assignments().filter(a=>a.class===c.name).length}</td><td><div class="actions"><button class="btn small light" onclick="openClassDetail(${i})">دفتر کلاس</button><button class="btn small outline" onclick="openAssignmentForClass('${safe(c.name)}')">تخصیص دبیر</button><button class="btn small danger" onclick="deleteClassSafe('${safe(c.name)}')">حذف</button></div></td></tr>`).join('');
+   return `${pageHead('مدیریت کلاس‌ها','ایجاد کلاس، مشاهده دفتر کلاسی و تنظیم دبیران',`${btn('＋ ایجاد کلاس','openClassModal()')}${btn('＋ تخصیص دبیر','openAssignmentModal()','btn outline')}`)}
+   <div class="grid stats">${metric('کلاس‌ها',list('classes').length,'کلاس تعریف‌شده','▤')}${metric('دانش‌آموزان',list('students').length,'پرونده فعال','♙')}${metric('تخصیص‌ها',assignments().length,'دبیر / کلاس / درس','♧')}${metric('بدون کلاس',list('students').filter(s=>!list('classes').some(c=>c.name===s.class)).length,'نیازمند بررسی','!')}</div>
+   ${panel('فهرست کلاس‌ها',`<div class="toolbar"><input placeholder="جست‌وجوی کلاس..." oninput="filterTable('classTable',this.value)"><button class="btn outline small" onclick="navigate('users')">مدیریت دانش‌آموزان</button></div><div class="table-wrap"><table id="classTable"><thead><tr><th>نام کلاس</th><th>پایه</th><th>رشته</th><th>دانش‌آموزان</th><th>دبیر / درس</th><th>عملیات</th></tr></thead><tbody>${rows||'<tr><td colspan="6" class="empty">کلاسی ثبت نشده است.</td></tr>'}</tbody></table></div>`)}`;
+ };
+ window.openClassDetailByName=function(name){const i=list('classes').findIndex(c=>c.name===name);if(i<0){toastSafe('کلاس پیدا نشد.');return}openClassDetail(i)};
+ window.openClassDetail=function(i){
+   const c=list('classes')[i];if(!c){toastSafe('کلاس پیدا نشد.');return}
+   const students=classStudents(c.name);
+   const canSee=isManager()||isTeacher()&&teacherClasses().includes(c.name);
+   if(!canSee){toastSafe('به این کلاس دسترسی ندارید.');return}
+   const trs=students.map(s=>`<tr><td>${safe(s.code)}</td><td><b>${safe(s.name)}</b></td><td>${safe(s.parent||'—')}</td><td>${safe(s.phone||'—')}</td></tr>`).join('');
+   modal('دفتر کلاسی · '+safe(c.name),`<div class="grid stats">${metric('دانش‌آموزان',students.length,'عضو کلاس','♙')}${metric('دبیران',assignments().filter(a=>a.class===c.name).length,'تخصیص فعال','♧')}</div>
+   <div class="toolbar">${btn('حضور و غیاب',`activeClass='${safe(c.name)}';navigate('attendance')`,'btn small')}${btn('دفتر نمرات',`activeClass='${safe(c.name)}';navigate('grades')`,'btn small outline')}</div>
+   <div class="table-wrap"><table><thead><tr><th>کد</th><th>نام دانش‌آموز</th><th>والد</th><th>تماس</th></tr></thead><tbody>${trs||'<tr><td colspan="4" class="empty">دانش‌آموزی در این کلاس ثبت نشده است.</td></tr>'}</tbody></table></div>`,'');
+ };
+ window.deleteClassSafe=function(name){
+   if(!isManager())return;
+   if(countInClass(name)>0){toastSafe('ابتدا دانش‌آموزان این کلاس را منتقل کنید؛ کلاس دارای عضو است.');return}
+   if(!confirm('کلاس و تخصیص‌های مرتبط حذف شود؟'))return;
+   db.classes=db.classes.filter(c=>c.name!==name);db.teacherAssignments=assignments().filter(a=>a.class!==name);saveDB();renderPage();
+ };
+
+ // Safer class and student creation with duplicate checks and derived membership counts.
+ openClassModal=function(){
+   modal('ایجاد کلاس جدید',`<div class="form-grid">${field('نام کلاس','clName','مثلاً دوازدهم تجربی ۲')}${selectField('پایه','clGrade','<option>دهم</option><option>یازدهم</option><option>دوازدهم</option>')}${selectField('رشته','clField','<option>ریاضی‌فیزیک</option><option>علوم تجربی</option><option>علوم انسانی</option><option>فنی‌وحرفه‌ای</option>')}</div><div class="notice" style="margin-top:12px">ظرفیت و تعداد دانش‌آموز به‌صورت خودکار از پرونده‌های عضو کلاس محاسبه می‌شود.</div>`,'saveClassSafe()');
+ };
+ window.saveClassSafe=function(){
+   const name=$id('clName').value.trim(),grade=$id('clGrade').value,fieldName=$id('clField').value;
+   if(!name){toastSafe('نام کلاس را وارد کنید.');$id('clName').focus();return}
+   if(list('classes').some(c=>c.name.trim().toLowerCase()===name.toLowerCase())){toastSafe('کلاسی با این نام از قبل وجود دارد.');return}
+   db.classes.push({id:Date.now(),name,grade,field:fieldName,count:0,students:0});saveDB();closeModal();renderPage();toastSafe('کلاس با موفقیت ایجاد شد.');
+ };
+ saveClass=saveClassSafe;
+ openStudentModal=function(){
+   modal('ثبت پرونده دانش‌آموز',`<div class="form-grid">${field('نام و نام خانوادگی','sName','نام کامل')}${field('کد دانش‌آموزی','sCode','کد یکتا')}${selectField('کلاس','sClass',classOptions())}${field('نام والد / سرپرست','sParent','نام سرپرست')}${field('شماره تماس','sPhone','شماره تماس','tel')}${field('توضیحات','sExtra','اختیاری')}</div><div class="notice" style="margin-top:12px">کد دانش‌آموزی باید یکتا باشد. تعداد دانش‌آموزان کلاس پس از ذخیره خودکار به‌روزرسانی می‌شود.</div>`,'saveStudentSafe()');
+ };
+ window.saveStudentSafe=function(){
+   const name=$id('sName').value.trim(),code=$id('sCode').value.trim(),cls=$id('sClass').value;
+   if(!name||!code||!cls){toastSafe('نام، کد دانش‌آموزی و کلاس الزامی هستند.');return}
+   if(list('students').some(s=>String(s.code).trim()===code)){toastSafe('این کد دانش‌آموزی قبلاً ثبت شده است.');return}
+   db.students.push({id:Date.now(),name,code,class:cls,parent:$id('sParent').value.trim(),phone:$id('sPhone').value.trim(),note:$id('sExtra').value.trim(),status:'فعال'});
+   saveDB();closeModal();renderPage();toastSafe('پرونده دانش‌آموز ثبت شد.');
+ };
+ saveStudent=saveStudentSafe;
+
+ // Users page becomes a usable student register, with teacher-account creation shortcut.
+ usersPage=function(){
+   if(!isManager())return `${pageHead('کاربران','نمایش پرونده‌های مجاز')}${panel('راهنما','برای مدیریت حساب‌ها با مدیر مدرسه تماس بگیرید.')}`;
+   const trs=list('students').map(s=>`<tr><td>${safe(s.code)}</td><td><b>${safe(s.name)}</b></td><td>${safe(s.class)}</td><td>${safe(s.parent||'—')}</td><td>${safe(s.phone||'—')}</td><td><button class="btn small danger" onclick="removeStudentSafe('${safe(s.code)}')">حذف</button></td></tr>`).join('');
+   const teachers=Object.entries(demoUsers).filter(([u,x])=>x.role==='teacher').map(([u,x])=>`<tr><td>${safe(u)}</td><td>${safe(x.name)}</td><td>${assignments().filter(a=>a.teacher===u).length}</td></tr>`).join('');
+   return `${pageHead('پرونده‌ها و کاربران','ثبت‌نام، پیگیری پرونده دانش‌آموزان و حساب دبیران',`${btn('＋ دانش‌آموز جدید','openStudentModal()')}${btn('＋ حساب دبیر','openTeacherModal()','btn outline')}`)}
+   <div class="grid stats">${metric('دانش‌آموزان',list('students').length,'پرونده ثبت‌شده','♙')}${metric('دبیران',Object.values(demoUsers).filter(x=>x.role==='teacher').length,'حساب آزمایشی','♧')}${metric('کلاس‌ها',list('classes').length,'کلاس فعال','▤')}${metric('کدهای تکراری',duplicateStudentCodes(),'نیازمند اصلاح','!')}</div>
+   ${panel('فهرست دانش‌آموزان',`<div class="toolbar"><input placeholder="جست‌وجو نام، کد یا کلاس..." oninput="filterTable('usersTable',this.value)"><button class="btn outline small" onclick="exportStudents()">خروجی CSV</button></div><div class="table-wrap"><table id="usersTable"><thead><tr><th>کد</th><th>نام</th><th>کلاس</th><th>سرپرست</th><th>تماس</th><th>عملیات</th></tr></thead><tbody>${trs}</tbody></table></div>`)}
+   ${panel('حساب دبیران',`<div class="table-wrap"><table><thead><tr><th>نام کاربری</th><th>نام دبیر</th><th>تخصیص فعال</th></tr></thead><tbody>${teachers||'<tr><td colspan="3" class="empty">حسابی ثبت نشده است.</td></tr>'}</tbody></table></div>`)}`;
+ };
+ function duplicateStudentCodes(){const codes=list('students').map(s=>String(s.code));return codes.length-new Set(codes).size}
+ window.removeStudentSafe=function(code){if(!isManager())return;if(!confirm('پرونده دانش‌آموز حذف شود؟ سوابق نمره و حضور او باقی می‌مانند.'))return;db.students=list('students').filter(s=>String(s.code)!==String(code));saveDB();renderPage()};
+ window.openTeacherModal=function(){modal('ایجاد حساب آزمایشی دبیر',`<div class="form-grid">${field('نام کاربری','tUser','مثلاً teacher2')}${field('نام دبیر','tName','نام و نام خانوادگی')}${field('رمز عبور آزمایشی','tPass','حداقل ۴ نویسه','password')}</div><div class="notice warn" style="margin-top:12px">این حساب فقط در همین مرورگر و برای نمونه‌سازی است؛ رمز عبور در این نسخه امنیت واقعی ندارد.</div>`,'saveTeacherSafe()')};
+ window.saveTeacherSafe=function(){const u=$id('tUser').value.trim(),name=$id('tName').value.trim(),pass=$id('tPass').value;if(!/^[a-zA-Z0-9_-]{3,24}$/.test(u)||!name||pass.length<4){toastSafe('نام کاربری معتبر، نام دبیر و رمز حداقل ۴ نویسه لازم است.');return}if(demoUsers[u]){toastSafe('این نام کاربری قبلاً وجود دارد.');return}demoUsers[u]={pass,name,role:'teacher'};closeModal();renderPage();toastSafe('حساب آزمایشی دبیر ایجاد شد.')};
+
+ // Assignment selector now includes all locally created teacher accounts.
+ window.openAssignmentModal=function(){
+   const teachers=Object.entries(demoUsers).filter(([u,x])=>x.role==='teacher').map(([u,x])=>`<option value="${safe(u)}">${safe(x.name)} (${safe(u)})</option>`).join('');
+   modal('تخصیص دبیر به کلاس و درس',`<div class="form-grid">${selectField('دبیر','asTeacher',teachers)}${selectField('کلاس','asClass',classOptions())}${selectField('درس','asSubject',['حسابان','هندسه','فیزیک','شیمی','ریاضی','آمار','ادبیات','عربی','زبان','زیست‌شناسی'].map(x=>`<option>${x}</option>`).join(''))}</div>`,'saveAssignmentSafe()');
+ };
+ window.openAssignmentForClass=function(cls){openAssignmentModal();if($id('asClass'))$id('asClass').value=cls};
+ window.saveAssignmentSafe=function(){
+   const item={teacher:$id('asTeacher').value,class:$id('asClass').value,subject:$id('asSubject').value};
+   if(!item.teacher||!item.class||!item.subject){toastSafe('تمام موارد تخصیص را انتخاب کنید.');return}
+   if(assignments().some(a=>a.teacher===item.teacher&&a.class===item.class&&a.subject===item.subject)){toastSafe('این تخصیص قبلاً ثبت شده است.');return}
+   db.teacherAssignments.push(item);saveDB();closeModal();renderPage();toastSafe('تخصیص دبیر ثبت شد.');
+ };
+ saveAssignment=saveAssignmentSafe;
+
+ // Add class context to every teacher-created record; correct old cross-class data leakage.
+ const attachClass=(fn,key)=>function(){
+   if(isTeacher()&&!window.activeClass){toastSafe('ابتدا یک کلاس را انتخاب کنید.');return}
+   fn();
+   const arr=list(key),last=arr[arr.length-1];
+   if(last&&isTeacher()){last.class=window.activeClass;last.subject=window.activeSubject||last.subject;saveDB()}
+ };
+ saveAttendance=saveAttendance; // keep legacy handler name
+ if(typeof saveAttendance==='function')saveAttendance=attachClass(saveAttendance,'attendance');
+ if(typeof saveGrade==='function')saveGrade=attachClass(saveGrade,'grades');
+ if(typeof saveBehavior==='function')saveBehavior=attachClass(saveBehavior,'behaviors');
+ if(typeof saveLesson==='function')saveLesson=attachClass(saveLesson,'lessons');
+ if(typeof saveHomework==='function')saveHomework=attachClass(saveHomework,'homework');
+ if(typeof saveExam==='function')saveExam=attachClass(saveExam,'exams');
+
+ // Rebuild class-scoped pages from strict class membership. Missing class is not treated as global.
+ const baseAttendance=attendancePage,baseGrades=gradesPage,baseBehavior=behaviorPage,baseLessons=lessonsPage,baseHomework=homeworkPage,baseExams=examsPage;
+ attendancePage=function(){if(isTeacher()&&window.activeClass){const a=db.attendance;db.attendance=a.filter(x=>x.class===window.activeClass);try{return baseAttendance()}finally{db.attendance=a}}return baseAttendance()};
+ gradesPage=function(){if(isTeacher()&&window.activeClass){const a=db.grades;db.grades=a.filter(x=>x.class===window.activeClass);try{return baseGrades()}finally{db.grades=a}}return baseGrades()};
+ behaviorPage=function(){if(isTeacher()&&window.activeClass){const a=db.behaviors;db.behaviors=a.filter(x=>x.class===window.activeClass);try{return baseBehavior()}finally{db.behaviors=a}}return baseBehavior()};
+ lessonsPage=function(){if(isTeacher()&&window.activeClass){const a=db.lessons;db.lessons=a.filter(x=>x.class===window.activeClass);try{return baseLessons()}finally{db.lessons=a}}return baseLessons()};
+ homeworkPage=function(){if(isTeacher()&&window.activeClass){const a=db.homework;db.homework=a.filter(x=>x.class===window.activeClass);try{return baseHomework()}finally{db.homework=a}}return baseHomework()};
+ examsPage=function(){if(isTeacher()&&window.activeClass){const a=db.exams;db.exams=a.filter(x=>x.class===window.activeClass);try{return baseExams()}finally{db.exams=a}}return baseExams()};
+
+ // Student and parent data are strictly limited to their linked student.
+ const oldStudentOptions=studentOptions;
+ studentOptions=function(){if(isTeacher()&&window.activeClass)return classStudents(window.activeClass).map(s=>`<option>${safe(s.name)}</option>`).join('');return oldStudentOptions()};
+ const oldClassOptions=classOptions;
+ classOptions=function(){return list('classes').map(c=>`<option>${safe(c.name)}</option>`).join('')};
+
+ // Update count displays and preserve a clear local-only / future-backend boundary.
+ const oldSettingsPage=settingsPage;
+ settingsPage=function(){
+   const base=oldSettingsPage();
+   return base+panel('وضعیت زیرساخت نسخه فعلی',`<div class="notice warn">این خروجی یک نمونه تعاملی آینده‌پذیر است. داده‌ها فقط در حافظه محلی مرورگر ذخیره می‌شوند و بین دستگاه‌ها همگام نیستند. ورود نمایشی، رمزها و سطح دسترسی سمت کاربر برای استفاده واقعی امن نیستند.</div><p class="muted">برای انتشار واقعی باید API، پایگاه داده مرکزی، احراز هویت امن، کنترل دسترسی سمت سرور، ثبت رویدادها و پشتیبان‌گیری زمان‌بندی‌شده اضافه شود.</p>`);
+ };
+
+ // Full render wrapper updates the mobile bar and class context without stacking duplicate banners.
+ const finalRender=renderPage;
+ renderPage=function(){finalRender();updateBottomNav();};
+ // If the current session is already authenticated, apply the new layout after script load.
+ if(currentUser){mountBottomNav();if(isTeacher()&&!window.activeClass)renderClassPicker();else renderPage()}
+})();
+</script>
+
+</body>
+</html>
